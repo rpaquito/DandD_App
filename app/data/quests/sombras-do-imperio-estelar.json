@@ -1,0 +1,568 @@
+{
+  "titulo": "Sombras do Império Estelar",
+  "descricao": "Uma aventura para personagens de nível 1-3. Os aventureiros juntam-se à resistência contra o tirânico Império Estelar e descobrem os segredos de uma antiga ordem de guardiões místicos.",
+  "nivel_min": 1,
+  "nivel_max": 3,
+  "passos": [
+    {
+      "id": 1,
+      "titulo": "A Cantina do Porto Estelar",
+      "tipo": "social",
+      "texto_jogadores": "O Porto Estelar de Mos Kador fervilha de atividade. Comerciantes, mercenários e viajantes de todas as raças cruzam-se nas ruas poeirentas desta cidade fronteiriça.\n\nEntram numa cantina escura chamada 'O Bantha Bêbado'. O ar está carregado de fumo de cachimbo e o som de uma melodia exótica ecoa de um canto. Criaturas de aparência estranha bebem em mesas dispersas, lançando-vos olhares desconfiados.\n\nNo fundo da cantina, uma figura encapuzada acena discretamente para a vossa mesa.",
+      "notas_mestre": "Esta é a cena de abertura no estilo clássico de cantina. A figura encapuzada é Kira Solaris, uma agente da Resistência. Ela precisa de escoltar um droide mensageiro com informações vitais até um templo escondido. O ambiente deve ser tenso - há espiões imperiais por todo o lado. Deixa os jogadores explorar a cantina e interagir com NPCs coloridos antes de abordar Kira.",
+      "dicas_improvisacao": [
+        "Se os jogadores falarem com o barman, ele avisa que soldados imperiais têm patrulhado a zona",
+        "Se examinarem outros clientes, há um Trandoshano suspeito que parece estar a observá-los",
+        "Se causarem problemas, o segurança Wookiee intervém pacificamente mas firmemente",
+        "Se perguntarem sobre trabalho, há sempre caçadores de recompensas à procura de recrutas"
+      ],
+      "npcs": ["kira_solaris"],
+      "monstros": [],
+      "proximos_passos": [2],
+      "recompensas": []
+    },
+    {
+      "id": 2,
+      "titulo": "A Missão da Resistência",
+      "tipo": "social",
+      "texto_jogadores": "A figura encapuzada revela-se como uma mulher jovem de cabelo escuro cortado curto e olhos determinados. Fala em voz baixa mas urgente.\n\n'Chamo-me Kira. Represento a Resistência contra o Império Estelar. Precisamos de ajuda para uma missão crítica.'\n\nEla coloca discretamente na mesa uma pequena esfera metálica - um droide mensageiro.\n\n'Este droide contém a localização de um antigo Templo dos Guardiões da Luz - uma ordem de guerreiros místicos que o Império julgava exterminada. Se encontrarmos o templo, podemos recuperar artefactos que mudarão o rumo da guerra. Pago 200 peças de ouro pela escolta.'",
+      "notas_mestre": "O droide D7-R2 é crucial para a missão. A recompensa pode ser negociada até 300 po (Persuasão CD 14). Os Guardiões da Luz eram uma ordem de guerreiros que canalizavam energia mística através de lâminas especiais. O Império caçou-os quase até à extinção. Kira não sabe que um espião imperial (o Trandoshano na cantina) já os identificou.",
+      "dicas_improvisacao": [
+        "Se pedirem mais informação sobre os Guardiões, Kira conta lendas de guerreiros com espadas de luz pura",
+        "Se perguntarem sobre o perigo, ela admite que o Império tem caçadores de recompensas atrás dela",
+        "Se recusarem, patrulhas imperiais entram na cantina e forçam uma fuga de qualquer forma",
+        "Se examinarem o droide, ele emite sons simpáticos e projeta um mapa holográfico parcial"
+      ],
+      "npcs": ["kira_solaris", "d7r2"],
+      "monstros": [],
+      "proximos_passos": [3],
+      "recompensas": []
+    },
+    {
+      "id": 3,
+      "titulo": "Emboscada Imperial",
+      "tipo": "combate",
+      "texto_jogadores": "Mal terminam de falar, a porta da cantina é arrombada! Quatro soldados em armadura branca reluzente irrompem pelo estabelecimento, béstas em punho.\n\n'Em nome do Império Estelar, estão todos detidos! Entreguem o droide!'\n\nO Trandoshano no canto levanta-se com um sorriso reptiliano - era um informador. A cantina explode em caos quando os clientes fogem em pânico.\n\n'Saída traseira, rápido!' grita Kira, sacando uma espada curta.",
+      "notas_mestre": "COMBATE: 4 Soldados Imperiais (usar estatísticas de Guarda). O Trandoshano foge durante o combate para reportar. Táticas: 2 soldados bloqueiam a porta principal, 2 avançam para capturar o droide. Ambiente: mesas podem ser viradas para cobertura (+2 AC), garrafas podem ser atiradas (improvised weapon, 1d4). Após 3 rounds, mais soldados chegam - os jogadores devem fugir pela saída traseira. Kira luta ao lado deles.",
+      "dicas_improvisacao": [
+        "Se um jogador virar uma mesa, ganha cobertura parcial contra ataques à distância",
+        "Se tentarem negociar, os soldados não ouvem - têm ordens de captura",
+        "Se a luta demorar muito, Kira grita que têm de fugir AGORA",
+        "Se o droide for atacado diretamente, Kira arrisca-se para o proteger"
+      ],
+      "npcs": ["kira_solaris"],
+      "monstros": ["soldado_imperial", "soldado_imperial", "soldado_imperial", "soldado_imperial"],
+      "proximos_passos": [4],
+      "recompensas": ["15 peças de ouro (nos soldados)", "1 Poção de Cura (atrás do balcão)"]
+    },
+    {
+      "id": 4,
+      "titulo": "Perseguição nas Docas",
+      "tipo": "combate",
+      "texto_jogadores": "Saem pela porta traseira para um beco escuro. O som de botas a marchar ecoa das ruas principais - mais patrulhas aproximam-se.\n\nKira aponta para as docas de carga ao fundo. 'O meu contacto tem um barco ali! Temos de...'\n\nÉ interrompida quando três figuras saltam dos telhados, bloqueando o caminho. São caçadores de recompensas em armadura de couro reforçado, com redes e lâminas prontas.\n\n'A cabeça da espia da Resistência vale 500 moedas de ouro,' rosna o líder. 'O droide, outros 500. Não nos levem a mal - são só negócios.'",
+      "notas_mestre": "COMBATE: 3 Caçadores de Recompensas (usar estatísticas de Bandido Capitão para o líder, Bandido para os outros 2). Táticas: O líder foca em Kira, os outros tentam capturar o droide com redes. Ambiente: Caixotes dão cobertura, escadas de serviço permitem terreno elevado (+2 para ataques à distância). Se os jogadores derrotarem o líder primeiro, os outros dois tentam fugir. Há barris de óleo que podem ser incendiados.",
+      "dicas_improvisacao": [
+        "Se um jogador subir para terreno elevado, ganha vantagem em ataques à distância",
+        "Se usarem o ambiente criativamente (barris, caixotes), recompensa com vantagem",
+        "Se tentarem subornar os caçadores, o líder considera mas os outros não querem dividir",
+        "Se a luta correr mal, Kira usa um dispositivo de fumo para facilitar a fuga (escuridão 1 round)"
+      ],
+      "npcs": ["kira_solaris"],
+      "monstros": ["cacador_lider", "cacador", "cacador"],
+      "proximos_passos": [5],
+      "recompensas": ["45 peças de ouro", "2 Redes", "Mapa de rotas de contrabando"]
+    },
+    {
+      "id": 5,
+      "titulo": "Fuga nas Areias",
+      "tipo": "narrativa",
+      "texto_jogadores": "Conseguem chegar ao barco de areia - um veículo estranho com velas que desliza sobre as dunas como um navio no mar. O piloto, um Sulustano chamado Nien, arranca imediatamente quando vos vê aproximar.\n\n'Entrem, entrem! Patrulhas imperiais por todo o lado!'\n\nO barco de areia acelera para o deserto, deixando para trás as luzes de Mos Kador. Durante horas, viajam sob um céu de duas luas, até que o droide D7-R2 emite um apito de alerta.\n\n'Chegámos,' anuncia Kira, apontando para formações rochosas no horizonte. 'O templo está algures naquelas montanhas.'",
+      "notas_mestre": "Esta cena é uma transição narrativa para recuperar fôlego. Nien é um aliado cómico que fala muito e nervosamente. Durante a viagem, os jogadores podem: descansar curto (recuperar Hit Dice), falar com Kira sobre os Guardiões (ela sabe lendas), examinar o droide (projeção holográfica do templo). Perceção CD 14 nota que estão a ser seguidos à distância por outro barco de areia.",
+      "dicas_improvisacao": [
+        "Se perguntarem ao Nien sobre o Império, ele conta como perdeu o negócio para impostos imperiais",
+        "Se quiserem saber mais dos Guardiões, Kira descreve lendas de guerreiros que deflectiam flechas com luz",
+        "Se virem o perseguidor, Nien acelera e consegue perdê-los temporariamente",
+        "Se quiserem parar para descansar antes do templo, é seguro mas perdem tempo (encontro futuro mais difícil)"
+      ],
+      "npcs": ["kira_solaris", "nien"],
+      "monstros": [],
+      "proximos_passos": [6],
+      "recompensas": []
+    },
+    {
+      "id": 6,
+      "titulo": "A Entrada do Templo",
+      "tipo": "combate",
+      "texto_jogadores": "As formações rochosas escondem uma entrada de pedra antiga, parcialmente soterrada pela areia. Símbolos místicos decoram o portal - um círculo com raios de luz irradiando para fora.\n\nQuando se aproximam, o droide D7-R2 projeta uma chave holográfica que desbloqueia a porta. Com um gemido antigo, ela desliza para o lado.\n\nMas não estão sozinhos. Dois constructos de pedra - guardiões do templo - ganham vida nas alcoves laterais! Os seus olhos brilham com luz dourada enquanto se movem para bloquear a entrada.\n\n'Intruso... detectado... protocolo... defesa... ativado...'",
+      "notas_mestre": "COMBATE: 2 Guardiões de Pedra (usar estatísticas de Animated Armor). Os constructos não são hostis por natureza - estão a seguir programação antiga. Táticas: Defendem a entrada, não perseguem além de 9m da porta. Podem ser desativados de outras formas: o droide pode tentar comunicar com eles (3 rounds para hackear, CD 15 Int), ou encontrar o painel de controlo na parede (Perceção CD 14 para encontrar, Arcana CD 13 para desativar). Se derrotados em combate, deixam cristais de energia.",
+      "dicas_improvisacao": [
+        "Se tentarem comunicar, os guardiões pausam mas continuam após 1 round sem ação",
+        "Se o droide tentar hackear, precisa de proteção durante 3 rounds",
+        "Se procurarem alternativas ao combate, há um painel de controlo escondido",
+        "Se os destruírem completamente, Kira lamenta - eram relíquias insubstituíveis"
+      ],
+      "npcs": ["kira_solaris"],
+      "monstros": ["guardiao_pedra", "guardiao_pedra"],
+      "proximos_passos": [7],
+      "recompensas": ["2 Cristais de Energia (valem 25 po cada)"]
+    },
+    {
+      "id": 7,
+      "titulo": "As Provações dos Guardiões",
+      "tipo": "puzzle",
+      "texto_jogadores": "O interior do templo é vasto e silencioso. Corredores de pedra polida conduzem a uma câmara circular iluminada por cristais que flutuam no ar, emitindo uma luz dourada suave.\n\nNo centro da câmara, três pedestais sustentam três objetos: uma pena, uma espada quebrada, e um espelho. Uma voz etérea ecoa pelas paredes:\n\n'Três provações enfrentarás,\nAntes que os segredos encontrarás.\nLeveza de espírito, a pena mostrará.\nForça de vontade, a lâmina testará.\nVerdade interior, o espelho revelará.\nEscolhe o teu caminho, aspirante.'",
+      "notas_mestre": "PUZZLE: Cada objeto é uma provação diferente. PENA (Sabedoria CD 13): Meditar e deixar ir o medo - falha causa 2d6 dano psíquico. ESPADA (Força CD 13): Resistir à tentação do poder fácil - falha causa a espada a atacar (+4, 1d8 cortante). ESPELHO (Carisma CD 13): Enfrentar os próprios defeitos honestamente - falha causa Medo por 1 minuto. Passar em DUAS provações abre a porta interior. Cada jogador só pode tentar uma provação. Se todos falharem, a porta abre mas com um aviso - o próximo combate terá um inimigo extra.",
+      "dicas_improvisacao": [
+        "Se hesitarem em escolher, os objetos brilham gentilmente para encorajar",
+        "Se roleplayarem bem as provações, dá vantagem no teste",
+        "Se falharem todas, a voz diz 'Imperfeitos, mas com potencial - passem'",
+        "Se passarem todas, recebem uma bênção (+1d4 no próximo ataque)"
+      ],
+      "npcs": [],
+      "monstros": [],
+      "proximos_passos": [8],
+      "recompensas": []
+    },
+    {
+      "id": 8,
+      "titulo": "O Espírito do Mestre",
+      "tipo": "social",
+      "texto_jogadores": "Passadas as provações, entram numa câmara interior repleta de artefactos antigos. Pergaminhos, cristais, e no centro - um suporte com três Lâminas de Luz, espadas cujas lâminas brilham com energia pura.\n\nUma figura translúcida materializa-se diante de vós - um homem idoso em vestes simples, com expressão serena.\n\n'Bem-vindos, jovens,' diz o espírito. 'Sou Mestre Kevan, o último guardião deste templo. Há muitos anos que aguardo por aqueles dignos de herdar o nosso legado. O Império destruiu a nossa ordem, mas não pode destruir a esperança.'",
+      "notas_mestre": "Mestre Kevan é um espírito benevolente que pode oferecer: informação sobre os Guardiões da Luz (história, filosofia), uma Lâmina de Luz para UM personagem que tenha passado numa provação, avisos sobre o perigo iminente (sente presenças sombrias a aproximar-se). Ele não pode lutar nem sair do templo. Se os jogadores perguntarem como derrotar o Império, ele fala de 'equilíbrio' e 'não ceder ao ódio'.",
+      "dicas_improvisacao": [
+        "Se perguntarem sobre a guerra, Kevan diz que a violência só gera mais violência",
+        "Se quiserem todas as lâminas, ele explica que só quem é digno pode empunhá-las",
+        "Se mencionarem o Império, a sua expressão escurece - 'Sinto a Sombra aproximar-se'",
+        "Se pedirem treino, ele oferece 1 hora de meditação (inspiração para um combate)"
+      ],
+      "npcs": ["mestre_kevan"],
+      "monstros": [],
+      "proximos_passos": [9],
+      "recompensas": ["Lâmina de Luz (para um personagem digno)"]
+    },
+    {
+      "id": 9,
+      "titulo": "Os Acólitos das Sombras",
+      "tipo": "combate",
+      "texto_jogadores": "Um estrondo ecoa pelo templo. Passos múltiplos aproximam-se rapidamente.\n\n'Encontraram-nos,' sussurra Kira, empunhando a espada.\n\nPelo corredor surgem quatro figuras em robes negros - Acólitos das Sombras, servos do Império treinados nas artes sombrias. Os seus olhos brilham com malícia amarelada.\n\n'O templo será purificado,' sibila o líder, erguendo um bastão que crepita com energia escura. 'Entreguem os artefactos ou morram.'",
+      "notas_mestre": "COMBATE: 4 Acólitos das Sombras (usar estatísticas de Cultist para 3, Cult Fanatic para o líder). Estes são os verdadeiros inimigos - corrompidos pelo lado sombrio. Táticas: O líder usa magia (Sacred Flame reflavored como raio negro, Command), os acólitos atacam em coordenação. Ambiente: Os cristais flutuantes podem ser derrubados sobre inimigos (Destreza CD 13 para acertar, 2d6 contundente). Se os jogadores tiverem a Lâmina de Luz, ela é especialmente eficaz (+1d6 radiante contra estes inimigos).",
+      "dicas_improvisacao": [
+        "Se usarem a Lâmina de Luz, os acólitos recuam momentaneamente em medo",
+        "Se tentarem converter os acólitos, o líder ri - estão demasiado corrompidos",
+        "Se focarem o líder primeiro, os outros perdem coordenação",
+        "Se a luta correr mal, Mestre Kevan pode cegar os inimigos 1 round (uma vez)"
+      ],
+      "npcs": ["kira_solaris"],
+      "monstros": ["acolito_sombras", "acolito_sombras", "acolito_sombras", "acolito_lider"],
+      "proximos_passos": [10],
+      "recompensas": ["60 peças de ouro", "Pergaminho de Escudo Arcano"]
+    },
+    {
+      "id": 10,
+      "titulo": "O Senhor das Sombras",
+      "tipo": "combate",
+      "texto_jogadores": "Com os acólitos derrotados, pensam que o pior passou. Mas então sentem - uma presença opressiva, como se o próprio ar ficasse mais pesado.\n\nUma figura alta emerge das sombras do corredor. Armadura negra como a noite, capa esvoaçante, e na mão uma espada de energia vermelha sangue. A sua respiração é um som mecânico e ameaçador.\n\n'Impressionante,' diz uma voz profunda e ressonante. 'Mas inútil. Sou Lord Malachar, Senhor das Sombras. Este templo e tudo nele pertence agora ao Império.'\n\nA sua espada vermelha ergue-se, pronta para atacar.",
+      "notas_mestre": "COMBATE FINAL: Lord Malachar (usar estatísticas modificadas). Este é o chefe final - um Cavaleiro das Sombras poderoso mas não invencível. Táticas: Abre com Presença Aterradora, depois usa ataques devastadores. Aos 20 HP, oferece aos jogadores uma escolha: 'Juntem-se a mim e viverão'. Se recusarem (espera-se), luta até à morte mas de forma mais desesperada. O espírito de Kevan pode intervir UMA vez para dar vantagem a um jogador. Ambiente: Os pedestais podem ser derrubados para criar terreno difícil.",
+      "dicas_improvisacao": [
+        "Se aceitarem juntar-se a ele, Malachar ataca mesmo assim - 'Fracos não servem o Império'",
+        "Se focarem a espada vermelha, podem tentar desarmá-lo (Atletismo CD 16)",
+        "Se usarem a Lâmina de Luz para bloquear, é cinematicamente épico - dá inspiração",
+        "Se estiverem a perder muito, Kira faz uma manobra de sacrifício que dá uma abertura"
+      ],
+      "npcs": ["kira_solaris"],
+      "monstros": ["lord_malachar"],
+      "proximos_passos": [11],
+      "recompensas": []
+    },
+    {
+      "id": 11,
+      "titulo": "A Queda do Tirano",
+      "tipo": "narrativa",
+      "texto_jogadores": "Com um último golpe, Lord Malachar cai de joelhos. A sua espada vermelha extingue-se, e a armadura negra parece perder toda a força.\n\n'Impossível...' arqueja ele. 'O Império... é eterno...'\n\nA figura colapsa, e por um momento, vedes por baixo do elmo - não um monstro, mas um homem. Um homem que fez escolhas erradas.\n\nO espírito de Mestre Kevan aproxima-se, observando o corpo caído.\n\n'Mesmo os mais perdidos podem ser redimidos na morte,' diz ele suavemente. 'Vocês trouxeram paz a este lugar. Levem os nossos ensinamentos para o mundo.'",
+      "notas_mestre": "Momento de reflexão após o combate. Malachar era humano - esta revelação pode ter impacto nos jogadores. Kevan oferece: as Lâminas de Luz restantes (uma por personagem), conhecimento sobre outros templos escondidos, uma bênção permanente (+1 em testes de resistência contra medo). Se procurarem no corpo de Malachar, encontram o tesouro listado e uma carta pessoal revelando que ele tinha uma família que pensava proteger ao servir o Império.",
+      "dicas_improvisacao": [
+        "Se quiserem enterrar Malachar, Kevan aprova - 'A compaixão é o caminho da Luz'",
+        "Se lerem a carta, descobrem que Malachar era um ex-Guardião corrompido",
+        "Se perguntarem sobre mais templos, Kevan menciona três localizações",
+        "Se quiserem ficar para treinar, Kevan diz que o seu caminho está lá fora"
+      ],
+      "npcs": ["mestre_kevan", "kira_solaris"],
+      "monstros": [],
+      "proximos_passos": [12],
+      "recompensas": ["Lâminas de Luz (para cada personagem)", "Medalha do Império (prova da vitória)"]
+    },
+    {
+      "id": 12,
+      "titulo": "Uma Nova Esperança",
+      "tipo": "narrativa",
+      "texto_jogadores": "Emergem do templo ao amanhecer. Os dois sóis erguem-se no horizonte, pintando o deserto de dourado e carmesim.\n\nKira sorri pela primeira vez desde que a conheceram.\n\n'Conseguimos. Quando a Resistência souber disto... quando souberem que os Guardiões podem voltar...' A voz dela treme de emoção. 'Vocês mudaram tudo.'\n\nNien espera no barco de areia, acenando freneticamente.\n\n'Vamos, vamos! Tenho uma garrafa do melhor vinho Corelliano para celebrar!'\n\nO droide D7-R2 emite apitos alegres enquanto flutua em círculos.",
+      "notas_mestre": "Conclusão da aventura. Os jogadores recebem todas as recompensas listadas. Kira entrega o pagamento prometido (200-300 po) mais um bónus por terem eliminado um Senhor das Sombras (+150 po). Ela também oferece contactos na Resistência para aventuras futuras. Ganchos: Outros templos para descobrir, a família de Malachar para contactar, o Império irá querer vingança. Os jogadores são agora conhecidos como 'Os Heróis de Mos Kador'.",
+      "dicas_improvisacao": [
+        "Se quiserem juntar-se à Resistência oficialmente, Kira pode facilitar",
+        "Se perguntarem sobre o Império, há rumores de uma super-arma em construção",
+        "Se quiserem visitar a família de Malachar, Kira pode descobrir a localização",
+        "Se preferirem manter perfil baixo, Kira garante que os seus nomes ficam em segredo"
+      ],
+      "npcs": ["kira_solaris", "nien"],
+      "monstros": [],
+      "proximos_passos": [],
+      "recompensas": ["200-300 peças de ouro (pagamento)", "150 peças de ouro (bónus)", "Contactos na Resistência", "Título: Heróis de Mos Kador"]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "kira_solaris",
+      "nome": "Kira Solaris",
+      "descricao": "Uma mulher humana nos seus vinte anos, com cabelo negro cortado curto e olhos castanhos intensos. Veste roupas práticas de viajante em tons de castanho e cinzento, com uma espada curta à cintura.",
+      "personalidade": "Determinada e pragmática, mas com um coração compassivo escondido sob uma fachada dura. Perdeu a família para o Império e dedicou a vida à Resistência.",
+      "motivacao": "Derrotar o Império Estelar e vingar a sua família. Acredita genuinamente que pode fazer a diferença.",
+      "localizacao": "Móvel - acompanha o grupo",
+      "dialogos": [
+        "O Império pode ter os números, mas nós temos a determinação. E isso vale mais do que qualquer exército.",
+        "Os Guardiões da Luz eram mais do que guerreiros - eram símbolos de esperança. Se conseguirmos trazer isso de volta...",
+        "Confio em vocês. Não me façam arrepender."
+      ]
+    },
+    {
+      "id": "d7r2",
+      "nome": "D7-R2",
+      "descricao": "Um pequeno droide esférico do tamanho de uma bola de futebol, com uma única lente azul e vários braços retráteis. Flutua a meio metro do chão e emite apitos e assobios expressivos.",
+      "personalidade": "Curioso e leal, com uma personalidade surpreendentemente expressiva para uma máquina. Apega-se facilmente a quem o trata bem.",
+      "motivacao": "Completar a sua missão e proteger a informação que carrega. Secundariamente, fazer amigos.",
+      "localizacao": "Móvel - acompanha o grupo",
+      "dialogos": [
+        "*bip bip boop* (som de concordância entusiástica)",
+        "*assobio longo descendente* (som de preocupação)",
+        "*série de bips rápidos* (som de alerta/urgência)"
+      ]
+    },
+    {
+      "id": "nien",
+      "nome": "Nien Sullub",
+      "descricao": "Um Sulustano - criatura humanoide baixa com grandes olhos negros, orelhas enormes e pele cor de pêssego. Veste um fato de piloto surrado mas bem cuidado.",
+      "personalidade": "Nervoso e falador, com tendência para tagarelar quando stressado. Apesar da aparência cobarde, é leal aos amigos e surpreendentemente competente em crise.",
+      "motivacao": "Sobreviver e ganhar dinheiro suficiente para reformar-se num planeta pacífico. Ajuda a Resistência mais por amizade com Kira do que por ideologia.",
+      "localizacao": "Barco de areia",
+      "dialogos": [
+        "Não se preocupem, sou o melhor piloto de barco de areia deste lado do sistema! Provavelmente. Quase de certeza.",
+        "Imperiais? Onde? Não, não quero saber, só quero ir embora!",
+        "Sabem, eu tinha um negócio próspero antes do Império. Agora olhem para mim. Piloto de fuga. A vida é injusta."
+      ]
+    },
+    {
+      "id": "mestre_kevan",
+      "nome": "Mestre Kevan",
+      "descricao": "O espírito translúcido de um homem idoso, com barba branca longa e vestes simples em tons de bege. Os seus olhos emanam uma luz dourada suave e serena.",
+      "personalidade": "Sábio e paciente, fala com calma mesmo em situações de perigo. Tem um senso de humor seco e uma tristeza profunda pela queda da sua ordem.",
+      "motivacao": "Passar o legado dos Guardiões da Luz para uma nova geração digna. Encontrar paz sabendo que a ordem pode renascer.",
+      "localizacao": "Templo dos Guardiões da Luz",
+      "dialogos": [
+        "A Força da Luz não é uma arma - é um estado de ser. Equilíbrio, paz, harmonia com o universo.",
+        "O Império caiu na armadilha do medo. O medo leva à raiva, a raiva ao ódio, o ódio ao sofrimento.",
+        "Vocês têm potencial. Não deixem que a escuridão vos consuma, mesmo quando lutam contra ela."
+      ]
+    }
+  ],
+  "monstros": [
+    {
+      "id": "soldado_imperial",
+      "nome": "Soldado Imperial",
+      "tamanho": "Médio",
+      "tipo": "Humanoide",
+      "alinhamento": "Leal Maligno",
+      "ac": 16,
+      "hp_max": 11,
+      "hp_dice": "2d8+2",
+      "velocidade": "9m",
+      "forca": 13,
+      "destreza": 12,
+      "constituicao": 12,
+      "inteligencia": 10,
+      "sabedoria": 11,
+      "carisma": 10,
+      "cr": "1/8",
+      "xp": 25,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": [],
+      "sentidos": "Perceção passiva 10",
+      "idiomas": ["Comum"],
+      "habilidades_especiais": [],
+      "acoes": [
+        {
+          "nome": "Lança",
+          "descricao": "Ataque corpo a corpo ou à distância com arma: +3 para acertar, alcance 1,5m ou 6/18m, um alvo. Acerto: 4 (1d6+1) de dano perfurante."
+        },
+        {
+          "nome": "Besta Leve",
+          "descricao": "Ataque à distância com arma: +3 para acertar, alcance 24/96m, um alvo. Acerto: 5 (1d8+1) de dano perfurante."
+        }
+      ]
+    },
+    {
+      "id": "cacador",
+      "nome": "Caçador de Recompensas",
+      "tamanho": "Médio",
+      "tipo": "Humanoide",
+      "alinhamento": "Neutro Maligno",
+      "ac": 12,
+      "hp_max": 11,
+      "hp_dice": "2d8+2",
+      "velocidade": "9m",
+      "forca": 11,
+      "destreza": 12,
+      "constituicao": 12,
+      "inteligencia": 10,
+      "sabedoria": 10,
+      "carisma": 10,
+      "cr": "1/8",
+      "xp": 25,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": [],
+      "sentidos": "Perceção passiva 10",
+      "idiomas": ["Comum"],
+      "habilidades_especiais": [],
+      "acoes": [
+        {
+          "nome": "Cimitarra",
+          "descricao": "Ataque corpo a corpo com arma: +3 para acertar, alcance 1,5m, um alvo. Acerto: 4 (1d6+1) de dano cortante."
+        },
+        {
+          "nome": "Rede",
+          "descricao": "Ataque à distância com arma: +3 para acertar, alcance 1,5/4,5m, uma criatura Grande ou menor. Acerto: O alvo está restringido. Uma criatura pode usar a sua ação para fazer um teste de Força CD 10 para libertar a si ou outra criatura, terminando o efeito em sucesso. Causar 5 de dano cortante à rede (CA 10) também liberta o alvo."
+        }
+      ]
+    },
+    {
+      "id": "cacador_lider",
+      "nome": "Líder dos Caçadores",
+      "tamanho": "Médio",
+      "tipo": "Humanoide",
+      "alinhamento": "Neutro Maligno",
+      "ac": 15,
+      "hp_max": 32,
+      "hp_dice": "5d8+10",
+      "velocidade": "9m",
+      "forca": 15,
+      "destreza": 14,
+      "constituicao": 14,
+      "inteligencia": 14,
+      "sabedoria": 11,
+      "carisma": 14,
+      "cr": "2",
+      "xp": 450,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": [],
+      "sentidos": "Perceção passiva 10",
+      "idiomas": ["Comum"],
+      "habilidades_especiais": [],
+      "acoes": [
+        {
+          "nome": "Multiataques",
+          "descricao": "O líder faz dois ataques corpo a corpo."
+        },
+        {
+          "nome": "Espada Longa",
+          "descricao": "Ataque corpo a corpo com arma: +4 para acertar, alcance 1,5m, um alvo. Acerto: 6 (1d8+2) de dano cortante."
+        },
+        {
+          "nome": "Besta Pesada",
+          "descricao": "Ataque à distância com arma: +4 para acertar, alcance 30/120m, um alvo. Acerto: 7 (1d10+2) de dano perfurante."
+        }
+      ]
+    },
+    {
+      "id": "guardiao_pedra",
+      "nome": "Guardião de Pedra",
+      "tamanho": "Médio",
+      "tipo": "Constructo",
+      "alinhamento": "Sem Alinhamento",
+      "ac": 18,
+      "hp_max": 33,
+      "hp_dice": "6d8+6",
+      "velocidade": "7,5m",
+      "forca": 14,
+      "destreza": 11,
+      "constituicao": 13,
+      "inteligencia": 1,
+      "sabedoria": 3,
+      "carisma": 1,
+      "cr": "1",
+      "xp": 200,
+      "resistencias": [],
+      "imunidades": ["veneno", "psíquico"],
+      "vulnerabilidades": [],
+      "imunidades_condicao": ["cego", "encantado", "surdo", "exausto", "amedrontado", "paralisado", "petrificado", "envenenado"],
+      "sentidos": "visão às cegas 18m (cego além disso), Perceção passiva 6",
+      "idiomas": ["entende comandos do criador"],
+      "habilidades_especiais": [
+        {
+          "nome": "Antimagia",
+          "descricao": "O guardião está incapacitado enquanto estiver na área de um campo antimagia."
+        },
+        {
+          "nome": "Forma Imutável",
+          "descricao": "O guardião é imune a qualquer magia ou efeito que alteraria a sua forma."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Multiataques",
+          "descricao": "O guardião faz dois ataques de pancada."
+        },
+        {
+          "nome": "Pancada",
+          "descricao": "Ataque corpo a corpo com arma: +4 para acertar, alcance 1,5m, um alvo. Acerto: 5 (1d6+2) de dano contundente."
+        }
+      ]
+    },
+    {
+      "id": "acolito_sombras",
+      "nome": "Acólito das Sombras",
+      "tamanho": "Médio",
+      "tipo": "Humanoide",
+      "alinhamento": "Neutro Maligno",
+      "ac": 12,
+      "hp_max": 9,
+      "hp_dice": "2d8",
+      "velocidade": "9m",
+      "forca": 11,
+      "destreza": 12,
+      "constituicao": 10,
+      "inteligencia": 10,
+      "sabedoria": 11,
+      "carisma": 10,
+      "cr": "1/8",
+      "xp": 25,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": ["radiante"],
+      "imunidades_condicao": [],
+      "sentidos": "Perceção passiva 10",
+      "idiomas": ["Comum"],
+      "habilidades_especiais": [
+        {
+          "nome": "Vantagem Sombria",
+          "descricao": "O acólito tem vantagem em testes de ataque contra criaturas em luz fraca ou escuridão."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Cimitarra",
+          "descricao": "Ataque corpo a corpo com arma: +3 para acertar, alcance 1,5m, um alvo. Acerto: 4 (1d6+1) de dano cortante."
+        }
+      ]
+    },
+    {
+      "id": "acolito_lider",
+      "nome": "Líder Acólito das Sombras",
+      "tamanho": "Médio",
+      "tipo": "Humanoide",
+      "alinhamento": "Neutro Maligno",
+      "ac": 13,
+      "hp_max": 22,
+      "hp_dice": "4d8+4",
+      "velocidade": "9m",
+      "forca": 11,
+      "destreza": 14,
+      "constituicao": 12,
+      "inteligencia": 10,
+      "sabedoria": 13,
+      "carisma": 14,
+      "cr": "2",
+      "xp": 450,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": ["radiante"],
+      "imunidades_condicao": [],
+      "sentidos": "Perceção passiva 11",
+      "idiomas": ["Comum"],
+      "habilidades_especiais": [
+        {
+          "nome": "Vantagem Sombria",
+          "descricao": "O líder tem vantagem em testes de ataque contra criaturas em luz fraca ou escuridão."
+        },
+        {
+          "nome": "Magia Sombria",
+          "descricao": "O líder é um conjurador de 4º nível. Atributo de conjuração: Carisma (CD 12, +4 para acertar). Truques: Raio de Gelo, Toque Arrepiante. 1º nível (4 espaços): Comando, Raio Enfermiço. 2º nível (3 espaços): Imobilizar Pessoa, Escuridão."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Adaga",
+          "descricao": "Ataque corpo a corpo ou à distância com arma: +4 para acertar, alcance 1,5m ou 6/18m, um alvo. Acerto: 4 (1d4+2) de dano perfurante."
+        }
+      ]
+    },
+    {
+      "id": "lord_malachar",
+      "nome": "Lord Malachar, Senhor das Sombras",
+      "tamanho": "Médio",
+      "tipo": "Humanoide",
+      "alinhamento": "Leal Maligno",
+      "ac": 18,
+      "hp_max": 52,
+      "hp_dice": "8d8+16",
+      "velocidade": "9m",
+      "forca": 16,
+      "destreza": 11,
+      "constituicao": 14,
+      "inteligencia": 11,
+      "sabedoria": 11,
+      "carisma": 15,
+      "cr": "3",
+      "xp": 700,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": ["amedrontado"],
+      "sentidos": "Perceção passiva 10",
+      "idiomas": ["Comum"],
+      "habilidades_especiais": [
+        {
+          "nome": "Lâmina Sombria",
+          "descricao": "Os ataques corpo a corpo de Lord Malachar causam 3 (1d6) de dano necrótico adicional."
+        },
+        {
+          "nome": "Bravura",
+          "descricao": "Lord Malachar tem vantagem em testes de resistência contra ser amedrontado."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Multiataques",
+          "descricao": "Lord Malachar faz dois ataques corpo a corpo."
+        },
+        {
+          "nome": "Lâmina Vermelha",
+          "descricao": "Ataque corpo a corpo com arma: +5 para acertar, alcance 1,5m, um alvo. Acerto: 7 (1d8+3) de dano cortante mais 3 (1d6) de dano necrótico."
+        },
+        {
+          "nome": "Presença Aterradora (Recarrega após Descanso Curto ou Longo)",
+          "descricao": "Cada criatura à escolha de Lord Malachar num raio de 9m que o possa ver deve fazer um teste de resistência de Sabedoria CD 12 ou ficar amedrontada por 1 minuto. Uma criatura pode repetir o teste no fim de cada turno seu, terminando o efeito em sucesso."
+        },
+        {
+          "nome": "Investida das Sombras (Recarrega 5-6)",
+          "descricao": "Lord Malachar avança 9m em linha reta. Cada criatura no caminho deve fazer um teste de resistência de Destreza CD 13. Em falha, sofre 10 (3d6) de dano necrótico e é empurrada 1,5m para o lado. Em sucesso, sofre metade do dano e não é empurrada."
+        }
+      ]
+    }
+  ],
+  "mapas": [
+    {
+      "nome": "Mos Kador e Arredores",
+      "descricao": "Mapa da cidade portuária no deserto e das rotas para o Templo dos Guardiões.",
+      "imagem": null
+    },
+    {
+      "nome": "Templo dos Guardiões da Luz",
+      "descricao": "Mapa interior do templo com todas as câmaras e corredores.",
+      "imagem": null
+    }
+  ]
+}

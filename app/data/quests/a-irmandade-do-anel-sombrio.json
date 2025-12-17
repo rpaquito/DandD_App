@@ -1,0 +1,1029 @@
+{
+  "titulo": "A Irmandade do Anel Sombrio",
+  "descricao": "Uma aventura épica para personagens de nível 1-3. Os aventureiros devem transportar um anel amaldiçoado através de terras perigosas até à única montanha onde pode ser destruído, antes que o Senhor das Sombras o recupere.",
+  "nivel_min": 1,
+  "nivel_max": 3,
+  "passos": [
+    {
+      "id": 1,
+      "titulo": "A Festa em Valdouro",
+      "tipo": "social",
+      "texto_jogadores": "A aldeia de Valdouro é um lugar idílico aninhado entre colinas verdejantes. Casas com telhados de colmo pontilham a paisagem, rodeadas por campos de trigo dourado e pomares carregados de fruta.\n\nHoje há festa! O ancião Bertoldo celebra o seu centésimo aniversário, e toda a aldeia se reuniu no prado central. Lanternas coloridas balançam nas árvores, mesas vergam sob o peso de comida farta, e música alegre enche o ar.\n\nVocês estão entre os convidados, desfrutando da hospitalidade dos halflings que aqui vivem.",
+      "notas_mestre": "Cena de abertura idílica para contrastar com a escuridão que virá. Deixa os jogadores absorver a paz da aldeia. Bertoldo tem um segredo - guarda um anel antigo há 60 anos e sente que está na hora de o passar adiante. Esta noite, um velho amigo vai chegar com notícias perturbadoras. Permite que os jogadores interajam com aldeões simpáticos.",
+      "dicas_improvisacao": [
+        "Se explorarem a aldeia, encontram uma taverna acolhedora chamada 'O Dragão Verde'",
+        "Se falarem com Bertoldo, ele parece distraído e toca constantemente no bolso do colete",
+        "Se perguntarem sobre a história da aldeia, é pacífica há gerações",
+        "Se notarem algo estranho, Perceção CD 14 nota que Bertoldo parece mais velho do que deveria"
+      ],
+      "npcs": ["bertoldo"],
+      "monstros": [],
+      "proximos_passos": [2],
+      "recompensas": []
+    },
+    {
+      "id": 2,
+      "titulo": "A Chegada do Mago",
+      "tipo": "social",
+      "texto_jogadores": "Os fogos de artifício iluminam o céu noturno quando uma carroça puxada por um cavalo cinzento entra na aldeia. No assento, um homem idoso de barba grisalha comprida e chapéu pontiagudo. Veste robes azuis e carrega um cajado nodoso.\n\n'Aldric!' exclama Bertoldo, correndo surpreendentemente rápido para a sua idade. 'Meu velho amigo!'\n\nO mago abraça o halfling, mas a sua expressão é grave.\n\n'Bertoldo, precisamos de falar. Em privado. É sobre... aquilo que guardas.'",
+      "notas_mestre": "Aldric, o Cinzento, é um mago sábio que vigia o anel há décadas. Ele descobriu que servos do Senhor das Sombras, Morghul, estão a aproximar-se - Cavaleiros Negros que farejam o anel. Aldric pede aos aventureiros que escoltem o anel até ao Conselho Élfico em Silvária, pois ele tem de partir noutra direção para reunir aliados. O anel deve ser destruído na Montanha do Perdição, o único lugar onde o fogo é quente o suficiente.",
+      "dicas_improvisacao": [
+        "Se perguntarem sobre o anel, Aldric explica que foi forjado pelo Senhor das Sombras há mil anos",
+        "Se quiserem ver o anel, Bertoldo mostra-o relutantemente - uma banda de ouro com inscrições que brilham ao fogo",
+        "Se recusarem a missão, Aldric avisa que os Cavaleiros Negros chegarão em dias",
+        "Se perguntarem sobre a Montanha do Perdição, fica nas Terras Negras de Morghul"
+      ],
+      "npcs": ["aldric", "bertoldo"],
+      "monstros": [],
+      "proximos_passos": [3],
+      "recompensas": ["Anel Sombrio (artefacto da missão)"]
+    },
+    {
+      "id": 3,
+      "titulo": "Fuga na Noite",
+      "tipo": "narrativa",
+      "texto_jogadores": "A festa terminou abruptamente. Enquanto os aldeões recolhem às suas casas confusos, Aldric prepara a vossa partida.\n\n'Devem partir esta noite,' insiste o mago. 'Evitem as estradas principais. Silvária fica a leste, através da Floresta Velha e sobre as Colinas dos Túmulos. Não confiem em ninguém que encontrem.'\n\nBertoldo entrega-vos o anel com mãos trémulas.\n\n'Guardei-o sessenta anos. Sinto-me... mais leve agora. Mais velho também.' Ele sorri tristemente. 'Boa sorte, amigos.'\n\nSob um manto de estrelas, deixam Valdouro para trás.",
+      "notas_mestre": "O portador do anel (um jogador deve voluntariar-se ou ser escolhido) começará a sentir os seus efeitos: sonhos perturbadores, paranoia, possessividade. Isto deve ser roleplayado subtilmente ao longo da aventura. A viagem até Silvária levará vários dias. Aldric parte para sul, prometendo encontrá-los no conselho.",
+      "dicas_improvisacao": [
+        "Se ninguém quiser carregar o anel, Aldric sugere o personagem mais resistente mentalmente",
+        "Se olharem para trás, veem Bertoldo acenar da sua porta",
+        "Se perguntarem sobre perigos da estrada, há histórias de lobos e coisas piores",
+        "Se tentarem usar o anel, sentem uma presença escura a observá-los (não reveles mais)"
+      ],
+      "npcs": ["aldric", "bertoldo"],
+      "monstros": [],
+      "proximos_passos": [4],
+      "recompensas": []
+    },
+    {
+      "id": 4,
+      "titulo": "Os Cavaleiros Negros",
+      "tipo": "combate",
+      "texto_jogadores": "Três dias de viagem trouxeram-vos à Floresta Velha. As árvores aqui são antigas e retorcidas, os seus ramos entrelaçando-se para bloquear a luz do sol.\n\nÉ perto do anoitecer quando ouvem - o som de cascos. Não galopando, mas avançando lentamente, deliberadamente.\n\nEntre as árvores surgem duas figuras montadas em cavalos negros como a noite. Os cavaleiros estão envolvidos em mantos escuros, e onde deveriam estar os rostos há apenas escuridão vazia. Um frio sobrenatural emana deles.\n\n'O anel...' sibila uma voz que parece vir de lugar nenhum. 'Entregaaaa...'",
+      "notas_mestre": "COMBATE: 2 Cavaleiros Negros (usar estatísticas de Espectro modificado, ver ficha). Este combate é para ser DIFÍCIL e assustador - os jogadores devem perceber que não podem vencer facilmente. Após 3 rounds OU se um Cavaleiro for reduzido a 0 HP, reforços chegam - os jogadores devem FUGIR. Fogo causa-lhes dano extra e fá-los hesitar. O portador do anel sente uma compulsão para o colocar no dedo (Sabedoria CD 14 para resistir). Se o fizer, os Cavaleiros sabem exatamente onde está.",
+      "dicas_improvisacao": [
+        "Se tentarem esconder-se, os Cavaleiros farejam o anel lentamente",
+        "Se usarem fogo, os Cavaleiros recuam sibilando - é uma fraqueza",
+        "Se alguém colocar o anel, entra num mundo de sombras e vê os Cavaleiros como reis espectrais",
+        "Se a fuga parecer impossível, uma raposa branca aparece para guiá-los por um atalho"
+      ],
+      "npcs": [],
+      "monstros": ["cavaleiro_negro", "cavaleiro_negro"],
+      "proximos_passos": [5],
+      "recompensas": []
+    },
+    {
+      "id": 5,
+      "titulo": "O Santuário de Silvária",
+      "tipo": "social",
+      "texto_jogadores": "Depois de dias de fuga desesperada, avistam finalmente o vosso destino. Silvária ergue-se num vale escondido, as suas torres brancas brilhando sob a luz do luar. Cascatas de água cristalina caem das rochas circundantes, e o ar está carregado do perfume de flores que não conhecem.\n\nElfos de cabelo prateado guardam a ponte que cruza o rio. Os seus olhos são antigos e sábios.\n\n'Fomos avisados da vossa chegada,' diz um deles. 'O Senhor Elarion aguarda-vos. Sejam bem-vindos a Silvária, o Último Lar Acolhedor.'",
+      "notas_mestre": "Silvária é um refúgio élfico protegido por magia antiga. Os Cavaleiros Negros não podem entrar. Aqui os jogadores podem: descansar completamente (recuperam tudo), curar ferimentos, obter informação. O Senhor Elarion é um elfo de milhares de anos que conhece a história do anel. Aldric já chegou e convocou um conselho para o dia seguinte. Outros viajantes também chegaram - um ranger do norte, um anão guerreiro, um príncipe humano.",
+      "dicas_improvisacao": [
+        "Se perguntarem sobre a proteção, magia élfica antiga mantém o mal afastado",
+        "Se explorarem Silvária, encontram bibliotecas imensas, jardins eternos, forjas élficas",
+        "Se falarem com outros viajantes, cada um tem razões para odiar o Senhor das Sombras",
+        "Se tentarem deixar o anel em Silvária, Elarion explica que a proteção acabará por falhar"
+      ],
+      "npcs": ["elarion", "aldric"],
+      "monstros": [],
+      "proximos_passos": [6],
+      "recompensas": ["Descanso completo", "Poções de Cura (2)"]
+    },
+    {
+      "id": 6,
+      "titulo": "O Conselho de Elarion",
+      "tipo": "social",
+      "texto_jogadores": "Na manhã seguinte, reúnem-se numa varanda circular com vista para as cascatas. Representantes de todos os povos livres estão presentes: elfos de Silvária, anões das Montanhas de Ferro, humanos do Reino do Norte, e até um halfling corajoso de Valdouro.\n\nO Senhor Elarion ergue-se, a sua voz grave.\n\n'O Anel Sombrio não pode ficar aqui. Não pode ser escondido. Não pode ser usado. Só pode ser destruído - e apenas nos fogos da Montanha do Perdição, onde foi forjado. Alguém deve levá-lo.'\n\nO silêncio é pesado. Todos olham para o anel no centro da mesa.",
+      "notas_mestre": "Este é o momento crucial onde a Irmandade é formada. Além dos jogadores, voluntariam-se: Thorin Escudo-de-Pedra (anão guerreiro), Arathorn (ranger humano), e Lindir (arqueiro élfico). Aldric também acompanhará o grupo. O caminho decidido: através das Montanhas Gélidas, pelas antigas Minas de Moria, através da Floresta Dourada de Lórien, e depois para sul até às Terras Negras. Total: cerca de 3 semanas de viagem.",
+      "dicas_improvisacao": [
+        "Se os jogadores hesitarem, o halfling de Valdouro oferece-se - 'Eu levo o anel!'",
+        "Se perguntarem sobre outros caminhos, todos são vigiados ou mais perigosos",
+        "Se quiserem usar águias gigantes, Aldric explica que seriam vistas imediatamente",
+        "Se discutirem táticas, Arathorn sugere viajar em segredo, evitando exércitos"
+      ],
+      "npcs": ["elarion", "aldric", "thorin", "arathorn", "lindir"],
+      "monstros": [],
+      "proximos_passos": [7],
+      "recompensas": ["Aliados: Thorin, Arathorn, Lindir"]
+    },
+    {
+      "id": 7,
+      "titulo": "A Partida da Irmandade",
+      "tipo": "narrativa",
+      "texto_jogadores": "Ao amanhecer do dia seguinte, a Irmandade parte de Silvária. O Senhor Elarion abençoa-vos na ponte.\n\n'Que as estrelas guiem os vossos passos. Em vocês reside a esperança de todos os povos livres.'\n\nA viagem começa através de vales verdejantes, mas rapidamente o terreno torna-se mais agreste. As Montanhas Gélidas erguem-se no horizonte, os seus picos cobertos de neve eterna.\n\n'Há duas passagens,' explica Arathorn. 'O Passo Alto, sobre as montanhas. Ou as Minas de Moria, através delas. O passo é vigiado pelo inimigo. As minas... têm os seus próprios perigos.'",
+      "notas_mestre": "A viagem até às montanhas demora 5 dias. Durante este tempo, desenvolve a camaradagem entre a Irmandade. Thorin conta histórias dos anões de Moria. Lindir canta canções élficas. Arathorn ensina a ler rastos. Aldric partilha sabedoria. O portador do anel começa a ter pesadelos - visões de um olho flamejante. Numa noite, os jogadores ouvem uivos de lobos ao longe.",
+      "dicas_improvisacao": [
+        "Se acamparem sem precauções, Arathorn avisa sobre predadores da região",
+        "Se o portador do anel tiver pesadelos, são visões da Montanha do Perdição",
+        "Se tentarem o Passo Alto, uma tempestade mágica força-os a recuar",
+        "Se perguntarem sobre Moria, Thorin diz que o seu povo perdeu contacto há décadas"
+      ],
+      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "monstros": [],
+      "proximos_passos": [8],
+      "recompensas": []
+    },
+    {
+      "id": 8,
+      "titulo": "Lobos das Sombras",
+      "tipo": "combate",
+      "texto_jogadores": "Na quinta noite, o frio das montanhas morde até aos ossos. Acamparam num afloramento rochoso que oferece alguma proteção contra o vento.\n\nÉ Arathorn quem primeiro ouve. 'Wargs,' sussurra ele, sacando a espada. 'Lobos das Sombras. E não estão sozinhos.'\n\nDa escuridão surgem seis formas massivas - lobos do tamanho de cavalos, com olhos que brilham com malícia vermelha. Montados em dois deles estão goblins de armadura rudimentar, brandindo cimitarras enferrujadas.\n\nOs lobos cercam o acampamento, rosnando.",
+      "notas_mestre": "COMBATE: 4 Wargs + 2 Goblins montados (ver fichas). Este é um combate de sobrevivência - o grupo está rodeado. Táticas: Os wargs tentam derrubar alvos (investida), os goblins atacam quem estiver caído. Os NPCs ajudam: Thorin defende a retaguarda, Arathorn ataca à distância, Lindir fornece suporte com arco. Aldric usa magia (Mísseis Mágicos, Luz para cegar). Após a vitória, encontram uma marca nas coleiras dos wargs - o símbolo de Moria. Algo corrompeu as minas.",
+      "dicas_improvisacao": [
+        "Se cercados, uma parede de rocha às costas impede ataques por trás",
+        "Se um warg derrubar alguém, outro tenta arrastar a vítima para longe",
+        "Se matarem os goblins primeiro, os wargs perdem coordenação",
+        "Se a luta correr mal, Aldric usa um clarão de luz para permitir recuo"
+      ],
+      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "monstros": ["warg", "warg", "warg", "warg", "goblin_montado", "goblin_montado"],
+      "proximos_passos": [9],
+      "recompensas": ["15 peças de ouro", "Poção de Cura (num goblin)"]
+    },
+    {
+      "id": 9,
+      "titulo": "Os Portões de Moria",
+      "tipo": "puzzle",
+      "texto_jogadores": "Após mais dois dias de marcha, chegam a um paredão de rocha aparentemente intransponível. Um lago escuro e parado estende-se ao longo da base do precipício.\n\n'Aqui,' diz Thorin, apontando para a rocha. 'Os portões dos meus antepassados.'\n\nSob a luz da lua, linhas prateadas começam a brilhar na pedra - um contorno de grandes portões, decorados com símbolos élficos e anãos. Uma inscrição no topo diz:\n\n'Os Portões de Durin, Senhor de Moria. Fala, amigo, e entra.'",
+      "notas_mestre": "PUZZLE: O enigma é simples mas elegante - a palavra 'amigo' em élfico (Mellon) abre os portões. Pistas: a inscrição está em élfico, Lindir pode ajudar a traduzir. 'Fala amigo' pode ser lido como 'Diz a palavra amigo'. Se os jogadores demorarem muito, o lago começa a ondular - há algo lá dentro. Se tentarem força bruta ou magia ofensiva, acordam o Vigilante da Água (tentáculos emergem, forçando-os a resolver o puzzle rápido).",
+      "dicas_improvisacao": [
+        "Se tentarem várias senhas erradas, o lago começa a borbulhar",
+        "Se Lindir ajudar, ele nota que 'amigo' em élfico é 'Mellon'",
+        "Se atacarem os portões, algo no lago desperta",
+        "Se disserem 'Mellon', os portões abrem-se silenciosamente"
+      ],
+      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "monstros": [],
+      "proximos_passos": [10],
+      "recompensas": []
+    },
+    {
+      "id": 10,
+      "titulo": "A Emboscada nas Minas",
+      "tipo": "combate",
+      "texto_jogadores": "Os portões revelam uma vasta sala em ruínas. Pilares partidos erguem-se na escuridão, e o cheiro a mofo e decomposição enche o ar. Pelo chão, ossos e armas enferrujadas - os restos de uma antiga batalha.\n\n'Khazad-dûm,' murmura Thorin com voz embargada. 'O que aconteceu ao meu povo?'\n\nAntes que possam investigar, sons ecoam dos corredores - guinchos agudos, passos de muitos pés. Das sombras surgem goblins, dezenas deles, com olhos que brilham na escuridão.\n\n'Carne fresca!' grita um deles. 'Para o Rei Goblin!'",
+      "notas_mestre": "COMBATE: 6 Goblins em ondas (3 iniciais, 3 de reforço no round 2). Os goblins são cobardes - se 4 caírem, os restantes fogem. Este combate serve para mostrar que as minas estão infestadas. Táticas: ataques em enxame, tentam flanquear, usam terreno (pilares) para emboscadas. Após o combate, Thorin encontra um livro - o diário de um guardião anão que descreve os últimos dias antes da queda. 'Despertámos algo nas profundezas... um demónio de sombra e fogo.'",
+      "dicas_improvisacao": [
+        "Se os jogadores fizerem muito barulho, mais goblins chegam dos corredores",
+        "Se usarem os pilares como cobertura, goblins tentam escalá-los",
+        "Se capturarem um goblin, ele fala do 'Rei nas Profundezas' com terror",
+        "Se explorarem os restos, encontram escudos anãos e runas de proteção"
+      ],
+      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "monstros": ["goblin", "goblin", "goblin", "goblin", "goblin", "goblin"],
+      "proximos_passos": [11],
+      "recompensas": ["30 peças de ouro", "Diário do Guardião"]
+    },
+    {
+      "id": 11,
+      "titulo": "O Reino Caído",
+      "tipo": "narrativa",
+      "texto_jogadores": "Durante dois dias, atravessam as profundezas de Moria. Salas imensas onde outrora anões festejavam agora jazem em ruínas. Forjas frias. Bibliotecas queimadas. Por todo o lado, sinais de uma batalha perdida há muito.\n\nThorin caminha em silêncio, o rosto pétreo.\n\nAldric guia-os com o seu cajado brilhante, mas mesmo ele parece inquieto.\n\n'Há algo aqui,' murmura o mago. 'Algo antigo. Algo que não deveria ter sido despertado.'\n\nFinalmente chegam a uma vasta ponte de pedra sobre um abismo sem fundo. Do outro lado, vê-se luz - a saída.",
+      "notas_mestre": "Esta cena é de exploração e atmosfera. Permite momentos de desenvolvimento de personagem - Thorin em luto pelo seu povo, Aldric preocupado com o que pressentem. O portador do anel sente o peso aumentar - o anel parece mais pesado aqui. Se alguém usar Perceção CD 16, ouve um tambor distante, rítmico, vindo das profundezas. A ponte é longa e estreita - apenas duas pessoas podem caminhar lado a lado.",
+      "dicas_improvisacao": [
+        "Se explorarem salas laterais, encontram tesouros mas também armadilhas",
+        "Se Thorin quiser ficar para vingar os anões, Aldric convence-o a continuar",
+        "Se o portador do anel olhar para o abismo, sente o anel a puxá-lo",
+        "Se fizerem barulho excessivo, os tambores ficam mais altos"
+      ],
+      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "monstros": [],
+      "proximos_passos": [12],
+      "recompensas": ["50 peças de ouro em joias anãs (opcional)"]
+    },
+    {
+      "id": 12,
+      "titulo": "O Troll das Cavernas",
+      "tipo": "combate",
+      "texto_jogadores": "Quando começam a atravessar a ponte, um rugido ensurdecedor ecoa pelo abismo. Das sombras de uma câmara lateral surge uma criatura massiva - um troll das cavernas de pele cinzenta como pedra, empunhando um martelo do tamanho de um homem.\n\nAtrás dele, mais goblins derramam-se dos túneis, guinchandode excitação.\n\n'Corram!' ordena Aldric. 'Eu trato disto!'\n\nMas os goblins já bloquearam a saída. Terão de lutar.",
+      "notas_mestre": "COMBATE: 1 Troll das Cavernas + 4 Goblins. O troll é o perigo principal - causa dano massivo mas é lento. Táticas: o troll ataca o alvo mais próximo com pancadas devastadoras, os goblins flanqueiam e distraem. A ponte é terreno perigoso - se alguém for empurrado, teste de Destreza CD 14 ou cai (6d6 dano). Os NPCs ajudam: Thorin enfrenta o troll diretamente, outros lidam com goblins. Se o troll for reduzido a metade do HP, entra em frenesi (+2 ataques, -2 AC).",
+      "dicas_improvisacao": [
+        "Se focarem o troll, os goblins atacam pelas costas",
+        "Se atraírem o troll para a ponte estreita, ele move-se devagar e pode ser rodeado",
+        "Se alguém cair da ponte, corda pode salvá-lo",
+        "Se o combate demorar muito, mais goblins chegam - urgência para terminar"
+      ],
+      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "monstros": ["troll_cavernas", "goblin", "goblin", "goblin", "goblin"],
+      "proximos_passos": [13],
+      "recompensas": ["Martelo do Troll (2d6 contundente, pesado)"]
+    },
+    {
+      "id": 13,
+      "titulo": "O Demónio de Sombra e Fogo",
+      "tipo": "combate",
+      "texto_jogadores": "Com o troll caído, correm para a saída. A luz do dia está próxima - conseguem ver céu azul ao fundo do túnel.\n\nMas então o ar fica quente. Os tambores cessam. E das profundezas do abismo, algo ergue-se.\n\nUma forma de escuridão coroada por chamas. Asas de sombra estendem-se de parede a parede. Na sua mão, um chicote de fogo.\n\nAldric pára a meio da ponte, cajado erguido.\n\n'Corram!' troveja ele. 'É um Balrog - um demónio do mundo antigo! Eu irei detê-lo!'",
+      "notas_mestre": "EVENTO DRAMÁTICO: O Balrog NÃO é para ser derrotado pelos jogadores - é CR 19! Este momento é sobre sacrifício. Aldric enfrenta o Balrog na ponte, usando magia para mantê-lo à distância. Os jogadores devem fugir. Se tentarem ajudar, Aldric ordena que protejam o portador do anel. Após 3 rounds de fuga, ouvem um estrondo - a ponte colapsa. Aldric e o Balrog caem no abismo. Os jogadores escapam para a luz do sol, mas perderam o seu mentor.",
+      "dicas_improvisacao": [
+        "Se tentarem lutar, o Balrog ignora-os e foca Aldric - 'FUJAM!'",
+        "Se hesitarem, Thorin agarra o portador do anel e arrasta-o para fora",
+        "Se olharem para trás, veem Aldric brilhar como uma estrela contra a escuridão",
+        "Se chorarem a perda, Lindir canta uma lamentação élfica"
+      ],
+      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "monstros": ["balrog"],
+      "proximos_passos": [14],
+      "recompensas": []
+    },
+    {
+      "id": 14,
+      "titulo": "A Floresta Dourada de Lórien",
+      "tipo": "social",
+      "texto_jogadores": "Emergem das montanhas para uma terra de beleza estonteante. Uma floresta de árvores douradas estende-se até onde a vista alcança, as suas folhas brilhando mesmo sem sol. O ar está carregado de uma paz que não sentiam há semanas.\n\nA Irmandade caminha em silêncio, o peso da perda de Aldric ainda fresco.\n\nEntre as árvores, figuras élficas aparecem - guardiões da floresta, com arcos apontados.\n\n'Quem ousa entrar em Lothlórien sem convite?' pergunta uma voz.\n\nLindir dá um passo em frente. 'Somos a Irmandade do Anel. Procuramos a Senhora da Luz.'",
+      "notas_mestre": "Lothlórien é um santuário élfico ainda mais antigo que Silvária. A Senhora Galadriel governa aqui com sabedoria de eras. Os guardas são inicialmente desconfiados (Persuasão CD 12 ou Lindir intervém). Uma vez aceites, são levados à cidade nas árvores - plataformas e palácios construídos entre os ramos dourados. Galadriel espera-os - ela já sabe da perda de Aldric através de visões.",
+      "dicas_improvisacao": [
+        "Se forem hostis com os guardas, Lindir acalma a situação",
+        "Se mencionarem o anel, os guardas ficam tensos - 'Isso explica a sombra que sentimos'",
+        "Se perguntarem sobre Aldric, Galadriel diz que o seu destino ainda não está selado",
+        "Se explorarem a floresta, encontram maravilhas - fontes de água prateada, árvores milenares"
+      ],
+      "npcs": ["galadriel", "lindir"],
+      "monstros": [],
+      "proximos_passos": [15],
+      "recompensas": ["Descanso completo"]
+    },
+    {
+      "id": 15,
+      "titulo": "O Espelho de Galadriel",
+      "tipo": "social",
+      "texto_jogadores": "A Senhora Galadriel recebe-vos num jardim sob as estrelas. É incrivelmente bela, com cabelo prateado que parece capturar a luz da lua. Os seus olhos são antigos e sábios, mas também tristes.\n\n'Conheço a vossa missão,' diz ela. 'E conheço o peso que carregam. Venham - tenho algo a mostrar-vos.'\n\nEla conduz o portador do anel a uma bacia de água prateada.\n\n'O Espelho mostra coisas que foram, coisas que são, e algumas coisas... que ainda não aconteceram. Olha, se tiveres coragem.'",
+      "notas_mestre": "O Espelho de Galadriel é um momento crucial. O portador do anel vê visões: a destruição de Valdouro se falhar, os Cavaleiros Negros a caçá-los, a Montanha do Perdição... e uma visão de Aldric, vivo, lutando nas profundezas. Galadriel oferece presentes à Irmandade antes de partirem (ver recompensas). Ela também testa o portador - 'Darias-me o anel?' - para ver se ele resiste à tentação. Ela recusa-o se oferecido.",
+      "dicas_improvisacao": [
+        "Se o portador hesitar em olhar, Galadriel diz que a escolha é dele",
+        "Se ele oferecer o anel a Galadriel, ela transforma-se brevemente em algo terrível antes de recusar",
+        "Se perguntarem sobre Aldric, Galadriel diz 'A esperança permanece enquanto a Irmandade for fiel'",
+        "Se pedirem ajuda militar, ela explica que os elfos não podem marchar abertamente"
+      ],
+      "npcs": ["galadriel"],
+      "monstros": [],
+      "proximos_passos": [16],
+      "recompensas": ["Capa Élfica (vantagem em Stealth)", "Lembas (ração élfica, 1 alimenta por 1 dia)", "Luz de Eärendil (frasco de luz estelar)"]
+    },
+    {
+      "id": 16,
+      "titulo": "O Grande Rio",
+      "tipo": "narrativa",
+      "texto_jogadores": "Os elfos de Lothlórien fornecem barcos élficos - embarcações elegantes que deslizam pela água como cisnes. O Grande Rio Anduin levará a Irmandade para sul, mais perto das Terras Negras.\n\n'Que a luz das estrelas vos guie,' despede-se Galadriel da margem. 'E lembrem-se - mesmo na escuridão mais profunda, há sempre esperança.'\n\nOs dias no rio são quase pacíficos. As margens passam - florestas densas, planícies douradas, ruínas de reinos antigos. Mas a cada dia, o ar torna-se mais pesado, e nuvens escuras acumulam-se no horizonte sul.",
+      "notas_mestre": "Viagem de 4 dias pelo rio. Use este tempo para desenvolvimento de personagem e para mostrar sinais da influência do anel. O portador começa a afastar-se dos outros, a guardar o anel possessivamente. Thorin nota e preocupa-se. Arathorn avista sinais de orcs na margem. Lindir canta menos. Uma noite, o portador sonha com uma voz a sussurrar promessas de poder. Perceção CD 14 nota que estão a ser seguidos - uma criatura estranha nas margens.",
+      "dicas_improvisacao": [
+        "Se confrontarem o portador sobre o anel, ele fica defensivo",
+        "Se investigarem a criatura que os segue, é uma forma esquelética - Gollum",
+        "Se acamparem na margem, ouvem tambores de orc ao longe",
+        "Se perguntarem sobre o destino, estão a 5 dias da Montanha do Perdição"
+      ],
+      "npcs": ["thorin", "arathorn", "lindir"],
+      "monstros": [],
+      "proximos_passos": [17],
+      "recompensas": []
+    },
+    {
+      "id": 17,
+      "titulo": "A Emboscada nas Cataratas",
+      "tipo": "combate",
+      "texto_jogadores": "O rio aproxima-se de grandes cataratas - terão de continuar por terra. Ao desembarcarem numa margem rochosa, o ar enche-se subitamente de gritos de guerra.\n\nOrcs! Dezenas deles irrompem da floresta, liderados por um imenso Uruk-hai de armadura negra. Entre eles, dois dos Cavaleiros Negros, as suas espadas brilhando com frio sobrenatural.\n\n'O anel!' ordena o Uruk-hai. 'Pela vontade do Senhor das Sombras, tragam-me o anel!'\n\nA Irmandade está cercada.",
+      "notas_mestre": "COMBATE: 1 Capitão Uruk-hai + 6 Orcs + 2 Cavaleiros Negros (em segundo plano). Este combate é desesperado - os jogadores não podem vencer todos. Objetivo: sobreviver tempo suficiente para que o portador do anel escape. Os NPCs lutam heroicamente: Arathorn grita ao portador para fugir enquanto segura a linha. Thorin enfrenta o Uruk-hai. Lindir fornece cobertura com flechas. Após 4 rounds OU quando 4 orcs caírem, os Cavaleiros Negros avançam - é hora de fugir.",
+      "dicas_improvisacao": [
+        "Se focarem o Uruk-hai, os orcs rodeiam-nos",
+        "Se tentarem proteger o portador, NPCs formam uma linha defensiva",
+        "Se alguém cair, outros arrastam-no enquanto recuam",
+        "Se o portador hesitar, Arathorn ordena 'VAI! A missão está acima de nós!'"
+      ],
+      "npcs": ["thorin", "arathorn", "lindir"],
+      "monstros": ["uruk_capitao", "orc", "orc", "orc", "orc", "orc", "orc"],
+      "proximos_passos": [18],
+      "recompensas": []
+    },
+    {
+      "id": 18,
+      "titulo": "A Encruzilhada",
+      "tipo": "social",
+      "texto_jogadores": "Conseguem fugir da emboscada, mas a um custo terrível. Arathorn está gravemente ferido, uma flecha envenenada no ombro. Thorin carrega-o enquanto fogem pela floresta.\n\nQuando finalmente param, a situação é clara: não podem todos continuar. O caminho divide-se - para leste, os Pântanos dos Mortos e depois as Terras Negras. Para oeste, o reino dos Homens onde Arathorn poderia ser curado.\n\nThorin olha para o grupo, o rosto sombrio.\n\n'A Irmandade deve dividir-se. Alguns devem levar Arathorn a segurança. Outros devem continuar a missão.'",
+      "notas_mestre": "Momento de decisão dramática. Os jogadores devem escolher: quem vai com o anel? Quem leva Arathorn? Sugestão canónica: Thorin e Lindir levam Arathorn; os jogadores continuam com o anel. Mas deixa-os decidir. Este é também um momento para o portador do anel - ele pode oferecer-se para ir sozinho (heroico mas perigoso) ou pedir companhia. A separação deve ser emotiva - podem não se ver novamente.",
+      "dicas_improvisacao": [
+        "Se quiserem ficar todos juntos, Arathorn morrerá do veneno - tem 2 dias",
+        "Se o portador quiser ir sozinho, os outros recusam - 'Não te deixaremos'",
+        "Se perguntarem sobre os Pântanos, são terríveis mas é o caminho mais curto",
+        "Se se despedirem, Thorin dá ao portador a sua pedra rúnica da sorte"
+      ],
+      "npcs": ["thorin", "arathorn", "lindir"],
+      "monstros": [],
+      "proximos_passos": [19],
+      "recompensas": ["Pedra Rúnica de Thorin (+1 salvaguarda, 1x)"]
+    },
+    {
+      "id": 19,
+      "titulo": "Os Pântanos dos Mortos",
+      "tipo": "narrativa",
+      "texto_jogadores": "Os Pântanos dos Mortos estendem-se como uma ferida na terra. Água estagnada, árvores mortas retorcidas, e uma névoa perpétua que parece engolir a luz.\n\nCaminham sobre trilhos instáveis de terra entre poças de água negra. E nas poças... veem rostos. Guerreiros caídos de batalhas antigas, preservados pela magia sombria deste lugar.\n\n'Não olhes para a água,' avisa uma voz súbita.\n\nDas sombras emerge uma criatura esquelética - pele sobre ossos, olhos enormes e luminosos. Move-se de forma estranha, às vezes em duas pernas, às vezes em quatro.\n\n'Nós conhecemos o caminho. Nós podemos guiar. Sim, precioso?'",
+      "notas_mestre": "Sméagol/Gollum aparece - uma criatura corrompida pelo anel há séculos. Ele quer o anel de volta mas também é a única criatura que conhece o caminho através dos pântanos. Os jogadores devem decidir se confiam nele. Ele é imprevisível - por vezes útil, por vezes traiçoeiro. O anel reage à sua presença - o portador sente-se atraído e repelido. Os rostos na água são sedutores - Sabedoria CD 13 ou sentem vontade de os seguir.",
+      "dicas_improvisacao": [
+        "Se atacarem Gollum, ele foge mas reaparece mais tarde",
+        "Se o tratarem com bondade, a parte 'Sméagol' emerge - mais cooperativo",
+        "Se olharem para os rostos na água, sentem-se puxados - Sabedoria CD 13",
+        "Se perguntarem sobre o passado de Gollum, ele era como eles, há muito tempo"
+      ],
+      "npcs": ["gollum"],
+      "monstros": [],
+      "proximos_passos": [20],
+      "recompensas": []
+    },
+    {
+      "id": 20,
+      "titulo": "Os Mortos Caminham",
+      "tipo": "combate",
+      "texto_jogadores": "Durante a segunda noite nos pântanos, os rostos na água começam a mover-se. Luzes fantasmagóricas flutuam sobre as poças, e sons de batalha antiga ecoam na névoa.\n\nGollum treme de medo. 'Não! Não esta noite! Os mortos despertaram!'\n\nDas águas negras, figuras emergem - guerreiros espectrais com armaduras enferrujadas e armas que brilham com luz fantasmagórica. Os seus olhos são vazios, mas fixam-se no anel.\n\n'O anel... a maldição... juntem-se a nós na morte...'",
+      "notas_mestre": "COMBATE: 5 Espectros dos Pântanos (usar estatísticas de Sombra modificada). Os espectros são vulneráveis a dano radiante e à Luz de Eärendil (se ainda a tiverem). Táticas: emergem da água, tentam agarrar e arrastar para as poças, focam o portador do anel. Se a Luz de Eärendil for usada, expulsa todos num raio de 6m por 1 round. Gollum esconde-se mas não foge - ainda quer o anel. Após a vitória, devem mover-se rápido - mais virão ao amanhecer.",
+      "dicas_improvisacao": [
+        "Se caírem na água, começam a afogar-se em memórias de batalha - Força CD 13 para sair",
+        "Se usarem a Luz de Eärendil, os espectros recuam gritando",
+        "Se Gollum parecer trair, ele hesita - o anel fascina-o",
+        "Se derrotarem todos, ouvem milhares de vozes nos pântanos - não podem ficar"
+      ],
+      "npcs": ["gollum"],
+      "monstros": ["espectro_pantano", "espectro_pantano", "espectro_pantano", "espectro_pantano", "espectro_pantano"],
+      "proximos_passos": [21],
+      "recompensas": ["Espada Fantasma (+1d4 necrótico, desaparece após 3 dias)"]
+    },
+    {
+      "id": 21,
+      "titulo": "Os Portões Negros",
+      "tipo": "narrativa",
+      "texto_jogadores": "Emergem dos pântanos para uma terra desolada. O chão é cinza e estéril, nada cresce. No horizonte, uma muralha negra ergue-se - os Portões de Mordûn, a entrada para as Terras Negras do Senhor das Sombras.\n\nMilhares de orcs marcham diante dos portões. Torres de vigia pontilham as muralhas. É impossível passar.\n\nGollum puxa-vos para trás.\n\n'Não! Não por aí! Há outro caminho. Caminho secreto. Escadas em espiral, através das montanhas. Sméagol conhece. Sméagol mostra!'",
+      "notas_mestre": "Os Portões Negros são intransponíveis de forma direta - isto deve ser claro. Gollum oferece uma alternativa: as Escadas em Espiral, um caminho secreto através das montanhas. O que ele não diz é que o caminho passa pelo covil de Shelob, uma aranha gigante. Os jogadores podem suspeitar de armadilha (Intuição CD 15 para notar hesitação de Gollum ao mencionar o caminho). O anel está mais pesado do que nunca - o portador começa a arrastar os pés.",
+      "dicas_improvisacao": [
+        "Se tentarem os portões de qualquer forma, são avistados - dezenas de orcs perseguem-nos",
+        "Se desconfiarem de Gollum, ele jura pelo 'precioso' que o caminho é real",
+        "Se o portador colapsar de exaustão, sonha com o Olho a observá-lo",
+        "Se perguntarem sobre a Montanha, está do outro lado - mais 2 dias"
+      ],
+      "npcs": ["gollum"],
+      "monstros": [],
+      "proximos_passos": [22],
+      "recompensas": []
+    },
+    {
+      "id": 22,
+      "titulo": "O Covil de Shelob",
+      "tipo": "combate",
+      "texto_jogadores": "As Escadas em Espiral são um pesadelo - degraus talhados na rocha ao longo de um precipício vertiginoso. Após horas de escalada, chegam a um túnel negro na montanha.\n\nGollum hesita à entrada.\n\n'Caminho seguro... sim... só um pouco escuro. Sméagol vai à frente...'\n\nDentro do túnel, a escuridão é total. O ar está carregado de um cheiro a podridão. Teias grudam em tudo.\n\nE então ouvem - o som de muitas pernas a mover-se nas sombras. Olhos enormes brilham na escuridão.\n\nGollum grita e foge. 'ELA! A FOME ANTIGA!'",
+      "notas_mestre": "COMBATE: Shelob, a Grande Aranha (usar estatísticas adaptadas). Shelob é um monstro lendário que habita este túnel há eras. Gollum planeou isto - esperava que ela matasse os portadores e ele ficasse com o anel. Táticas: Shelob usa veneno paralisante, teias para prender, e escuridão para emboscar. A Luz de Eärendil (se ainda tiverem) fere-a e causa-lhe medo. Ponto fraco: os olhos. Se for cegada, tenta fugir. Se reduzida a 1/3 HP, recua para as sombras.",
+      "dicas_improvisacao": [
+        "Se usarem a Luz de Eärendil, Shelob recua sibilando de dor",
+        "Se um jogador for paralisado pelo veneno, outros têm 3 rounds para salvá-lo",
+        "Se mirarem os olhos, ataques certeiros causam dano dobrado",
+        "Se Shelob fugir, deixa o caminho livre mas pode retornar"
+      ],
+      "npcs": [],
+      "monstros": ["shelob"],
+      "proximos_passos": [23],
+      "recompensas": []
+    },
+    {
+      "id": 23,
+      "titulo": "A Torre da Lua",
+      "tipo": "combate",
+      "texto_jogadores": "Emergem do covil de Shelob para descobrir uma torre orc erguida na saída do túnel - a Torre da Lua, guardada por um destacamento do Senhor das Sombras.\n\nOrcs patrulham as muralhas. A única passagem é através da torre.\n\nMas há uma abertura - os guardas estão distraídos, discutindo sobre algo. Se forem rápidos e silenciosos, podem infiltrar-se.\n\nOu podem lutar.\n\nA Montanha do Perdição é visível daqui - um vulcão que cospe fogo vermelho no horizonte negro. Estão tão perto.",
+      "notas_mestre": "COMBATE ou STEALTH: Os jogadores podem tentar infiltração (série de testes Stealth CD 14) ou combate direto. Na torre: 1 Capitão Orc + 4 Orcs. Se forem detectados durante infiltração, combate acontece em espaço apertado. Se usarem stealth com sucesso, podem emboscar ou evitar completamente. Dentro da torre encontram: equipamento orc, provisões, e um prisioneiro - um soldado gondoriano que sabe de um caminho secreto para a montanha.",
+      "dicas_improvisacao": [
+        "Se tentarem stealth e falharem, orcs soam alarme - combate mais difícil",
+        "Se libertarem o prisioneiro, ele junta-se como guia",
+        "Se matarem o capitão primeiro, orcs restantes fogem",
+        "Se forem capturados, acordam nas masmorras - precisam escapar"
+      ],
+      "npcs": ["prisioneiro_gondor"],
+      "monstros": ["orc_capitao", "orc", "orc", "orc", "orc"],
+      "proximos_passos": [24],
+      "recompensas": ["Armadura de Mithril (CA 14, conta como leve)", "50 peças de ouro"]
+    },
+    {
+      "id": 24,
+      "titulo": "A Fenda do Destino",
+      "tipo": "narrativa",
+      "texto_jogadores": "A escalada final da Montanha do Perdição é uma provação de vontade pura. O ar está quente e tóxico, a terra treme sob os pés, e rios de lava serpenteiam pelas encostas.\n\nO anel nunca foi tão pesado. A cada passo, sussurra promessas e ameaças. O portador mal consegue avançar.\n\nFinalmente, chegam - uma caverna que se abre sobre um mar de lava borbulhante. A Fenda do Destino. O único lugar onde o anel pode ser destruído.\n\nO momento chegou. Basta atirar o anel às chamas.\n\nMas o portador hesita. O anel brilha na sua mão, tentador.\n\n'Não... é meu. O MEU PRECIOSO!'",
+      "notas_mestre": "CLÍMAX: O portador do anel deve fazer um teste de Sabedoria CD 18 para resistir à corrupção final. Se falhar, recusa-se a destruir o anel. Neste caso: Gollum aparece (sobreviveu), ataca o portador pelo anel. Na luta, ambos podem cair - ou apenas Gollum com o anel. Se o portador tiver sucesso no teste, pode destruir o anel voluntariamente - um ato de heroísmo supremo. Quando o anel é destruído: a montanha começa a colapsar, o poder do Senhor das Sombras desmorona, os jogadores devem fugir.",
+      "dicas_improvisacao": [
+        "Se o portador falhar o teste, Gollum aparece para 'salvar' a situação",
+        "Se outro jogador tentar forçar o portador, pode resultar em luta entre eles",
+        "Se o anel for destruído, descreve a onda de libertação que percorre a terra",
+        "Se Gollum cair com o anel, grita 'Precioso!' com alegria mesmo enquanto morre"
+      ],
+      "npcs": ["gollum"],
+      "monstros": [],
+      "proximos_passos": [],
+      "recompensas": ["Libertação das Terras Médias", "Título: Heróis da Era"]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "bertoldo",
+      "nome": "Bertoldo Bolseiro",
+      "descricao": "Um halfling idoso mas vivaz, com cabelo branco encaracolado e olhos verdes brilhantes. Veste roupas de festa coloridas e tem um sorriso contagiante, embora pareça carregar um peso invisível.",
+      "personalidade": "Hospitaleiro e alegre por fora, mas secretamente cansado do fardo que carrega há décadas. Aliviado por finalmente poder passar o anel adiante.",
+      "motivacao": "Proteger Valdouro e passar o anel a alguém capaz de o destruir antes que o consuma completamente.",
+      "localizacao": "Valdouro",
+      "dialogos": [
+        "Cem anos! Quem diria que um simples halfling viveria tanto? Embora às vezes pareçam mil...",
+        "Este anel... encontrei-o numa caverna, há sessenta anos. Desde então, nunca envelheci como deveria.",
+        "Levem-no. Por favor. Antes que eu mude de ideias."
+      ]
+    },
+    {
+      "id": "aldric",
+      "nome": "Aldric, o Cinzento",
+      "descricao": "Um mago idoso de barba grisalha comprida e olhos cinzentos penetrantes. Veste robes azuis desbotados e carrega um cajado nodoso de carvalho. Apesar da idade, move-se com energia surpreendente.",
+      "personalidade": "Sábio e misterioso, com um senso de humor seco. Por vezes parece saber mais do que revela. Profundamente preocupado com o destino do mundo.",
+      "motivacao": "Guiar os povos livres contra a ameaça do Senhor das Sombras. Garantir que o anel seja destruído.",
+      "localizacao": "Móvel - acompanha a Irmandade até Moria",
+      "dialogos": [
+        "Um mago nunca chega atrasado. Chega precisamente quando pretende.",
+        "O anel não pode ser usado, nem escondido, nem destruído por meios comuns. Há apenas um caminho.",
+        "NÃO PASSARÁS!"
+      ]
+    },
+    {
+      "id": "elarion",
+      "nome": "Senhor Elarion",
+      "descricao": "Um elfo de aparência atemporal, com cabelo negro longo e olhos que parecem conter a sabedoria de eras. Veste robes de seda branca e usa uma coroa simples de prata.",
+      "personalidade": "Digno e sábio, fala com calma medida. Carrega a tristeza de ter visto civilizações erguerem-se e caírem.",
+      "motivacao": "Proteger Silvária e ajudar os povos livres a resistir à escuridão, mesmo sabendo que a era dos elfos está a terminar.",
+      "localizacao": "Silvária",
+      "dialogos": [
+        "Bem-vindos a Silvária, o Último Lar Acolhedor. Aqui estão seguros... por agora.",
+        "O anel foi forjado pelo Senhor das Sombras para dominar todas as outras criaturas. Não pode ser usado para o bem.",
+        "A decisão de quem carrega o anel é pesada demais para ser tomada de ânimo leve."
+      ]
+    },
+    {
+      "id": "thorin",
+      "nome": "Thorin Escudo-de-Pedra",
+      "descricao": "Um anão robusto e carrancudo, com barba castanha entrançada e olhos duros como pedra. Usa armadura de placas trabalhada com runas e empunha um machado de guerra ancestral.",
+      "personalidade": "Orgulhoso e teimoso, mas leal até à morte. Desconfia de elfos mas respeita coragem. Carrega a vergonha da queda de Moria.",
+      "motivacao": "Recuperar a honra do seu povo e vingar a queda de Moria. Prova o seu valor através de ações, não palavras.",
+      "localizacao": "Móvel - membro da Irmandade",
+      "dialogos": [
+        "O meu povo governou Moria durante mil anos. Seja o que for que a destruiu, irei enfrentá-lo.",
+        "Um anão paga as suas dívidas. Vocês salvaram a minha vida; a minha vida é vossa.",
+        "Não confio neste elfo. Mas confio no seu arco."
+      ]
+    },
+    {
+      "id": "arathorn",
+      "nome": "Arathorn, o Ranger",
+      "descricao": "Um homem alto e esguio, com cabelo negro desgrenhado e olhos cinzentos vigilantes. Veste roupas de viajante em tons de verde e castanho, e carrega uma espada longa de lâmina partida.",
+      "personalidade": "Reservado e observador, prefere ações a palavras. Esconde uma linhagem nobre sob a aparência de vagabundo.",
+      "motivacao": "Proteger os inocentes das sombras. Secretamente, é herdeiro de um trono perdido.",
+      "localizacao": "Móvel - membro da Irmandade",
+      "dialogos": [
+        "Nem todos os que vagueiam estão perdidos.",
+        "A minha espada está partida, mas ainda corta. Assim como o meu povo.",
+        "Sigam-me. Conheço caminhos que os mapas não mostram."
+      ]
+    },
+    {
+      "id": "lindir",
+      "nome": "Lindir, o Arqueiro",
+      "descricao": "Um elfo jovem (para os padrões élficos), com cabelo loiro dourado e olhos azuis brilhantes. Move-se com graça sobrenatural e carrega um arco élfico e duas adagas curvas.",
+      "personalidade": "Mais alegre que a maioria dos elfos, gosta de cantar e contar histórias. Leal aos amigos que faz, mesmo que sejam mortais.",
+      "motivacao": "Provar o seu valor e ver o mundo além das fronteiras de Silvária.",
+      "localizacao": "Móvel - membro da Irmandade",
+      "dialogos": [
+        "Os meus olhos veem longe e as minhas flechas voam certas. Terão a minha proteção.",
+        "Permitam-me cantar uma canção de viagem. Torna o caminho mais leve.",
+        "Quarenta e três orcs. Ainda estou à frente, mestre anão."
+      ]
+    },
+    {
+      "id": "galadriel",
+      "nome": "Senhora Galadriel",
+      "descricao": "A mais bela e poderosa dos elfos, com cabelo prateado que brilha com luz própria e olhos que parecem ver através de todas as coisas. Veste branco puro e usa um anel de diamante.",
+      "personalidade": "Serena e majestosa, com poder imenso que escolhe não usar. Sábia mas também tentada pelo poder.",
+      "motivacao": "Preservar a beleza do mundo contra a escuridão, mesmo sabendo que os elfos devem partir em breve.",
+      "localizacao": "Lothlórien",
+      "dialogos": [
+        "Bem-vindos a Lothlórien, onde o tempo flui de forma diferente e a beleza ainda resiste.",
+        "Sei o que ofereceriam. Eu não recusaria. Teria uma rainha, bela e terrível como a aurora...",
+        "Em vez de um Senhor das Sombras, teriam uma rainha! ...Passei no teste. Permanecerei Galadriel."
+      ]
+    },
+    {
+      "id": "gollum",
+      "nome": "Gollum/Sméagol",
+      "descricao": "Uma criatura miserável - pele pálida esticada sobre ossos, olhos enormes e luminosos, alguns dentes podres. Move-se de forma estranha, às vezes em duas pernas, às vezes em quatro.",
+      "personalidade": "Dividido entre Sméagol (a parte que quer ser bom) e Gollum (a parte corrompida pelo anel). Traiçoeiro, patético, e perigoso.",
+      "motivacao": "Recuperar 'o precioso' - o anel que possuiu durante séculos e que lhe roubaram.",
+      "localizacao": "Segue a Irmandade",
+      "dialogos": [
+        "Precioso... meu precioso... eles roubaram-no de nós...",
+        "Sméagol é bom! Sméagol ajuda os mestres simpáticos!",
+        "Gollum! Gollum! Ela vai comê-los! Sim, vai! E Sméagol terá o precioso de volta!"
+      ]
+    },
+    {
+      "id": "prisioneiro_gondor",
+      "nome": "Boromir de Gondor",
+      "descricao": "Um guerreiro humano de porte nobre, embora maltratado pelo cativeiro. Cabelo castanho, barba por fazer, olhos verdes determinados. A sua armadura está danificada mas ainda mostra o brasão de Gondor.",
+      "personalidade": "Orgulhoso e valente, mas também desesperado para salvar o seu povo. Suspeito do anel - vê nele uma arma potencial.",
+      "motivacao": "Voltar a Gondor e defender o seu povo contra as hordas do Senhor das Sombras.",
+      "localizacao": "Torre da Lua (prisioneiro)",
+      "dialogos": [
+        "Sou Boromir, filho do Regente de Gondor. Os orcs capturaram-me há uma semana.",
+        "Gondor resiste sozinha contra a maré negra. Se o anel pudesse ser usado contra ele...",
+        "Perdoem-me. Vi o que o anel faz aos homens. Destruam-no, antes que destrua tudo."
+      ]
+    }
+  ],
+  "monstros": [
+    {
+      "id": "cavaleiro_negro",
+      "nome": "Cavaleiro Negro",
+      "tamanho": "Médio",
+      "tipo": "Morto-vivo",
+      "alinhamento": "Leal Maligno",
+      "ac": 15,
+      "hp_max": 45,
+      "hp_dice": "6d8+18",
+      "velocidade": "9m",
+      "forca": 14,
+      "destreza": 14,
+      "constituicao": 16,
+      "inteligencia": 12,
+      "sabedoria": 14,
+      "carisma": 16,
+      "cr": "4",
+      "xp": 1100,
+      "resistencias": ["necrótico", "contundente/perfurante/cortante de armas não-mágicas"],
+      "imunidades": ["veneno"],
+      "vulnerabilidades": ["fogo", "radiante"],
+      "imunidades_condicao": ["exausto", "envenenado", "amedrontado"],
+      "sentidos": "visão no escuro 36m, pode sentir o anel até 1km, Perceção passiva 14",
+      "idiomas": ["Comum", "Língua Negra"],
+      "habilidades_especiais": [
+        {
+          "nome": "Aura de Terror",
+          "descricao": "Qualquer criatura hostil que comece o turno a 6m do Cavaleiro deve fazer um teste de Sabedoria CD 14 ou fica amedrontada até ao final do turno."
+        },
+        {
+          "nome": "Sentir o Anel",
+          "descricao": "O Cavaleiro sabe a direção exata do Anel Sombrio se estiver num raio de 1km."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Espada Morgul",
+          "descricao": "Ataque corpo a corpo com arma: +5 para acertar, alcance 1,5m, um alvo. Acerto: 8 (1d10+3) de dano cortante mais 7 (2d6) de dano necrótico. Se o dano necrótico reduzir o alvo a 0 HP, o alvo morre e ergue-se como zombi ao serviço do Senhor das Sombras em 1d4 horas."
+        },
+        {
+          "nome": "Grito Fantasmagórico (Recarrega 5-6)",
+          "descricao": "O Cavaleiro emite um grito terrível. Cada criatura num raio de 9m que o possa ouvir deve fazer um teste de Sabedoria CD 14. Em falha, a criatura fica amedrontada e paralisada até ao final do próximo turno do Cavaleiro."
+        }
+      ]
+    },
+    {
+      "id": "warg",
+      "nome": "Warg",
+      "tamanho": "Grande",
+      "tipo": "Monstruosidade",
+      "alinhamento": "Neutro Maligno",
+      "ac": 13,
+      "hp_max": 26,
+      "hp_dice": "4d10+4",
+      "velocidade": "15m",
+      "forca": 16,
+      "destreza": 13,
+      "constituicao": 13,
+      "inteligencia": 7,
+      "sabedoria": 11,
+      "carisma": 8,
+      "cr": "1/2",
+      "xp": 100,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": [],
+      "sentidos": "Perceção passiva 13",
+      "idiomas": ["Warg, Goblin"],
+      "habilidades_especiais": [
+        {
+          "nome": "Faro Aguçado",
+          "descricao": "O warg tem vantagem em testes de Perceção (Sabedoria) que dependam do olfato."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Mordida",
+          "descricao": "Ataque corpo a corpo com arma: +5 para acertar, alcance 1,5m, um alvo. Acerto: 10 (2d6+3) de dano perfurante. Se o alvo for uma criatura, deve fazer um teste de Força CD 13 ou ser derrubado."
+        }
+      ]
+    },
+    {
+      "id": "goblin_montado",
+      "nome": "Goblin Montado",
+      "tamanho": "Pequeno",
+      "tipo": "Humanoide",
+      "alinhamento": "Neutro Maligno",
+      "ac": 15,
+      "hp_max": 12,
+      "hp_dice": "3d6+2",
+      "velocidade": "9m (15m montado)",
+      "forca": 8,
+      "destreza": 14,
+      "constituicao": 10,
+      "inteligencia": 10,
+      "sabedoria": 8,
+      "carisma": 8,
+      "cr": "1/2",
+      "xp": 100,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": [],
+      "sentidos": "visão no escuro 18m, Perceção passiva 9",
+      "idiomas": ["Comum", "Goblin"],
+      "habilidades_especiais": [
+        {
+          "nome": "Fuga Ágil",
+          "descricao": "O goblin pode usar Desvincular ou Esconder como ação bónus."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Cimitarra",
+          "descricao": "Ataque corpo a corpo com arma: +4 para acertar, alcance 1,5m, um alvo. Acerto: 5 (1d6+2) de dano cortante."
+        },
+        {
+          "nome": "Arco Curto",
+          "descricao": "Ataque à distância com arma: +4 para acertar, alcance 24/96m, um alvo. Acerto: 5 (1d6+2) de dano perfurante."
+        }
+      ]
+    },
+    {
+      "id": "goblin",
+      "nome": "Goblin",
+      "tamanho": "Pequeno",
+      "tipo": "Humanoide",
+      "alinhamento": "Neutro Maligno",
+      "ac": 13,
+      "hp_max": 7,
+      "hp_dice": "2d6",
+      "velocidade": "9m",
+      "forca": 8,
+      "destreza": 14,
+      "constituicao": 10,
+      "inteligencia": 10,
+      "sabedoria": 8,
+      "carisma": 8,
+      "cr": "1/4",
+      "xp": 50,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": [],
+      "sentidos": "visão no escuro 18m, Perceção passiva 9",
+      "idiomas": ["Comum", "Goblin"],
+      "habilidades_especiais": [
+        {
+          "nome": "Fuga Ágil",
+          "descricao": "O goblin pode usar Desvincular ou Esconder como ação bónus."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Cimitarra",
+          "descricao": "Ataque corpo a corpo com arma: +4 para acertar, alcance 1,5m, um alvo. Acerto: 5 (1d6+2) de dano cortante."
+        },
+        {
+          "nome": "Arco Curto",
+          "descricao": "Ataque à distância com arma: +4 para acertar, alcance 24/96m, um alvo. Acerto: 5 (1d6+2) de dano perfurante."
+        }
+      ]
+    },
+    {
+      "id": "troll_cavernas",
+      "nome": "Troll das Cavernas",
+      "tamanho": "Grande",
+      "tipo": "Gigante",
+      "alinhamento": "Caótico Maligno",
+      "ac": 15,
+      "hp_max": 84,
+      "hp_dice": "8d10+40",
+      "velocidade": "9m",
+      "forca": 18,
+      "destreza": 13,
+      "constituicao": 20,
+      "inteligencia": 7,
+      "sabedoria": 9,
+      "carisma": 7,
+      "cr": "5",
+      "xp": 1800,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": [],
+      "sentidos": "visão no escuro 18m, Perceção passiva 9",
+      "idiomas": ["Gigante"],
+      "habilidades_especiais": [
+        {
+          "nome": "Regeneração",
+          "descricao": "O troll recupera 10 HP no início do seu turno. Se sofrer dano de fogo ou ácido, esta característica não funciona até ao início do próximo turno. O troll morre apenas se começar o turno com 0 HP e não regenerar."
+        },
+        {
+          "nome": "Olfato Aguçado",
+          "descricao": "O troll tem vantagem em testes de Perceção (Sabedoria) que dependam do olfato."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Multiataques",
+          "descricao": "O troll faz três ataques: um com mordida e dois com garras."
+        },
+        {
+          "nome": "Mordida",
+          "descricao": "Ataque corpo a corpo com arma: +7 para acertar, alcance 1,5m, um alvo. Acerto: 7 (1d6+4) de dano perfurante."
+        },
+        {
+          "nome": "Garras",
+          "descricao": "Ataque corpo a corpo com arma: +7 para acertar, alcance 1,5m, um alvo. Acerto: 11 (2d6+4) de dano cortante."
+        }
+      ]
+    },
+    {
+      "id": "balrog",
+      "nome": "Balrog - Demónio de Sombra e Fogo",
+      "tamanho": "Enorme",
+      "tipo": "Celestial",
+      "alinhamento": "Caótico Maligno",
+      "ac": 19,
+      "hp_max": 262,
+      "hp_dice": "21d12+126",
+      "velocidade": "12m, voo 24m",
+      "forca": 26,
+      "destreza": 15,
+      "constituicao": 22,
+      "inteligencia": 20,
+      "sabedoria": 16,
+      "carisma": 22,
+      "cr": "19",
+      "xp": 22000,
+      "resistencias": ["frio", "relâmpago", "contundente/perfurante/cortante de armas não-mágicas"],
+      "imunidades": ["fogo", "veneno"],
+      "vulnerabilidades": [],
+      "imunidades_condicao": ["envenenado"],
+      "sentidos": "visão verdadeira 36m, Perceção passiva 13",
+      "idiomas": ["Abissal", "Telepatia 36m"],
+      "habilidades_especiais": [
+        {
+          "nome": "Aura de Fogo",
+          "descricao": "No início de cada turno do Balrog, cada criatura a 1,5m dele sofre 10 (3d6) de dano de fogo."
+        },
+        {
+          "nome": "Armas Mágicas",
+          "descricao": "Os ataques de arma do Balrog são mágicos."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "NOTA",
+          "descricao": "O Balrog NÃO é para ser combatido pelos jogadores. Serve apenas para a cena dramática do sacrifício de Aldric."
+        }
+      ]
+    },
+    {
+      "id": "orc",
+      "nome": "Orc",
+      "tamanho": "Médio",
+      "tipo": "Humanoide",
+      "alinhamento": "Caótico Maligno",
+      "ac": 13,
+      "hp_max": 15,
+      "hp_dice": "2d8+6",
+      "velocidade": "9m",
+      "forca": 16,
+      "destreza": 12,
+      "constituicao": 16,
+      "inteligencia": 7,
+      "sabedoria": 11,
+      "carisma": 10,
+      "cr": "1/2",
+      "xp": 100,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": [],
+      "sentidos": "visão no escuro 18m, Perceção passiva 10",
+      "idiomas": ["Comum", "Orc"],
+      "habilidades_especiais": [
+        {
+          "nome": "Agressivo",
+          "descricao": "Como ação bónus, o orc pode mover-se até à sua velocidade em direção a uma criatura hostil que consiga ver."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Machado de Batalha",
+          "descricao": "Ataque corpo a corpo com arma: +5 para acertar, alcance 1,5m, um alvo. Acerto: 9 (1d12+3) de dano cortante."
+        },
+        {
+          "nome": "Javelin",
+          "descricao": "Ataque corpo a corpo ou à distância com arma: +5 para acertar, alcance 1,5m ou 9/36m, um alvo. Acerto: 6 (1d6+3) de dano perfurante."
+        }
+      ]
+    },
+    {
+      "id": "uruk_capitao",
+      "nome": "Capitão Uruk-hai",
+      "tamanho": "Médio",
+      "tipo": "Humanoide",
+      "alinhamento": "Leal Maligno",
+      "ac": 16,
+      "hp_max": 52,
+      "hp_dice": "7d8+21",
+      "velocidade": "9m",
+      "forca": 18,
+      "destreza": 12,
+      "constituicao": 16,
+      "inteligencia": 10,
+      "sabedoria": 11,
+      "carisma": 12,
+      "cr": "3",
+      "xp": 700,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": ["amedrontado"],
+      "sentidos": "visão no escuro 18m, Perceção passiva 10",
+      "idiomas": ["Comum", "Orc"],
+      "habilidades_especiais": [
+        {
+          "nome": "Agressivo",
+          "descricao": "Como ação bónus, o uruk pode mover-se até à sua velocidade em direção a uma criatura hostil que consiga ver."
+        },
+        {
+          "nome": "Bravura",
+          "descricao": "O uruk tem vantagem em testes de resistência contra ser amedrontado."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Multiataques",
+          "descricao": "O uruk faz dois ataques corpo a corpo."
+        },
+        {
+          "nome": "Espada Grande",
+          "descricao": "Ataque corpo a corpo com arma: +6 para acertar, alcance 1,5m, um alvo. Acerto: 11 (2d6+4) de dano cortante."
+        },
+        {
+          "nome": "Grito de Guerra (1/dia)",
+          "descricao": "Cada aliado num raio de 9m que possa ouvir o uruk ganha 5 HP temporários e vantagem no próximo ataque."
+        }
+      ]
+    },
+    {
+      "id": "espectro_pantano",
+      "nome": "Espectro dos Pântanos",
+      "tamanho": "Médio",
+      "tipo": "Morto-vivo",
+      "alinhamento": "Caótico Maligno",
+      "ac": 12,
+      "hp_max": 16,
+      "hp_dice": "3d8+3",
+      "velocidade": "0m, voo 12m (paira)",
+      "forca": 6,
+      "destreza": 14,
+      "constituicao": 13,
+      "inteligencia": 6,
+      "sabedoria": 10,
+      "carisma": 8,
+      "cr": "1/2",
+      "xp": 100,
+      "resistencias": ["ácido", "frio", "fogo", "relâmpago", "trovão", "contundente/perfurante/cortante de armas não-mágicas"],
+      "imunidades": ["necrótico", "veneno"],
+      "vulnerabilidades": ["radiante"],
+      "imunidades_condicao": ["exausto", "agarrado", "paralisado", "petrificado", "envenenado", "caído", "restringido"],
+      "sentidos": "visão no escuro 18m, Perceção passiva 10",
+      "idiomas": ["as línguas que conhecia em vida"],
+      "habilidades_especiais": [
+        {
+          "nome": "Amorfo",
+          "descricao": "O espectro pode mover-se através de espaços de até 2,5cm de largura sem se espremer."
+        },
+        {
+          "nome": "Movimento Incorpóreo",
+          "descricao": "O espectro pode mover-se através de outras criaturas e objetos como terreno difícil. Sofre 5 (1d10) de dano de força se terminar o turno dentro de um objeto."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Drenar Força",
+          "descricao": "Ataque corpo a corpo com arma: +4 para acertar, alcance 1,5m, um alvo. Acerto: 9 (2d6+2) de dano necrótico, e o valor de Força do alvo é reduzido em 1d4. O alvo morre se isto reduzir a sua Força a 0. A redução dura até o alvo completar um descanso curto ou longo."
+        }
+      ]
+    },
+    {
+      "id": "shelob",
+      "nome": "Shelob, a Grande Aranha",
+      "tamanho": "Enorme",
+      "tipo": "Monstruosidade",
+      "alinhamento": "Neutro Maligno",
+      "ac": 16,
+      "hp_max": 95,
+      "hp_dice": "10d12+30",
+      "velocidade": "12m, escalada 12m",
+      "forca": 18,
+      "destreza": 16,
+      "constituicao": 16,
+      "inteligencia": 8,
+      "sabedoria": 12,
+      "carisma": 6,
+      "cr": "5",
+      "xp": 1800,
+      "resistencias": [],
+      "imunidades": ["veneno"],
+      "vulnerabilidades": ["radiante"],
+      "imunidades_condicao": ["envenenado"],
+      "sentidos": "visão às cegas 9m, visão no escuro 18m, Perceção passiva 13",
+      "idiomas": [],
+      "habilidades_especiais": [
+        {
+          "nome": "Andar nas Teias",
+          "descricao": "Shelob ignora restrições de movimento causadas por teias."
+        },
+        {
+          "nome": "Percepção de Teias",
+          "descricao": "Enquanto em contacto com uma teia, Shelob sabe a localização exata de qualquer criatura tocando a mesma teia."
+        },
+        {
+          "nome": "Vulnerabilidade à Luz",
+          "descricao": "Se exposta a luz mágica brilhante (como a Luz de Eärendil), Shelob tem desvantagem em testes de ataque e Perceção."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Mordida",
+          "descricao": "Ataque corpo a corpo com arma: +7 para acertar, alcance 3m, um alvo. Acerto: 13 (2d8+4) de dano perfurante, e o alvo deve fazer um teste de Constituição CD 14. Em falha, sofre 18 (4d8) de dano de veneno e fica paralisado por 1 minuto. Em sucesso, sofre metade do dano e não fica paralisado. O alvo pode repetir o teste no fim de cada turno."
+        },
+        {
+          "nome": "Teia (Recarrega 5-6)",
+          "descricao": "Ataque à distância com arma: +7 para acertar, alcance 9/18m, uma criatura. Acerto: A criatura está restringida pela teia. Como ação, a criatura pode fazer um teste de Força CD 14, libertando-se em sucesso. A teia pode ser atacada (CA 10, 10 HP, vulnerável a fogo)."
+        }
+      ]
+    },
+    {
+      "id": "orc_capitao",
+      "nome": "Capitão Orc",
+      "tamanho": "Médio",
+      "tipo": "Humanoide",
+      "alinhamento": "Caótico Maligno",
+      "ac": 14,
+      "hp_max": 39,
+      "hp_dice": "6d8+12",
+      "velocidade": "9m",
+      "forca": 16,
+      "destreza": 12,
+      "constituicao": 14,
+      "inteligencia": 10,
+      "sabedoria": 11,
+      "carisma": 12,
+      "cr": "2",
+      "xp": 450,
+      "resistencias": [],
+      "imunidades": [],
+      "vulnerabilidades": [],
+      "imunidades_condicao": [],
+      "sentidos": "visão no escuro 18m, Perceção passiva 10",
+      "idiomas": ["Comum", "Orc"],
+      "habilidades_especiais": [
+        {
+          "nome": "Agressivo",
+          "descricao": "Como ação bónus, o orc pode mover-se até à sua velocidade em direção a uma criatura hostil que consiga ver."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Multiataques",
+          "descricao": "O capitão faz dois ataques corpo a corpo."
+        },
+        {
+          "nome": "Machado de Batalha",
+          "descricao": "Ataque corpo a corpo com arma: +5 para acertar, alcance 1,5m, um alvo. Acerto: 9 (1d12+3) de dano cortante."
+        }
+      ]
+    }
+  ],
+  "mapas": [
+    {
+      "nome": "Terras Médias",
+      "descricao": "Mapa geral do mundo mostrando Valdouro, Silvária, Lothlórien, Moria, e as Terras Negras.",
+      "imagem": null
+    },
+    {
+      "nome": "Minas de Moria",
+      "descricao": "Mapa interior das minas com as principais câmaras e a Ponte de Khazad-dûm.",
+      "imagem": null
+    },
+    {
+      "nome": "Terras Negras de Mordûn",
+      "descricao": "Mapa das Terras Negras mostrando os Portões Negros, as Escadas em Espiral, e a Montanha do Perdição.",
+      "imagem": null
+    }
+  ]
+}
