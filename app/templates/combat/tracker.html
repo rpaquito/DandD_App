@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+
+{% block title %}Rastreador de Combate{% endblock %}
+
+{% block extra_css %}
+<style>
+    .participant-card {
+        transition: all 0.3s ease;
+    }
+    .participant-card.active-turn {
+        border-color: #ffc107 !important;
+        box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+    }
+    .hp-bar {
+        height: 8px;
+        transition: width 0.3s ease;
+    }
+    .condition-badge {
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+    .condition-badge:hover {
+        opacity: 0.8;
+    }
+    .drag-handle {
+        cursor: grab;
+    }
+    .drag-handle:active {
+        cursor: grabbing;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Painel Principal de Combate -->
+        <div class="col-lg-8">
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header border-danger d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="bi bi-shield-shaded me-2"></i>Rastreador de Combate
+                    </h4>
+                    <div>
+                        <span class="badge bg-secondary me-2" id="roundCounter">Ronda: 1</span>
+                        <button class="btn btn-sm btn-outline-warning" onclick="nextTurn()">
+                            <i class="bi bi-skip-forward me-1"></i>Próximo Turno
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Lista de Iniciativa -->
+                    <div id="initiativeList" class="mb-4">
+                        <div class="text-center text-muted py-4" id="emptyMessage">
+                            <i class="bi bi-people display-4 mb-3 d-block"></i>
+                            <p>Adiciona participantes para começar o combate</p>
+                        </div>
+                    </div>
+
+                    <!-- Controlos de Combate -->
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addParticipantModal">
+                            <i class="bi bi-plus-circle me-1"></i>Adicionar Participante
+                        </button>
+                        <button class="btn btn-outline-secondary" onclick="sortByInitiative()">
+                            <i class="bi bi-sort-numeric-down me-1"></i>Ordenar por Iniciativa
+                        </button>
+                        <button class="btn btn-outline-danger" onclick="clearCombat()">
+                            <i class="bi bi-trash me-1"></i>Limpar Combate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel Lateral - Condições e Referência -->
+        <div class="col-lg-4">
+            <!-- Condições Rápidas -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Condições 5e</h5>
+                </div>
+                <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                    <div class="row g-2">
+                        {% for cond_id, cond in conditions.items() %}
+                        <div class="col-6">
+                            <button class="btn btn-sm btn-outline-secondary w-100 text-start condition-ref"
+                                    data-bs-toggle="tooltip" title="{{ cond.descricao }}">
+                                <i class="{{ cond.icone }} me-1"></i>{{ cond.nome }}
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculadora de Dano Rápida -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-calculator me-2"></i>Calculadora</h5>
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               id="diceExpression" placeholder="2d6+3">
+                        <button class="btn btn-danger" onclick="rollDice()">
+                            <i class="bi bi-dice-5"></i>
+                        </button>
+                    </div>
+                    <div id="diceCalcResult" class="text-center fs-4 text-warning"></div>
+                </div>
+            </div>
+
+            <!-- Referência Rápida -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-book me-2"></i>Referência Rápida</h5>
+                </div>
+                <div class="card-body small">
+                    <p><strong>Ações em Combate:</strong></p>
+                    <ul class="mb-2">
+                        <li><strong>Atacar</strong> - Uma ou mais armas</li>
+                        <li><strong>Lançar Magia</strong> - Uma magia com tempo de 1 ação</li>
+                        <li><strong>Dash</strong> - Dobra movimento</li>
+                        <li><strong>Desengajar</strong> - Evita ataques de oportunidade</li>
+                        <li><strong>Esquivar</strong> - Ataques têm desvantagem</li>
+                        <li><strong>Ajudar</strong> - Dá vantagem a aliado</li>
+                        <li><strong>Esconder</strong> - Teste de Furtividade</li>
+                        <li><strong>Preparar</strong> - Ação condicional</li>
+                    </ul>
+                    <p class="mb-1"><strong>Cobertura:</strong></p>
+                    <ul class="mb-0">
+                        <li>Meia cobertura: +2 AC e saves de DES</li>
+                        <li>3/4 cobertura: +5 AC e saves de DES</li>
+                        <li>Cobertura total: Não pode ser alvejado</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Dicas do Mestre para Combate -->
+            <div class="card bg-dark border-warning mb-4">
+                <div class="card-header border-warning bg-warning bg-opacity-10">
+                    <h5 class="mb-0 text-warning"><i class="bi bi-lightbulb me-2"></i>Dicas de Mestre</h5>
+                </div>
+                <div class="card-body small">
+                    <div class="accordion accordion-flush" id="dmTipsAccordion">
+                        <!-- Descrever Ataques -->
+                        <div class="accordion-item bg-transparent border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#attackDescriptions">
+                                    <i class="bi bi-chat-quote me-2"></i>Descrever Ataques
+                                </button>
+                            </h2>
+                            <div id="attackDescriptions" class="accordion-collapse collapse" data-bs-parent="#dmTipsAccordion">
+                                <div class="accordion-body bg-dark">
+                                    <p class="text-success"><strong>Acerto:</strong></p>
+                                    <ul class="mb-2">
+                                        <li>"A lâmina corta o ar e atinge o flanco!"</li>
+                                        <li>"O golpe encontra uma fresta na armadura!"</li>
+                                        <li>"A magia explode contra o alvo!"</li>
+                                    </ul>
+                                    <p class="text-danger"><strong>Falha:</strong></p>
+                                    <ul class="mb-2">
+                                        <li>"O inimigo esquiva-se no último segundo!"</li>
+                                        <li>"A espada ressoa contra o escudo!"</li>
+                                        <li>"O feitiço dissipa-se inofensivamente!"</li>
+                                    </ul>
+                                    <p class="text-warning"><strong>Crítico (20):</strong></p>
+                                    <ul class="mb-0">
+                                        <li>"Um golpe devastador atinge em cheio!"</li>
+                                        <li>"Encontras o ponto fraco perfeito!"</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Táticas de Monstros -->
+                        <div class="accordion-item bg-transparent border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#monsterTactics">
+                                    <i class="bi bi-bug me-2"></i>Táticas de Monstros
+                                </button>
+                            </h2>
+                            <div id="monsterTactics" class="accordion-collapse collapse" data-bs-parent="#dmTipsAccordion">
+                                <div class="accordion-body bg-dark">
+                                    <p><strong>Esqueletos:</strong> Atacam o mais próximo, sem medo</p>
+                                    <p><strong>Zombies:</strong> Vão sempre ao mesmo alvo, lentos</p>
+                                    <p><strong>Goblins:</strong> Táticas de grupo, fogem se perderem líder</p>
+                                    <p><strong>Lobos:</strong> Atacam em matilha, usam vantagem</p>
+                                    <p class="mb-0"><strong>Boss:</strong> Foca nos curadores primeiro, usa terreno</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Situações Comuns -->
+                        <div class="accordion-item bg-transparent border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#commonSituations">
+                                    <i class="bi bi-question-circle me-2"></i>Situações Comuns
+                                </button>
+                            </h2>
+                            <div id="commonSituations" class="accordion-collapse collapse" data-bs-parent="#dmTipsAccordion">
+                                <div class="accordion-body bg-dark">
+                                    <p><strong>Empurrar:</strong> Atletismo vs Atletismo/Acrobacia</p>
+                                    <p><strong>Agarrar:</strong> Atletismo vs Atletismo/Acrobacia</p>
+                                    <p><strong>Desarmar:</strong> Ataque vs Atletismo/Acrobacia</p>
+                                    <p><strong>Saltar:</strong> FOR metros (corrida) ou FOR/2 (parado)</p>
+                                    <p><strong>Escalar:</strong> Metade do movimento, ou teste</p>
+                                    <p class="mb-0"><strong>Nadar:</strong> Metade do movimento em água calma</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ajustar Dificuldade -->
+                        <div class="accordion-item bg-transparent border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#adjustDifficulty">
+                                    <i class="bi bi-sliders me-2"></i>Ajustar Dificuldade
+                                </button>
+                            </h2>
+                            <div id="adjustDifficulty" class="accordion-collapse collapse" data-bs-parent="#dmTipsAccordion">
+                                <div class="accordion-body bg-dark">
+                                    <p class="text-success"><strong>Muito Fácil?</strong></p>
+                                    <ul class="mb-2">
+                                        <li>Adiciona reforços</li>
+                                        <li>Aumenta HP dos monstros</li>
+                                        <li>Monstros usam táticas melhores</li>
+                                    </ul>
+                                    <p class="text-danger"><strong>Muito Difícil?</strong></p>
+                                    <ul class="mb-0">
+                                        <li>Monstros falham mais ataques</li>
+                                        <li>Reduz HP secretamente</li>
+                                        <li>Aliados aparecem para ajudar</li>
+                                        <li>Inimigos fogem mais cedo</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CDs Comuns -->
+            <div class="card bg-dark border-info">
+                <div class="card-header border-info">
+                    <h5 class="mb-0"><i class="bi bi-bullseye me-2"></i>CDs Comuns</h5>
+                </div>
+                <div class="card-body small">
+                    <table class="table table-sm table-dark mb-0">
+                        <tbody>
+                            <tr><td>Muito Fácil</td><td class="text-end"><strong>5</strong></td></tr>
+                            <tr><td>Fácil</td><td class="text-end"><strong>10</strong></td></tr>
+                            <tr><td>Médio</td><td class="text-end"><strong>15</strong></td></tr>
+                            <tr><td>Difícil</td><td class="text-end"><strong>20</strong></td></tr>
+                            <tr><td>Muito Difícil</td><td class="text-end"><strong>25</strong></td></tr>
+                            <tr><td>Quase Impossível</td><td class="text-end"><strong>30</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adicionar Participante -->
+<div class="modal fade" id="addParticipantModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Adicionar Participante</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addParticipantForm">
+                    <div class="mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               id="participantName" required>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label class="form-label">Iniciativa</label>
+                            <input type="number" class="form-control bg-dark text-light border-secondary"
+                                   id="participantInit" value="10">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">HP Máx</label>
+                            <input type="number" class="form-control bg-dark text-light border-secondary"
+                                   id="participantHP" value="10">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">AC</label>
+                            <input type="number" class="form-control bg-dark text-light border-secondary"
+                                   id="participantAC" value="10">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tipo</label>
+                        <select class="form-select bg-dark text-light border-secondary" id="participantType">
+                            <option value="jogador">Jogador</option>
+                            <option value="monstro" selected>Monstro</option>
+                            <option value="npc">NPC</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="addParticipant()">
+                    <i class="bi bi-plus-circle me-1"></i>Adicionar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Dano/Cura -->
+<div class="modal fade" id="damageModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="damageModalTitle">Dano/Cura</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="damageTargetId">
+                <div class="input-group">
+                    <input type="number" class="form-control bg-dark text-light border-secondary fs-4 text-center"
+                           id="damageAmount" value="0">
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-danger" onclick="applyDamage(false)">
+                        <i class="bi bi-dash-circle me-1"></i>Aplicar Dano
+                    </button>
+                    <button class="btn btn-success" onclick="applyDamage(true)">
+                        <i class="bi bi-plus-circle me-1"></i>Curar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/combat.js') }}"></script>
+<script>
+    // Inicializar tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Verificar parâmetros URL para adicionar automaticamente
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('add')) {
+        document.getElementById('participantName').value = urlParams.get('add');
+        document.getElementById('participantHP').value = urlParams.get('hp') || 10;
+        document.getElementById('participantAC').value = urlParams.get('ac') || 10;
+        new bootstrap.Modal(document.getElementById('addParticipantModal')).show();
+    }
+
+    // Carregar combate existente
+    loadCombat();
+</script>
+{% endblock %}

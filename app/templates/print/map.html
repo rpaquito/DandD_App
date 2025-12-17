@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}Mapa - {{ quest.titulo }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .no-print { display: none !important; }
+        body { background: white !important; color: black !important; }
+        .map-container { border: 2px solid #000 !important; }
+        .map-ascii { color: black !important; }
+    }
+
+    .map-container {
+        background: #fdf1dc;
+        border: 3px solid #58170D;
+        padding: 20px;
+    }
+
+    .map-ascii {
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        line-height: 1.2;
+        white-space: pre;
+        color: #2c1810;
+        background: #fdf1dc;
+        padding: 15px;
+        border: 1px solid #8B4513;
+    }
+
+    .map-legend-print {
+        font-family: 'Georgia', serif;
+        color: #000000;
+        background: #fdf1dc;
+        padding: 15px;
+        border: 1px solid #8B4513;
+        margin-top: 20px;
+    }
+
+    .map-legend-print strong {
+        color: #000000;
+    }
+
+    .map-legend-print li {
+        color: #000000;
+    }
+
+    .map-title {
+        font-family: 'Georgia', serif;
+        color: #58170D;
+        text-align: center;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #58170D;
+        padding-bottom: 10px;
+    }
+
+    .room-key {
+        columns: 2;
+        column-gap: 30px;
+    }
+
+    .room-key li {
+        break-inside: avoid;
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="no-print mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Início</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('quest.overview', quest_id=quest.id) }}">{{ quest.titulo }}</a></li>
+                <li class="breadcrumb-item active">Mapa</li>
+            </ol>
+        </nav>
+
+        <h1><i class="bi bi-map me-2"></i>Mapa da Aventura</h1>
+        <p class="text-muted">{{ quest.titulo }} - Mapa para impressão</p>
+        <button class="btn btn-primary" onclick="window.print()">
+            <i class="bi bi-printer me-1"></i>Imprimir Mapa
+        </button>
+    </div>
+
+    <!-- Mapa Imprimível -->
+    <div class="map-container">
+        <div class="map-title">{{ quest.titulo }}</div>
+
+        <div class="map-ascii">
+                              ENTRADA
+                                 │
+                    ┌────────────┴────────────┐
+                    │                         │
+                    │    1. CORREDOR DE       │
+                    │       ENTRADA           │
+                    │         ☆               │
+                    │                         │
+                    └────────────┬────────────┘
+                                 │
+                         ┌───────┴───────┐
+                         │   PUZZLE DA   │
+                         │     PORTA     │
+                         │      [5]      │
+                         └───────┬───────┘
+                                 │
+        ┌────────────────────────┼────────────────────────┐
+        │                        │                        │
+        │                        │                        │
+   ┌────┴────┐            ┌──────┴──────┐            ┌────┴────┐
+   │ NICHO   │            │             │            │  NICHO  │
+   │   A     │            │  6. CÂMARA  │            │    B    │
+   │  [☠]    │────────────│     DOS     │────────────│   [☠]   │
+   │         │            │  GUARDIÕES  │            │         │
+   └─────────┘            │    ☠ ☠ ☠ ☠  │            └─────────┘
+                          │             │
+                          │     [7]     │
+                          │   Tomás     │
+                          └──────┬──────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    │                         │
+                    │   8. CORREDOR DAS       │
+                    │      ARMADILHAS         │
+                    │   ░░░░░░░░░░░░░░░░░     │
+                    │         [T]             │
+                    │                         │
+                    └────────────┬────────────┘
+                                 │
+              ┌──────────────────┼──────────────────┐
+              │                  │                  │
+         ┌────┴────┐      ┌──────┴──────┐     ┌────┴────┐
+         │         │      │             │     │         │
+         │ TESOURO │      │ 9. CÂMARA   │     │ ALTAR   │
+         │  FALSO  │      │  DA RAINHA  │     │ ANTIGO  │
+         │   [T]   │      │     👻      │     │         │
+         └─────────┘      │   Leonor    │     └─────────┘
+                          └──────┬──────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    │                         │
+                    │                         │
+                    │    10. SALA DO TRONO    │
+                    │                         │
+                    │     ┌─────────────┐     │
+                    │     │    TRONO    │     │
+                    │     │             │     │
+                    │     └─────────────┘     │
+                    │                         │
+                    │          👑             │
+                    │   CAVALEIRO FANTASMA    │
+                    │                         │
+                    │  [ALTAR]          [11]  │
+                    │                         │
+                    └─────────────────────────┘
+        </div>
+
+        <!-- Legenda -->
+        <div class="map-legend-print">
+            <h5 style="color: #000000; border-bottom: 1px solid #000000; padding-bottom: 5px;">Legenda</h5>
+            <div class="row">
+                <div class="col-6">
+                    <strong>Símbolos:</strong>
+                    <ul class="list-unstyled mt-2">
+                        <li>☆ - Entrada/Saída</li>
+                        <li>☠ - Esqueleto</li>
+                        <li>👻 - Fantasma (aliado)</li>
+                        <li>👑 - Boss (Cavaleiro)</li>
+                        <li>[T] - Armadilha</li>
+                        <li>░ - Ladrilhos de pressão</li>
+                    </ul>
+                </div>
+                <div class="col-6">
+                    <strong>Salas:</strong>
+                    <ul class="list-unstyled mt-2 room-key">
+                        {% for step in quest.passos %}
+                        {% if step.id >= 5 and step.id <= 11 %}
+                        <li><strong>{{ step.id }}.</strong> {{ step.titulo }}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notas para o Mestre (não imprime) -->
+    <div class="card bg-dark border-secondary mt-4 no-print">
+        <div class="card-header border-secondary">
+            <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Notas do Mapa para o Mestre</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="text-warning">Armadilhas</h6>
+                    <ul>
+                        <li><strong>Puzzle da Porta [5]:</strong> Espada → Livro → Moeda → Coruja</li>
+                        <li><strong>Corredor [8]:</strong> Padrão seguro: claro-escuro-claro-claro-escuro</li>
+                        <li><strong>Tesouro Falso:</strong> Dardos envenenados se abrir sem verificar</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-danger">Encontros</h6>
+                    <ul>
+                        <li><strong>Câmara dos Guardiões:</strong> 4 Esqueletos (CR 1/4 cada)</li>
+                        <li><strong>Sala do Trono:</strong> Cavaleiro Fantasma (CR 3)</li>
+                    </ul>
+                    <h6 class="text-success mt-3">Aliados</h6>
+                    <ul>
+                        <li><strong>Tomás:</strong> Escondido na sala 6/7</li>
+                        <li><strong>Rainha Leonor:</strong> Fantasma aliado na sala 9</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

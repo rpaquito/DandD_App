@@ -1,0 +1,14 @@
+# Flask e extensões
+Flask==3.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-WTF==1.2.1
+
+# Base de dados
+SQLAlchemy==2.0.23
+
+# Geração de PDF
+WeasyPrint==60.1
+
+# Utilidades
+python-dotenv==1.0.0
+PyYAML==6.0.1

@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}Imprimir Personagens Pré-Criados{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .no-print { display: none !important; }
+        body { background: white !important; color: black !important; font-size: 10pt; }
+        .sheet-container {
+            border: 2px solid #000 !important;
+            background: white !important;
+            page-break-after: always;
+            page-break-inside: avoid;
+        }
+        .sheet-container:last-child {
+            page-break-after: auto;
+        }
+        .stat-box { border: 1px solid #000 !important; background: #f5f5f5 !important; }
+        .section-title { background: #333 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @page {
+        size: A4;
+        margin: 0.5cm;
+    }
+
+    .sheet-container {
+        background: #fdf1dc;
+        border: 3px solid #58170D;
+        font-family: 'Georgia', serif;
+        color: #1a1a1a;
+        max-width: 800px;
+        margin: 0 auto 30px auto;
+    }
+
+    .sheet-header {
+        background: #58170D;
+        color: #fdf1dc;
+        padding: 10px 15px;
+        text-align: center;
+    }
+
+    .sheet-body {
+        padding: 15px;
+    }
+
+    .stat-box {
+        border: 2px solid #58170D;
+        border-radius: 5px;
+        padding: 5px;
+        text-align: center;
+        background: #fff;
+    }
+
+    .stat-label {
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        color: #58170D;
+        font-weight: bold;
+    }
+
+    .stat-value {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #1a1a1a;
+    }
+
+    .stat-mod {
+        font-size: 0.8rem;
+        color: #58170D;
+    }
+
+    .section-title {
+        background: #58170D;
+        color: #fdf1dc;
+        padding: 3px 8px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .combat-stat {
+        border: 2px solid #58170D;
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+    }
+
+    .attack-row {
+        border-bottom: 1px solid #ccc;
+        padding: 3px 0;
+        font-size: 0.85rem;
+    }
+
+    .notes-box {
+        border: 1px solid #58170D;
+        min-height: 50px;
+        background: #fff;
+        padding: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="no-print mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Início</a></li>
+                <li class="breadcrumb-item active">Imprimir Personagens</li>
+            </ol>
+        </nav>
+
+        <h1><i class="bi bi-printer me-2"></i>Imprimir Personagens Pré-Criados</h1>
+        <p class="text-muted">{{ characters|length }} fichas prontas para impressão - cada uma numa página A4</p>
+
+        <div class="d-flex gap-2 mb-4">
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="bi bi-printer me-1"></i>Imprimir Todas ({{ characters|length }} páginas)
+            </button>
+            <a href="{{ url_for('main.characters') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Voltar aos Personagens
+            </a>
+        </div>
+
+        <!-- Lista rápida -->
+        <div class="card bg-dark border-secondary mb-4">
+            <div class="card-body">
+                <h6>Personagens incluídos:</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for char in characters %}
+                    <span class="badge bg-secondary">{{ char.nome }} ({{ char.classe }})</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for character in characters %}
+    <!-- Ficha de {{ character.nome }} -->
+    <div class="sheet-container">
+        <div class="sheet-header">
+            <h4 class="mb-0">{{ character.nome }}</h4>
+            <small>{{ character.raca }} {{ character.classe }} - Nível {{ character.nivel }}{% if character.antecedente %} | {{ character.antecedente }}{% endif %}</small>
+        </div>
+
+        <div class="sheet-body">
+            <div class="row g-2">
+                <!-- Coluna Esquerda - Atributos -->
+                <div class="col-3">
+                    <div class="stat-box mb-1">
+                        <div class="stat-label">FOR</div>
+                        <div class="stat-value">{{ character.forca }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.forca - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box mb-1">
+                        <div class="stat-label">DES</div>
+                        <div class="stat-value">{{ character.destreza }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.destreza - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box mb-1">
+                        <div class="stat-label">CON</div>
+                        <div class="stat-value">{{ character.constituicao }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.constituicao - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box mb-1">
+                        <div class="stat-label">INT</div>
+                        <div class="stat-value">{{ character.inteligencia }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.inteligencia - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box mb-1">
+                        <div class="stat-label">SAB</div>
+                        <div class="stat-value">{{ character.sabedoria }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.sabedoria - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">CAR</div>
+                        <div class="stat-value">{{ character.carisma }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.carisma - 10) // 2) }}</div>
+                    </div>
+                </div>
+
+                <!-- Coluna Central -->
+                <div class="col-5">
+                    <!-- Stats de Combate -->
+                    <div class="d-flex justify-content-around mb-2">
+                        <div class="combat-stat">
+                            <div class="stat-label" style="font-size: 0.5rem;">AC</div>
+                            <div style="font-size: 1.2rem; font-weight: bold;">{{ character.ac }}</div>
+                        </div>
+                        <div class="combat-stat">
+                            <div class="stat-label" style="font-size: 0.5rem;">HP</div>
+                            <div style="font-size: 1.2rem; font-weight: bold;">{{ character.hp_max }}</div>
+                        </div>
+                        <div class="combat-stat">
+                            <div class="stat-label" style="font-size: 0.5rem;">Inic.</div>
+                            <div style="font-size: 1.2rem; font-weight: bold;">{{ '%+d'|format((character.destreza - 10) // 2) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="small mb-2">
+                        <strong>Velocidade:</strong> {{ character.velocidade }} |
+                        <strong>Prof:</strong> +{{ character.bonus_proficiencia|default(2) }}
+                    </div>
+
+                    <!-- Ataques -->
+                    <div class="section-title">Ataques</div>
+                    {% for ataque in character.ataques %}
+                    <div class="attack-row d-flex justify-content-between">
+                        <span>{{ ataque.nome }}</span>
+                        <span>{{ ataque.bonus }}</span>
+                        <span>{{ ataque.dano }}</span>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Equipamento -->
+                    <div class="section-title mt-2">Equipamento</div>
+                    <div class="small">
+                        {{ character.armadura }}<br>
+                        {{ character.armas|join(', ') }}<br>
+                        {{ character.equipamento|join(', ') }}
+                    </div>
+                </div>
+
+                <!-- Coluna Direita -->
+                <div class="col-4">
+                    <!-- Salvaguardas e Perícias -->
+                    <div class="section-title">Salvaguardas</div>
+                    <p class="small mb-1">{{ character.salvaguardas|join(', ') }}</p>
+
+                    <div class="section-title">Perícias</div>
+                    <p class="small mb-1">{{ character.pericias|join(', ') }}</p>
+
+                    <!-- Características -->
+                    <div class="section-title">Características</div>
+                    <ul class="small mb-1" style="padding-left: 15px; margin-bottom: 0;">
+                        {% for carac in character.caracteristicas[:4] %}
+                        <li style="font-size: 0.75rem;">{{ carac }}</li>
+                        {% endfor %}
+                        {% if character.caracteristicas|length > 4 %}
+                        <li style="font-size: 0.75rem;">+{{ character.caracteristicas|length - 4 }} mais...</li>
+                        {% endif %}
+                    </ul>
+
+                    <!-- Magias -->
+                    {% if character.magias_conhecidas %}
+                    <div class="section-title">Magias</div>
+                    <div style="font-size: 0.7rem;">
+                        <strong>Truques:</strong> {{ character.magias_conhecidas.truques|join(', ') }}<br>
+                        {% if character.magias_conhecidas.nivel_1 %}
+                        <strong>Nv.1 ({{ character.espacos_magia.nivel_1 }}):</strong> {{ character.magias_conhecidas.nivel_1|join(', ') }}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Descrição e Notas -->
+            <div class="row mt-2">
+                <div class="col-12">
+                    <p class="small fst-italic mb-1">{{ character.descricao }}</p>
+                    <div class="section-title">Notas</div>
+                    <div class="notes-box"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

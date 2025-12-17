@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Resumo - {{ quest.titulo }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .no-print { display: none !important; }
+        .print-page { page-break-after: always; }
+        body { background: white !important; color: black !important; }
+        .card { border: 1px solid #000 !important; }
+    }
+
+    .summary-section {
+        background: #f9f9f9;
+        border-left: 4px solid #dc3545;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="no-print mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Início</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('quest.overview', quest_id=quest.id) }}">{{ quest.titulo }}</a></li>
+                <li class="breadcrumb-item active">Resumo Imprimível</li>
+            </ol>
+        </nav>
+        <button class="btn btn-primary" onclick="window.print()">
+            <i class="bi bi-printer me-1"></i>Imprimir Resumo
+        </button>
+    </div>
+
+    <!-- Resumo Imprimível -->
+    <div class="bg-light text-dark p-4">
+        <header class="text-center mb-4 print-page">
+            <h1>{{ quest.titulo }}</h1>
+            <p class="lead">{{ quest.descricao }}</p>
+            <p><strong>Nível Recomendado:</strong> {{ quest.nivel_min }}-{{ quest.nivel_max }}</p>
+        </header>
+
+        <!-- Resumo dos Passos -->
+        <section class="mb-4">
+            <h2>Estrutura da Aventura</h2>
+            {% for step in quest.passos %}
+            <div class="summary-section">
+                <h4>{{ step.id }}. {{ step.titulo }}</h4>
+                <p><strong>Tipo:</strong>
+                    {% if step.tipo == 'combate' %}Combate
+                    {% elif step.tipo == 'puzzle' %}Puzzle
+                    {% elif step.tipo == 'social' %}Interação Social
+                    {% else %}Narrativa{% endif %}
+                </p>
+                {% if step.notas_mestre %}
+                <p><strong>Notas:</strong> {{ step.notas_mestre[:200] }}{% if step.notas_mestre|length > 200 %}...{% endif %}</p>
+                {% endif %}
+                {% if step.monstros %}
+                <p><strong>Monstros:</strong> {{ step.monstros|join(', ') }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+
+        <!-- NPCs -->
+        {% if quest.npcs %}
+        <section class="mb-4 print-page">
+            <h2>NPCs Principais</h2>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Localização</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for npc_id, npc in quest.npcs.items() %}
+                    <tr>
+                        <td><strong>{{ npc.nome }}</strong></td>
+                        <td>{{ npc.descricao[:100] }}{% if npc.descricao|length > 100 %}...{% endif %}</td>
+                        <td>{{ npc.localizacao or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        {% endif %}
+
+        <!-- Monstros -->
+        {% if quest.monstros %}
+        <section class="mb-4">
+            <h2>Monstros</h2>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nome</th>
+                        <th>CR</th>
+                        <th>AC</th>
+                        <th>HP</th>
+                        <th>XP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m_id, monster in quest.monstros.items() %}
+                    <tr>
+                        <td><strong>{{ monster.nome }}</strong></td>
+                        <td>{{ monster.cr }}</td>
+                        <td>{{ monster.ac }}</td>
+                        <td>{{ monster.hp_max }}</td>
+                        <td>{{ monster.xp }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        {% endif %}
+
+        <!-- Notas do Mestre -->
+        <section>
+            <h2>Notas do Mestre</h2>
+            <div class="border p-3" style="min-height: 200px;">
+                <p class="text-muted">Espaço para as tuas notas pessoais...</p>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

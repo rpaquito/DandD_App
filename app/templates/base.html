@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Companheiro de Mestre{% endblock %} | D&D DM Companion</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navegação Principal -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <i class="bi bi-dice-6-fill me-2"></i>DM Companion
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.index') }}">
+                            <i class="bi bi-house me-1"></i>Início
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.characters') }}">
+                            <i class="bi bi-people me-1"></i>Personagens
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('players.list_players') }}">
+                            <i class="bi bi-person-badge me-1"></i>Jogadores
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('combat.tracker') }}">
+                            <i class="bi bi-shield-shaded me-1"></i>Combate
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-printer me-1"></i>Imprimir
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="{{ url_for('print.character_sheets') }}">Fichas em Branco</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('main.characters') }}">Personagens Pré-Criados</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><span class="dropdown-item-text text-muted small">Aventura (seleciona primeiro)</span></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- Ferramentas Rápidas -->
+                <div class="d-flex align-items-center">
+                    <a href="{{ url_for('main.help_page') }}" class="btn btn-outline-info btn-sm me-2">
+                        <i class="bi bi-question-circle"></i> Ajuda
+                    </a>
+                    <button class="btn btn-outline-light btn-sm me-2" data-bs-toggle="modal" data-bs-target="#diceModal">
+                        <i class="bi bi-dice-5"></i> Dados
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow-1">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mt-3">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-dark text-light py-3 mt-auto">
+        <div class="container text-center">
+            <small>Companheiro de Mestre de Dungeon &copy; 2024 | D&D 5ª Edição</small>
+        </div>
+    </footer>
+
+    <!-- Modal de Dados -->
+    <div class="modal fade" id="diceModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title"><i class="bi bi-dice-5 me-2"></i>Lançar Dados</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-2 mb-3">
+                        <div class="col-4">
+                            <button class="btn btn-outline-light w-100 dice-btn" data-dice="d4">d4</button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-outline-light w-100 dice-btn" data-dice="d6">d6</button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-outline-light w-100 dice-btn" data-dice="d8">d8</button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-outline-light w-100 dice-btn" data-dice="d10">d10</button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-outline-light w-100 dice-btn" data-dice="d12">d12</button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-outline-danger w-100 dice-btn" data-dice="d20">d20</button>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-secondary text-light border-secondary">Quantidade</span>
+                        <input type="number" class="form-control bg-dark text-light border-secondary" id="diceCount" value="1" min="1" max="10">
+                        <span class="input-group-text bg-secondary text-light border-secondary">Modificador</span>
+                        <input type="number" class="form-control bg-dark text-light border-secondary" id="diceModifier" value="0">
+                    </div>
+                    <div id="diceResult" class="text-center p-3 bg-secondary rounded" style="min-height: 60px;">
+                        <span class="text-muted">Clica num dado para lançar</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

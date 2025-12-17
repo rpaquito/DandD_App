@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Fichas de Monstros - {{ quest.titulo }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .no-print { display: none !important; }
+        body { background: white !important; }
+        .monster-card-print {
+            page-break-inside: avoid;
+            border: 2px solid #000 !important;
+        }
+    }
+
+    .monster-card-print {
+        background: #fdf1dc;
+        color: #000;
+        border: 2px solid #58170D;
+        font-family: 'Times New Roman', serif;
+        max-width: 400px;
+    }
+
+    .monster-card-print .header {
+        background: #58170D;
+        color: #fff;
+        padding: 10px;
+    }
+
+    .monster-card-print .stats {
+        background: #E69A28;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .monster-card-print .abilities {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        padding: 10px;
+        border-top: 1px solid #58170D;
+        border-bottom: 1px solid #58170D;
+        font-size: 0.8rem;
+    }
+
+    .monster-card-print .actions {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+
+    .monster-card-print .action-name {
+        font-weight: bold;
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="no-print mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Início</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('quest.overview', quest_id=quest.id) }}">{{ quest.titulo }}</a></li>
+                <li class="breadcrumb-item active">Fichas de Monstros</li>
+            </ol>
+        </nav>
+
+        <h1><i class="bi bi-bug me-2"></i>Fichas de Monstros para Impressão</h1>
+        <button class="btn btn-primary" onclick="window.print()">
+            <i class="bi bi-printer me-1"></i>Imprimir Fichas
+        </button>
+    </div>
+
+    {% if quest.monstros %}
+    <div class="row g-4">
+        {% for m_id, monster in quest.monstros.items() %}
+        <div class="col-md-6 col-lg-4">
+            <div class="monster-card-print">
+                <div class="header">
+                    <h4 class="mb-0">{{ monster.nome }}</h4>
+                    <small>{{ monster.tamanho }} {{ monster.tipo }}, {{ monster.alinhamento }}</small>
+                </div>
+
+                <div class="stats">
+                    <div><strong>Classe de Armadura</strong> {{ monster.ac }}</div>
+                    <div><strong>Pontos de Vida</strong> {{ monster.hp_max }} ({{ monster.hp_dice }})</div>
+                    <div><strong>Velocidade</strong> {{ monster.velocidade }}</div>
+                </div>
+
+                <div class="abilities">
+                    <div>
+                        <strong>FOR</strong><br>
+                        {{ monster.forca }} ({{ '%+d'|format(monster.mod_forca) }})
+                    </div>
+                    <div>
+                        <strong>DES</strong><br>
+                        {{ monster.destreza }} ({{ '%+d'|format(monster.mod_destreza) }})
+                    </div>
+                    <div>
+                        <strong>CON</strong><br>
+                        {{ monster.constituicao }} ({{ '%+d'|format(monster.mod_constituicao) }})
+                    </div>
+                    <div>
+                        <strong>INT</strong><br>
+                        {{ monster.inteligencia }} ({{ '%+d'|format(monster.mod_inteligencia) }})
+                    </div>
+                    <div>
+                        <strong>SAB</strong><br>
+                        {{ monster.sabedoria }} ({{ '%+d'|format(monster.mod_sabedoria) }})
+                    </div>
+                    <div>
+                        <strong>CAR</strong><br>
+                        {{ monster.carisma }} ({{ '%+d'|format(monster.mod_carisma) }})
+                    </div>
+                </div>
+
+                <div class="actions">
+                    {% if monster.imunidades %}
+                    <p><strong>Imunidades a Dano</strong> {{ monster.imunidades|join(', ') }}</p>
+                    {% endif %}
+                    {% if monster.resistencias %}
+                    <p><strong>Resistências</strong> {{ monster.resistencias|join(', ') }}</p>
+                    {% endif %}
+                    {% if monster.sentidos %}
+                    <p><strong>Sentidos</strong> {{ monster.sentidos }}</p>
+                    {% endif %}
+                    <p><strong>Nível de Desafio</strong> {{ monster.cr }} ({{ monster.xp }} XP)</p>
+
+                    {% if monster.habilidades_especiais %}
+                    <hr style="border-color: #58170D;">
+                    {% for hab in monster.habilidades_especiais %}
+                    <p><span class="action-name">{{ hab.nome }}.</span> {{ hab.descricao }}</p>
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if monster.acoes %}
+                    <hr style="border-color: #58170D;">
+                    <h6 style="color: #58170D;">AÇÕES</h6>
+                    {% for acao in monster.acoes %}
+                    <p><span class="action-name">{{ acao.nome }}.</span> {{ acao.descricao }}</p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        Esta aventura não tem monstros definidos.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

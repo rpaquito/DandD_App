@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}NPCs - {{ quest.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Início</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('quest.overview', quest_id=quest.id) }}">{{ quest.titulo }}</a></li>
+            <li class="breadcrumb-item active">NPCs</li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-4"><i class="bi bi-people me-2"></i>Personagens Não-Jogáveis</h1>
+
+    {% if quest.npcs %}
+    <div class="row g-4">
+        {% for npc_id, npc in quest.npcs.items() %}
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-header border-secondary">
+                    <h4 class="mb-0">{{ npc.nome }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">{{ npc.descricao }}</p>
+
+                    {% if npc.personalidade %}
+                    <h6><i class="bi bi-emoji-smile me-1"></i>Personalidade</h6>
+                    <p>{{ npc.personalidade }}</p>
+                    {% endif %}
+
+                    {% if npc.motivacao %}
+                    <h6><i class="bi bi-bullseye me-1"></i>Motivação</h6>
+                    <p>{{ npc.motivacao }}</p>
+                    {% endif %}
+
+                    {% if npc.localizacao %}
+                    <h6><i class="bi bi-geo-alt me-1"></i>Localização</h6>
+                    <p>{{ npc.localizacao }}</p>
+                    {% endif %}
+
+                    {% if npc.dialogos %}
+                    <h6><i class="bi bi-chat-quote me-1"></i>Diálogos Sugeridos</h6>
+                    <ul class="fst-italic">
+                        {% for dialogo in npc.dialogos %}
+                        <li>"{{ dialogo }}"</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        Esta aventura não tem NPCs definidos.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

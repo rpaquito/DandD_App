@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Ficha - {{ character.nome }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .no-print { display: none !important; }
+        body { background: white !important; color: black !important; font-size: 11pt; }
+        .sheet-container { border: 2px solid #000 !important; background: white !important; }
+        .stat-box { border: 1px solid #000 !important; background: #f5f5f5 !important; }
+        .section-title { background: #333 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @page {
+        size: A4;
+        margin: 1cm;
+    }
+
+    .sheet-container {
+        background: #fdf1dc;
+        border: 3px solid #58170D;
+        font-family: 'Georgia', serif;
+        color: #1a1a1a;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .sheet-header {
+        background: #58170D;
+        color: #fdf1dc;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .sheet-body {
+        padding: 20px;
+    }
+
+    .stat-box {
+        border: 2px solid #58170D;
+        border-radius: 5px;
+        padding: 10px;
+        text-align: center;
+        background: #fff;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        color: #58170D;
+        font-weight: bold;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #1a1a1a;
+    }
+
+    .stat-mod {
+        font-size: 1rem;
+        color: #58170D;
+    }
+
+    .section-title {
+        background: #58170D;
+        color: #fdf1dc;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .combat-stat {
+        border: 2px solid #58170D;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+    }
+
+    .attack-row {
+        border-bottom: 1px solid #ccc;
+        padding: 5px 0;
+    }
+
+    .notes-box {
+        border: 1px solid #58170D;
+        min-height: 100px;
+        background: #fff;
+        padding: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="no-print mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.characters') }}">Personagens</a></li>
+                <li class="breadcrumb-item active">{{ character.nome }}</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex gap-2 mb-4">
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="bi bi-printer me-1"></i>Imprimir Ficha
+            </button>
+            <a href="{{ url_for('players.choose_template', template_id=character.id) }}" class="btn btn-success">
+                <i class="bi bi-person-plus me-1"></i>Usar este Personagem
+            </a>
+            <a href="{{ url_for('main.characters') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Voltar
+            </a>
+        </div>
+    </div>
+
+    <!-- Ficha de Personagem -->
+    <div class="sheet-container">
+        <div class="sheet-header">
+            <h2 class="mb-0">{{ character.nome }}</h2>
+            <small>{{ character.raca }} {{ character.classe }} - Nível {{ character.nivel }}</small>
+            {% if character.antecedente %}
+            <div><small>Antecedente: {{ character.antecedente }} | {{ character.alinhamento }}</small></div>
+            {% endif %}
+        </div>
+
+        <div class="sheet-body">
+            <div class="row g-3">
+                <!-- Coluna Esquerda - Atributos -->
+                <div class="col-md-3">
+                    <div class="stat-box mb-2">
+                        <div class="stat-label">Força</div>
+                        <div class="stat-value">{{ character.forca }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.forca - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box mb-2">
+                        <div class="stat-label">Destreza</div>
+                        <div class="stat-value">{{ character.destreza }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.destreza - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box mb-2">
+                        <div class="stat-label">Constituição</div>
+                        <div class="stat-value">{{ character.constituicao }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.constituicao - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box mb-2">
+                        <div class="stat-label">Inteligência</div>
+                        <div class="stat-value">{{ character.inteligencia }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.inteligencia - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box mb-2">
+                        <div class="stat-label">Sabedoria</div>
+                        <div class="stat-value">{{ character.sabedoria }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.sabedoria - 10) // 2) }}</div>
+                    </div>
+                    <div class="stat-box mb-2">
+                        <div class="stat-label">Carisma</div>
+                        <div class="stat-value">{{ character.carisma }}</div>
+                        <div class="stat-mod">{{ '%+d'|format((character.carisma - 10) // 2) }}</div>
+                    </div>
+                </div>
+
+                <!-- Coluna Central -->
+                <div class="col-md-5">
+                    <!-- Stats de Combate -->
+                    <div class="d-flex justify-content-around mb-4">
+                        <div class="combat-stat">
+                            <div class="stat-label" style="font-size: 0.6rem;">AC</div>
+                            <div class="stat-value">{{ character.ac }}</div>
+                        </div>
+                        <div class="combat-stat">
+                            <div class="stat-label" style="font-size: 0.6rem;">HP</div>
+                            <div class="stat-value">{{ character.hp_max }}</div>
+                        </div>
+                        <div class="combat-stat">
+                            <div class="stat-label" style="font-size: 0.6rem;">Inic.</div>
+                            <div class="stat-value">{{ '%+d'|format((character.destreza - 10) // 2) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-1"><strong>Velocidade:</strong> {{ character.velocidade }}</div>
+                    <div class="mb-3"><strong>Bónus de Proficiência:</strong> +{{ character.bonus_proficiencia|default(2) }}</div>
+
+                    <!-- Ataques -->
+                    <div class="section-title">Ataques</div>
+                    {% for ataque in character.ataques %}
+                    <div class="attack-row d-flex justify-content-between">
+                        <span>{{ ataque.nome }}</span>
+                        <span>{{ ataque.bonus }}</span>
+                        <span>{{ ataque.dano }}</span>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Equipamento -->
+                    <div class="section-title mt-3">Equipamento</div>
+                    <ul class="small mb-0">
+                        <li>{{ character.armadura }}</li>
+                        <li>{{ character.armas|join(', ') }}</li>
+                        {% for item in character.equipamento %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Coluna Direita -->
+                <div class="col-md-4">
+                    <!-- Salvaguardas -->
+                    <div class="section-title">Salvaguardas</div>
+                    <p class="small">{{ character.salvaguardas|join(', ') }}</p>
+
+                    <!-- Perícias -->
+                    <div class="section-title mt-3">Perícias</div>
+                    <p class="small">{{ character.pericias|join(', ') }}</p>
+
+                    <!-- Características -->
+                    <div class="section-title mt-3">Características</div>
+                    <ul class="small">
+                        {% for carac in character.caracteristicas %}
+                        <li>{{ carac }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Magias -->
+                    {% if character.magias_conhecidas %}
+                    <div class="section-title mt-3">Magias</div>
+                    <div class="small">
+                        <p class="mb-1"><strong>Truques:</strong> {{ character.magias_conhecidas.truques|join(', ') }}</p>
+                        {% if character.magias_conhecidas.nivel_1 %}
+                        <p class="mb-1"><strong>Nível 1 ({{ character.espacos_magia.nivel_1 }} espaços):</strong> {{ character.magias_conhecidas.nivel_1|join(', ') }}</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Descrição -->
+            <div class="section-title mt-3">Descrição</div>
+            <p class="small fst-italic">{{ character.descricao }}</p>
+
+            <!-- Notas -->
+            <div class="section-title mt-3">Notas</div>
+            <div class="notes-box"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

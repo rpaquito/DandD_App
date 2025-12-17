@@ -1,0 +1,364 @@
+{
+  "titulo": "A Cripta dos Reis Esquecidos",
+  "descricao": "Uma aventura para personagens de nível 1-3. Os aventureiros investigam uma antiga cripta real onde rumores falam de mortos que caminham.",
+  "nivel_min": 1,
+  "nivel_max": 3,
+  "passos": [
+    {
+      "id": 1,
+      "titulo": "A Taverna do Javali Dourado",
+      "tipo": "social",
+      "texto_jogadores": "Vocês encontram-se numa taverna acolhedora chamada O Javali Dourado. O fogo crepita na lareira, enchendo o ar com um calor reconfortante. O cheiro a pão fresco e carne assada permeia o ambiente. Nas mesas em redor, camponeses e viajantes conversam em voz baixa, lançando olhares nervosos para a janela sempre que o vento uiva lá fora.\n\nO taverneiro, um homem robusto de barba grisalha chamado Gonçalo, aproxima-se da vossa mesa com expressão preocupada.",
+      "notas_mestre": "Esta é a cena de abertura. O objetivo é apresentar a missão e criar o clima da aventura. O Gonçalo conhece a região há décadas e está genuinamente preocupado com os eventos recentes. Deixa os jogadores fazer perguntas e explorar a taverna antes de avançar para o gancho da aventura.",
+      "dicas_improvisacao": [
+        "Se os jogadores perguntarem sobre outros clientes, há um grupo de 3 mineiros que também viram luzes estranhas perto da cripta",
+        "Se perguntarem sobre a história da região, menciona que os reis da antiga dinastia foram enterrados na cripta há 300 anos",
+        "Se quiserem comprar provisões, a taverna tem rações, tochas e corda disponíveis por preços justos",
+        "Se tentarem intimidar o Gonçalo, ele fecha-se - responde melhor a simpatia"
+      ],
+      "npcs": ["goncalo"],
+      "monstros": [],
+      "proximos_passos": [2],
+      "recompensas": []
+    },
+    {
+      "id": 2,
+      "titulo": "A Proposta",
+      "tipo": "social",
+      "texto_jogadores": "Gonçalo baixa a voz e inclina-se para mais perto.\n\n'Preciso da vossa ajuda, aventureiros. Há três noites, luzes estranhas têm brilhado na direção da Cripta dos Reis Esquecidos. Ontem, o filho do moleiro desapareceu quando foi investigar. Os aldeões estão aterrorizados - dizem que os mortos caminharam de novo.'\n\nEle pousa uma bolsa de moedas na mesa.\n\n'Cem peças de ouro para quem descobrir o que se passa e puser fim a isto. O Padre Sebastião no templo sabe mais sobre a cripta - falem com ele antes de partirem.'",
+      "notas_mestre": "A recompensa pode ser negociada até 150 po se os jogadores forem persuasivos (CD 15 Persuasão). O filho do moleiro (Tomás, 16 anos) está vivo mas escondido na cripta, assustado demais para sair. Esta informação cria urgência mas não deve ser revelada ainda.",
+      "dicas_improvisacao": [
+        "Se os jogadores pedirem mais dinheiro, Gonçalo pode oferecer até 150 po, mas parecer hesitante",
+        "Se perguntarem há quanto tempo não há enterros na cripta, Gonçalo diz que há cerca de 200 anos",
+        "Se quiserem falar com a família do rapaz desaparecido, o moleiro António está na taverna, desesperado",
+        "Se recusarem a missão, notícias de mais desaparecimentos chegam durante a noite"
+      ],
+      "npcs": ["goncalo"],
+      "monstros": [],
+      "proximos_passos": [3],
+      "recompensas": []
+    },
+    {
+      "id": 3,
+      "titulo": "O Templo de São Martinho",
+      "tipo": "social",
+      "texto_jogadores": "O pequeno templo de pedra ergue-se no centro da aldeia, com o seu campanário pontiagudo a alcançar o céu nublado. No interior, velas bruxuleiam diante de ícones sagrados, e o cheiro a incenso preenche o ar.\n\nO Padre Sebastião, um homem idoso de olhos bondosos mas cansados, levanta-se de um banco de oração quando vos vê entrar.\n\n'Ah, viajantes. Pelo vosso porte, diria que são aventureiros. Venham falar da cripta, presumo?'",
+      "notas_mestre": "O Padre Sebastião é um repositório de conhecimento sobre a cripta. Ele pode fornecer: a história dos reis enterrados, aviso sobre armadilhas conhecidas, e crucialmente, mencionar que existe uma maldição ligada ao túmulo do último rei. Também pode abençoar armas (dá vantagem contra mortos-vivos no primeiro ataque) ou fornecer água benta (1d6 a mortos-vivos, 2 frascos disponíveis).",
+      "dicas_improvisacao": [
+        "Se perguntarem sobre a maldição, explica que o Rei Afonso III morreu amaldiçoado por um feiticeiro que ele traiu",
+        "Se pedirem ajuda divina, pode abençoar até 2 armas ou dar 2 frascos de água benta",
+        "Se perguntarem sobre pontos fracos dos mortos-vivos, menciona dano radiante e água benta",
+        "Se quiserem acesso a mapas antigos, tem um esboço incompleto da entrada da cripta"
+      ],
+      "npcs": ["padre_sebastiao"],
+      "monstros": [],
+      "proximos_passos": [4],
+      "recompensas": []
+    },
+    {
+      "id": 4,
+      "titulo": "O Caminho para a Cripta",
+      "tipo": "narrativa",
+      "texto_jogadores": "O caminho serpenteia através de uma floresta cada vez mais densa e sombria. As árvores parecem inclinar-se sobre vós como sentinelas silenciosas, e o canto dos pássaros desapareceu por completo.\n\nApós uma hora de marcha, avistam a entrada da cripta - um portal de pedra negra esculpido na encosta de uma colina, ladeado por duas estátuas de guerreiros antigos cujas faces foram corroídas pelo tempo. Uma luz azulada e antinatural brilha fracamente do interior.",
+      "notas_mestre": "Esta cena serve para criar atmosfera e permitir preparação. Um teste de Perceção CD 12 revela pegadas recentes (do Tomás). Um teste de História CD 14 reconhece os símbolos nas estátuas como sendo da antiga dinastia real. A luz azulada é de cristais mágicos na cripta, não de mortos-vivos.",
+      "dicas_improvisacao": [
+        "Se os jogadores examinarem as estátuas, parecem guerreiros reais em armadura cerimonial",
+        "Se procurarem armadilhas na entrada, encontram uma placa de pressão desativada há muito tempo",
+        "Se esperarem até ao anoitecer, a luz azulada intensifica-se",
+        "Se fizerem muito barulho, corvos levantam voo assustados"
+      ],
+      "npcs": [],
+      "monstros": [],
+      "proximos_passos": [5],
+      "recompensas": []
+    },
+    {
+      "id": 5,
+      "titulo": "A Entrada da Cripta",
+      "tipo": "puzzle",
+      "texto_jogadores": "O corredor de entrada é largo e alto, com teto abobadado decorado com mosaicos desbotados que outrora retratavam cenas de batalhas gloriosas. O ar é frio e húmido, carregando um cheiro a mofo e terra.\n\nA meio do corredor, deparais-vos com uma porta de bronze maciço. No centro da porta, um disco de pedra com símbolos gravados pode ser rodado. Por baixo, uma inscrição em português antigo diz:\n\n'O primeiro reinou com a espada,\nO segundo com a palavra,\nO terceiro com ouro,\nO quarto com sabedoria.\nAlinhai as suas virtudes e passai.'",
+      "notas_mestre": "PUZZLE: O disco tem 4 símbolos que devem ser alinhados com 4 entalhes em ordem específica: Espada, Livro, Moeda, Coruja. A ordem correta desbloqueia a porta. Ordem errada ativa uma armadilha de dardos (2d6 dano, Destreza CD 13 para metade). Pistas podem ser encontradas nos mosaicos do teto (Perceção CD 14) ou lembradas do Padre Sebastião. Alternativa: a porta pode ser forçada (Força CD 20) mas faz barulho que alerta os esqueletos adiante.",
+      "dicas_improvisacao": [
+        "Se estiverem completamente perdidos, um mosaico no teto mostra os 4 reis com os seus símbolos",
+        "Se tentarem destruir a porta, é possível mas demora 10 minutos e faz muito barulho",
+        "Se um jogador tocar nos símbolos sem pensar, dá-lhe uma sensação de formigueiro como aviso",
+        "Se perguntarem sobre os reis, cada símbolo representa uma dinastia diferente"
+      ],
+      "npcs": [],
+      "monstros": [],
+      "proximos_passos": [6],
+      "recompensas": []
+    },
+    {
+      "id": 6,
+      "titulo": "As Câmaras dos Guardiões",
+      "tipo": "combate",
+      "texto_jogadores": "A porta abre-se com um gemido de metal antigo, revelando uma câmara octogonal iluminada por cristais azuis incrustados nas paredes. Quatro sarcófagos de pedra ocupam nichos nas paredes.\n\nMal pisais o chão de mármore rachado, os sarcófagos começam a tremer. As tampas deslizam com um ranger horrível, e de dentro erguem-se quatro figuras ossudas vestidas com restos de armadura enferrujada. Os esqueletos viram as suas caveiras vazias na vossa direção, erguendo espadas quebradas mas ainda mortais.",
+      "notas_mestre": "COMBATE: 4 Esqueletos (ver ficha). Táticas: atacam o alvo mais próximo, sem coordenação. Os cristais nas paredes podem ser partidos (CA 10, 5 HP) para criar escuridão parcial. Se os jogadores fugirem, os esqueletos não os seguem além desta câmara. Após a vitória, encontram: 25 po antigas em cada sarcófago (100 po total) e uma Poção de Cura num dos nichos.",
+      "dicas_improvisacao": [
+        "Se um jogador ficar a 0 HP, um esqueleto perde interesse e foca noutro alvo",
+        "Se os jogadores usarem o ambiente, os pilares dão cobertura parcial (+2 AC)",
+        "Se tentarem falar com os esqueletos, não respondem - são autómatos sem mente",
+        "Se destruírem os cristais, a sala fica em penumbra (desvantagem em ataques à distância)"
+      ],
+      "npcs": [],
+      "monstros": ["esqueleto", "esqueleto", "esqueleto", "esqueleto"],
+      "proximos_passos": [7],
+      "recompensas": ["100 peças de ouro antigas", "Poção de Cura"]
+    },
+    {
+      "id": 7,
+      "titulo": "A Criança Escondida",
+      "tipo": "social",
+      "texto_jogadores": "Após o combate, ouvem um som abafado vindo de trás de um dos sarcófagos vazios. Investigando, encontram um rapaz adolescente encolhido num canto escuro, tremendo de medo.\n\n'Por favor, não me matem!' implora ele. 'Sou o Tomás, o filho do moleiro! Vim investigar as luzes e fiquei preso aqui quando aquelas coisas acordaram!'",
+      "notas_mestre": "Tomás está assustado mas ileso. Escondeu-se quando os esqueletos acordaram há dois dias e tem estado a sobreviver com a comida que trouxe. Ele viu 'uma senhora de branco' passar pelos esqueletos sem os acordar e entrar na câmara mais profunda. Esta é a Fantasma da Rainha. Os jogadores podem escolher: levar Tomás de volta (missão secundária cumprida, +50 po de bónus) ou deixá-lo escondido enquanto continuam.",
+      "dicas_improvisacao": [
+        "Se perguntarem sobre a senhora de branco, Tomás descreve-a como triste e etérea",
+        "Se tentarem levá-lo imediatamente, ele pede para ajudar - conhece um atalho na cripta",
+        "Se forem rudes com ele, fecha-se e não partilha informação sobre a senhora",
+        "Se lhe derem comida/água, fica mais cooperativo e conta tudo o que viu"
+      ],
+      "npcs": ["tomas"],
+      "monstros": [],
+      "proximos_passos": [8],
+      "recompensas": []
+    },
+    {
+      "id": 8,
+      "titulo": "O Corredor das Armadilhas",
+      "tipo": "puzzle",
+      "texto_jogadores": "Um longo corredor estende-se à vossa frente, o chão de ladrilhos alternando entre pedras claras e escuras num padrão de xadrez. No fundo do corredor, vedes uma porta ornamentada.\n\nNas paredes, pequenas ranhuras estão espaçadas a intervalos regulares. No início do corredor, uma placa de bronze mostra um diagrama apagado pelo tempo - parece representar um percurso específico pelos ladrilhos.",
+      "notas_mestre": "ARMADILHA: Pisar nos ladrilhos errados dispara dardos envenenados das paredes. O padrão seguro é: claro-escuro-claro-claro-escuro (depois repete). Perceção CD 15 nota que alguns ladrilhos têm pó perturbado. Investigação CD 14 decifra parcialmente o diagrama. Ladrões podem desativar as armadilhas (CD 16). Dardos: +5 para acertar, 1d6+2 perfurante + CD 12 Constituição ou envenenado por 1 hora.",
+      "dicas_improvisacao": [
+        "Se um jogador disparar uma armadilha, pode usar reação para se esquivar (Destreza CD 14)",
+        "Se testarem com objetos primeiro, podem descobrir o padrão com 3-4 testes",
+        "Se voarem/levitarem sobre os ladrilhos, passam sem problema",
+        "Se tiverem o Tomás, ele conhece o caminho seguro (se os jogadores foram simpáticos)"
+      ],
+      "npcs": [],
+      "monstros": [],
+      "proximos_passos": [9],
+      "recompensas": []
+    },
+    {
+      "id": 9,
+      "titulo": "A Câmara da Rainha",
+      "tipo": "social",
+      "texto_jogadores": "Entram numa câmara mais pequena e ornamentada. Tapeçarias desbotadas cobrem as paredes, e no centro repousa um sarcófago de mármore branco decorado com flores esculpidas.\n\nDiante do sarcófago, flutua uma figura translúcida de uma mulher em vestes reais. A sua expressão é de profunda tristeza quando se vira para vós.\n\n'Finalmente, mortais com a coragem de chegarem até aqui,' diz ela numa voz que ecoa como um sussurro distante. 'Sou Leonor, rainha deste reino esquecido. E preciso da vossa ajuda.'",
+      "notas_mestre": "A Rainha Leonor é um fantasma benigno, não hostil. Ela explica: o seu marido, o Rei Afonso III, foi amaldiçoado por um feiticeiro e agora ergue-se como um Cavaleiro Fantasma, incapaz de descansar. A maldição também afeta os outros mortos da cripta. Para quebrar a maldição, é preciso destruir o Cavaleiro e colocar o seu amuleto (que ele usa) no altar da câmara do trono. Leonor não pode entrar na câmara do trono devido à maldição.",
+      "dicas_improvisacao": [
+        "Se tentarem atacar Leonor, ela simplesmente desvanece e reaparece, pedindo calma",
+        "Se perguntarem sobre o feiticeiro, ela diz que ele morreu há muito mas a maldição persiste",
+        "Se pedirem ajuda em combate, ela pode dar bênção (+1d4 num ataque, uma vez por pessoa)",
+        "Se perguntarem sobre tesouros, menciona que o tesouro real está guardado pelo rei"
+      ],
+      "npcs": ["rainha_leonor"],
+      "monstros": [],
+      "proximos_passos": [10],
+      "recompensas": []
+    },
+    {
+      "id": 10,
+      "titulo": "A Sala do Trono - Confronto Final",
+      "tipo": "combate",
+      "texto_jogadores": "As portas duplas da sala do trono abrem-se com um estrondo. A câmara é vasta e majestosa, apesar da decadência. Um trono de pedra domina o fundo da sala, e diante dele ergue-se uma figura aterradora.\n\nO Cavaleiro Fantasma do Rei Afonso III está de pé em armadura negra espectral, uma espada fantasmagórica na mão. Os seus olhos brilham com um fogo azul doentio, e quando fala, a voz ressoa como trovão distante.\n\n'Quem ousa perturbar o meu descanso eterno? Venham então, tolos, e juntem-se aos meus servos na morte!'",
+      "notas_mestre": "COMBATE FINAL: Cavaleiro Fantasma (ver ficha). O combate deve ser desafiante mas justo. Táticas do Cavaleiro: usa Investida Fantasmagórica no primeiro turno, depois alterna entre ataques corpo a corpo e Presença Aterradora. Aos 15 HP, tenta fugir para regenerar - não deixem escapar! O amuleto que ele usa é visível (pode ser agarrado com teste de Atletismo CD 16 como ação). Se o amuleto for removido, o Cavaleiro perde a regeneração.",
+      "dicas_improvisacao": [
+        "Se os jogadores estiverem a perder muito, Leonor aparece para distrair o Cavaleiro um turno",
+        "Se focarem no amuleto, recompense a criatividade - é uma tática válida",
+        "Se tentarem falar com o Rei, há um momento de lucidez onde ele pede para ser libertado",
+        "Se fugirem, o Cavaleiro não persegue além da sala mas a maldição não é quebrada"
+      ],
+      "npcs": [],
+      "monstros": ["cavaleiro_fantasma"],
+      "proximos_passos": [11],
+      "recompensas": []
+    },
+    {
+      "id": 11,
+      "titulo": "Quebrar a Maldição",
+      "tipo": "narrativa",
+      "texto_jogadores": "Com um último golpe, o Cavaleiro Fantasma cai de joelhos. A luz azul nos seus olhos tremeluz.\n\n'Obrigado...' sussurra a voz do Rei, agora mais humana. 'Libertai-me. Colocai o amuleto no altar...'\n\nA figura espectral dissolve-se, deixando para trás apenas o amuleto brilhante e a armadura vazia. Junto ao trono, vedes um pequeno altar de pedra com um recesso do tamanho exato do amuleto.",
+      "notas_mestre": "Quando o amuleto é colocado no altar, uma onda de luz dourada percorre a cripta. Todos os mortos-vivos restantes são destruídos permanentemente. A Rainha Leonor aparece uma última vez para agradecer antes de encontrar paz. O tesouro real (ver recompensas) materializa-se junto ao trono como recompensa.",
+      "dicas_improvisacao": [
+        "Se hesitarem em colocar o amuleto, Leonor aparece para encorajar",
+        "Se tentarem ficar com o amuleto, começa a queimar (1d6 dano/turno)",
+        "Se explorarem a sala do trono, encontram o tesouro escondido atrás do trono",
+        "Se quiserem honrar o rei, podem fazer um pequeno ritual - Leonor agradece profundamente"
+      ],
+      "npcs": ["rainha_leonor"],
+      "monstros": [],
+      "proximos_passos": [12],
+      "recompensas": ["Amuleto Amaldiçoado (para destruir)"]
+    },
+    {
+      "id": 12,
+      "titulo": "Conclusão - Heróis da Aldeia",
+      "tipo": "narrativa",
+      "texto_jogadores": "Ao emergirem da cripta, o sol da manhã recebe-vos com um calor reconfortante. O ar parece mais leve, como se um peso antigo tivesse sido levantado da terra.\n\nDe regresso à aldeia, sois recebidos como heróis. Gonçalo espera-vos à porta da taverna com um sorriso aliviado, e o moleiro António abraça o filho Tomás com lágrimas nos olhos.\n\n'Conseguiram! Os mortos descansam finalmente!' exclama o Padre Sebastião, fazendo o sinal da bênção. 'Que os deuses vos abençoem, bravos aventureiros.'",
+      "notas_mestre": "Esta é a cena de conclusão. Os jogadores recebem: a recompensa prometida (100-150 po do Gonçalo), 50 po extra por terem salvo o Tomás, e o tesouro da cripta. Reputação na região aumenta significativamente. Gancho para aventuras futuras: há rumores de outras criptas, e o Padre Sebastião menciona textos antigos que falam de um artefacto poderoso algures nas montanhas...",
+      "dicas_improvisacao": [
+        "Se quiserem celebrar, a taverna oferece uma festa gratuita em sua honra",
+        "Se perguntarem sobre outras aventuras, há sempre problemas na estrada do norte",
+        "Se quiserem ficar na aldeia, há uma casa disponível para heróis locais",
+        "Se mencionarem a Rainha Leonor, o Padre Sebastião fica fascinado e quer saber mais"
+      ],
+      "npcs": ["goncalo", "padre_sebastiao"],
+      "monstros": [],
+      "proximos_passos": [],
+      "recompensas": ["100-150 peças de ouro (recompensa)", "50 peças de ouro (salvar Tomás)", "Espada Longa +1 (tesouro da cripta)", "300 peças de ouro em joias antigas", "Pergaminho de Curar Ferimentos"]
+    }
+  ],
+  "npcs": [
+    {
+      "id": "goncalo",
+      "nome": "Gonçalo, o Taverneiro",
+      "descricao": "Um homem robusto nos seus cinquenta anos, com barba grisalha bem cuidada e olhos castanhos bondosos. Usa um avental manchado sobre roupas simples mas limpas.",
+      "personalidade": "Acolhedor e paternal, mas pragmático. Preocupa-se genuinamente com a aldeia e os seus habitantes. Fala de forma direta e honesta.",
+      "motivacao": "Proteger a aldeia e os seus habitantes. A taverna é o seu orgulho e sustento da família há três gerações.",
+      "localizacao": "Taverna do Javali Dourado",
+      "dialogos": [
+        "Bem-vindos ao Javali Dourado! Sentem-se, sentem-se. Parecem precisar de uma boa refeição quente.",
+        "Estes são tempos estranhos, amigos. Coisas que deviam estar mortas... não estão.",
+        "Cem peças de ouro é tudo o que a aldeia conseguiu juntar. Mas se resolverem isto, serão heróis aqui."
+      ]
+    },
+    {
+      "id": "padre_sebastiao",
+      "nome": "Padre Sebastião",
+      "descricao": "Um homem idoso e magro, com cabelo branco ralo e olhos azuis penetrantes que parecem ver além do visível. Veste uma batina preta simples com um símbolo sagrado ao pescoço.",
+      "personalidade": "Sábio e contemplativo, fala pausadamente escolhendo as palavras com cuidado. Tem uma fé inabalável mas não é fanático.",
+      "motivacao": "Guiar espiritualmente a aldeia e preservar o conhecimento antigo. Secretamente, culpa-se por não ter conseguido purificar a cripta antes.",
+      "localizacao": "Templo de São Martinho",
+      "dialogos": [
+        "Os mortos que caminham são sintoma de uma doença maior. Há uma maldição antiga naquela cripta.",
+        "O Rei Afonso III foi um homem justo, até ser traído. A maldição transformou-o em algo... diferente.",
+        "Levem esta água benta. Contra os mortos-vivos, a fé é uma arma tão poderosa como o aço."
+      ]
+    },
+    {
+      "id": "rainha_leonor",
+      "nome": "Rainha Leonor",
+      "descricao": "Um fantasma de uma mulher bela, aparentando trinta anos, em vestes reais etéreas. A sua forma translúcida emite uma luz prateada suave, e uma expressão de profunda melancolia marca o seu rosto.",
+      "personalidade": "Digna e triste, mas não hostil. Fala com a formalidade de uma era passada. Há séculos que espera por alguém capaz de libertar o seu marido.",
+      "motivacao": "Libertar o espírito do marido da maldição e finalmente encontrar paz. Está presa à cripta pela sua ligação emocional ao Rei.",
+      "localizacao": "Câmara da Rainha (Cripta)",
+      "dialogos": [
+        "Não temais. Não vos farei mal. Há muito que espero por almas corajosas como as vossas.",
+        "O meu amado Afonso foi amaldiçoado por aquele que ele considerava amigo. Agora não conhece senão raiva.",
+        "O amuleto que ele carrega é a âncora da maldição. Destruam-no no altar e ambos seremos livres."
+      ]
+    },
+    {
+      "id": "tomas",
+      "nome": "Tomás, o Filho do Moleiro",
+      "descricao": "Um rapaz de dezasseis anos, magro e de cabelo castanho desgrenhado. Está pálido e com olheiras profundas após dois dias escondido na cripta, mas os olhos ainda mostram um espírito aventureiro.",
+      "personalidade": "Curioso e corajoso para a idade, mas a experiência na cripta deixou-o traumatizado. Alterna entre bravatas e tremores de medo.",
+      "motivacao": "Voltar para casa em segurança. Queria provar que era corajoso; agora só quer ver a família.",
+      "localizacao": "Câmaras dos Guardiões (escondido)",
+      "dialogos": [
+        "Eu vi uma senhora de branco! Passou pelos esqueletos como se não existissem!",
+        "Desculpem, não queria preocupar ninguém. Só queria ver o que eram as luzes...",
+        "Se me ajudarem a sair, posso mostrar um atalho que encontrei. Há um túnel que evita algumas armadilhas."
+      ]
+    }
+  ],
+  "monstros": [
+    {
+      "id": "esqueleto",
+      "nome": "Esqueleto Guardião",
+      "tamanho": "Médio",
+      "tipo": "Morto-vivo",
+      "alinhamento": "Leal Maligno",
+      "ac": 13,
+      "hp_max": 13,
+      "hp_dice": "2d8+4",
+      "velocidade": "9m",
+      "forca": 10,
+      "destreza": 14,
+      "constituicao": 15,
+      "inteligencia": 6,
+      "sabedoria": 8,
+      "carisma": 5,
+      "cr": "1/4",
+      "xp": 50,
+      "resistencias": [],
+      "imunidades": ["veneno"],
+      "vulnerabilidades": ["contundente"],
+      "imunidades_condicao": ["exausto", "envenenado"],
+      "sentidos": "visão no escuro 18m, Perceção passiva 9",
+      "idiomas": ["entende Comum mas não fala"],
+      "habilidades_especiais": [],
+      "acoes": [
+        {
+          "nome": "Espada Curta",
+          "descricao": "Ataque corpo a corpo com arma: +4 para acertar, alcance 1,5m, um alvo. Acerto: 5 (1d6+2) de dano perfurante."
+        },
+        {
+          "nome": "Arco Curto",
+          "descricao": "Ataque à distância com arma: +4 para acertar, alcance 24/96m, um alvo. Acerto: 5 (1d6+2) de dano perfurante."
+        }
+      ]
+    },
+    {
+      "id": "cavaleiro_fantasma",
+      "nome": "Cavaleiro Fantasma de Afonso III",
+      "tamanho": "Médio",
+      "tipo": "Morto-vivo",
+      "alinhamento": "Leal Maligno",
+      "ac": 16,
+      "hp_max": 45,
+      "hp_dice": "6d8+18",
+      "velocidade": "9m, voo 9m (paira)",
+      "forca": 16,
+      "destreza": 12,
+      "constituicao": 16,
+      "inteligencia": 12,
+      "sabedoria": 14,
+      "carisma": 15,
+      "cr": "3",
+      "xp": 700,
+      "resistencias": ["ácido", "frio", "fogo", "relâmpago", "trovão", "contundente/perfurante/cortante de ataques não-mágicos"],
+      "imunidades": ["necrótico", "veneno"],
+      "vulnerabilidades": ["radiante"],
+      "imunidades_condicao": ["enfeitiçado", "exausto", "agarrado", "paralisado", "petrificado", "envenenado", "propenso", "restringido"],
+      "sentidos": "visão no escuro 18m, Perceção passiva 12",
+      "idiomas": ["Comum"],
+      "habilidades_especiais": [
+        {
+          "nome": "Incorporeidade",
+          "descricao": "O Cavaleiro pode mover-se através de outras criaturas e objetos como se fossem terreno difícil. Sofre 5 (1d10) de dano de força se terminar o turno dentro de um objeto."
+        },
+        {
+          "nome": "Regeneração",
+          "descricao": "O Cavaleiro recupera 5 pontos de vida no início do seu turno se tiver pelo menos 1 ponto de vida e não estiver em luz solar. Se sofrer dano radiante, esta característica não funciona até ao início do próximo turno."
+        }
+      ],
+      "acoes": [
+        {
+          "nome": "Multiataques",
+          "descricao": "O Cavaleiro faz dois ataques com a Espada Espectral."
+        },
+        {
+          "nome": "Espada Espectral",
+          "descricao": "Ataque corpo a corpo com arma: +5 para acertar, alcance 1,5m, um alvo. Acerto: 7 (1d8+3) de dano cortante mais 4 (1d8) de dano necrótico."
+        },
+        {
+          "nome": "Investida Fantasmagórica (Recarrega 5-6)",
+          "descricao": "O Cavaleiro voa até 9m em linha reta, atravessando criaturas. Cada criatura no caminho deve fazer um teste de resistência de Destreza CD 13. Em falha, sofre 14 (4d6) de dano necrótico e fica amedrontada até ao fim do próximo turno do Cavaleiro. Em sucesso, sofre metade do dano e não fica amedrontada."
+        },
+        {
+          "nome": "Presença Aterradora (1/dia)",
+          "descricao": "Cada criatura à escolha do Cavaleiro num raio de 18m que o possa ver deve fazer um teste de resistência de Sabedoria CD 13 ou ficar amedrontada por 1 minuto. Uma criatura pode repetir o teste no fim de cada turno seu, terminando o efeito em sucesso."
+        }
+      ]
+    }
+  ],
+  "mapas": [
+    {
+      "nome": "Cripta dos Reis Esquecidos",
+      "descricao": "Mapa geral da cripta com todas as câmaras e corredores.",
+      "imagem": null
+    }
+  ]
+}

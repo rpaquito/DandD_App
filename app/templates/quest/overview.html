@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}{{ quest.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar - Navegação -->
+        <div class="col-lg-3 mb-4">
+            <div class="card bg-dark border-secondary sticky-top" style="top: 20px;">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-list-ol me-2"></i>Passos da Aventura</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for step in quest.passos %}
+                    <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=step.id) }}"
+                       class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>
+                                <span class="badge bg-secondary me-2">{{ step.id }}</span>
+                                {{ step.titulo }}
+                            </span>
+                            {% if step.tipo == 'combate' %}
+                            <i class="bi bi-shield-shaded text-danger"></i>
+                            {% elif step.tipo == 'puzzle' %}
+                            <i class="bi bi-puzzle text-warning"></i>
+                            {% elif step.tipo == 'social' %}
+                            <i class="bi bi-chat-dots text-info"></i>
+                            {% endif %}
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="col-lg-9">
+            <!-- Cabeçalho da Aventura -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h1 class="card-title">{{ quest.titulo }}</h1>
+                            <p class="lead text-muted">{{ quest.descricao }}</p>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-info fs-6">
+                                <i class="bi bi-people me-1"></i>Nível {{ quest.nivel_min }}-{{ quest.nivel_max }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <div class="p-3">
+                                <i class="bi bi-list-ol display-6 text-primary"></i>
+                                <h4 class="mt-2">{{ quest.passos|length }}</h4>
+                                <small class="text-muted">Passos</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3">
+                                <i class="bi bi-person-fill display-6 text-success"></i>
+                                <h4 class="mt-2">{{ quest.npcs|length }}</h4>
+                                <small class="text-muted">NPCs</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3">
+                                <i class="bi bi-bug display-6 text-danger"></i>
+                                <h4 class="mt-2">{{ quest.monstros|length }}</h4>
+                                <small class="text-muted">Monstros</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3">
+                                <i class="bi bi-map display-6 text-warning"></i>
+                                <h4 class="mt-2">{{ quest.mapas|length }}</h4>
+                                <small class="text-muted">Mapas</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer border-secondary">
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=1) }}" class="btn btn-danger">
+                            <i class="bi bi-play-fill me-1"></i>Começar Aventura
+                        </a>
+                        <a href="{{ url_for('quest.npcs', quest_id=quest.id) }}" class="btn btn-outline-light">
+                            <i class="bi bi-people me-1"></i>Ver NPCs
+                        </a>
+                        <a href="{{ url_for('quest.monsters', quest_id=quest.id) }}" class="btn btn-outline-light">
+                            <i class="bi bi-bug me-1"></i>Ver Monstros
+                        </a>
+                        <a href="{{ url_for('print.map_view', quest_id=quest.id) }}" class="btn btn-outline-warning">
+                            <i class="bi bi-map me-1"></i>Ver Mapa
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumo dos NPCs -->
+            {% if quest.npcs %}
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-people me-2"></i>NPCs Principais</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        {% for npc_id, npc in quest.npcs.items() %}
+                        <div class="col-md-4">
+                            <div class="card bg-secondary h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ npc.nome }}</h6>
+                                    <p class="card-text small text-muted">{{ npc.descricao[:100] }}{% if npc.descricao|length > 100 %}...{% endif %}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

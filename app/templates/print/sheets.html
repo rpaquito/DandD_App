@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block title %}Fichas de Personagem{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .no-print { display: none !important; }
+        .print-page { page-break-after: always; }
+        body { background: white !important; }
+        .card { border: 1px solid #000 !important; background: white !important; }
+    }
+
+    .character-sheet {
+        background: #f5f5f0;
+        color: #000;
+        font-family: 'Times New Roman', serif;
+    }
+
+    .stat-box {
+        border: 2px solid #000;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        background: white;
+    }
+
+    .stat-name {
+        font-size: 0.7rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .stat-modifier {
+        font-size: 0.9rem;
+        border: 1px solid #000;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5px;
+    }
+
+    .section-box {
+        border: 1px solid #000;
+        padding: 10px;
+        margin-bottom: 10px;
+        background: white;
+    }
+
+    .input-line {
+        border-bottom: 1px solid #999;
+        min-height: 25px;
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="no-print mb-4">
+        <h1><i class="bi bi-person-badge me-2"></i>Fichas de Personagem</h1>
+        <p class="text-muted">Fichas de personagem D&D 5e em português para imprimir.</p>
+        <button class="btn btn-primary" onclick="window.print()">
+            <i class="bi bi-printer me-1"></i>Imprimir Ficha
+        </button>
+    </div>
+
+    <!-- Ficha de Personagem -->
+    <div class="character-sheet p-4 print-page">
+        <div class="row mb-4">
+            <!-- Cabeçalho -->
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="section-box">
+                            <small class="text-muted">Nome do Personagem</small>
+                            <div class="input-line fs-4"></div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="section-box">
+                            <div class="row">
+                                <div class="col-4">
+                                    <small class="text-muted">Classe & Nível</small>
+                                    <div class="input-line"></div>
+                                </div>
+                                <div class="col-4">
+                                    <small class="text-muted">Raça</small>
+                                    <div class="input-line"></div>
+                                </div>
+                                <div class="col-4">
+                                    <small class="text-muted">Antecedente</small>
+                                    <div class="input-line"></div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <small class="text-muted">Nome do Jogador</small>
+                                    <div class="input-line"></div>
+                                </div>
+                                <div class="col-4">
+                                    <small class="text-muted">Alinhamento</small>
+                                    <div class="input-line"></div>
+                                </div>
+                                <div class="col-4">
+                                    <small class="text-muted">Pontos de Experiência</small>
+                                    <div class="input-line"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Coluna Esquerda - Atributos -->
+            <div class="col-md-4">
+                <!-- Atributos -->
+                <div class="row g-2 mb-3">
+                    {% for attr in ['Força', 'Destreza', 'Constituição', 'Inteligência', 'Sabedoria', 'Carisma'] %}
+                    <div class="col-6">
+                        <div class="stat-box">
+                            <div class="stat-name">{{ attr }}</div>
+                            <div class="stat-value input-line" style="border: none;"></div>
+                            <div class="stat-modifier"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Bónus de Proficiência -->
+                <div class="section-box text-center">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="stat-modifier mx-auto"></div>
+                            <small class="text-muted d-block mt-1">Inspiração</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="stat-modifier mx-auto"></div>
+                            <small class="text-muted d-block mt-1">Proficiência</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="stat-modifier mx-auto"></div>
+                            <small class="text-muted d-block mt-1">Perceção Passiva</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna Central -->
+            <div class="col-md-4">
+                <!-- AC, Iniciativa, Velocidade -->
+                <div class="row g-2 mb-3">
+                    <div class="col-4">
+                        <div class="stat-box">
+                            <div class="stat-name">Classe de Armadura</div>
+                            <div class="stat-value input-line" style="border: none;"></div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-box">
+                            <div class="stat-name">Iniciativa</div>
+                            <div class="stat-value input-line" style="border: none;"></div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-box">
+                            <div class="stat-name">Velocidade</div>
+                            <div class="stat-value input-line" style="border: none;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pontos de Vida -->
+                <div class="section-box">
+                    <small class="text-muted">Máximo de Pontos de Vida</small>
+                    <div class="input-line"></div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <small class="text-muted">Pontos de Vida Atuais</small>
+                            <div class="input-line" style="min-height: 50px;"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <small class="text-muted">HP Temporários</small>
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">Dados de Vida</small>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testes de Morte -->
+                <div class="section-box">
+                    <div class="row">
+                        <div class="col-6">
+                            <small class="text-muted">Sucesso</small>
+                            <div>○ ○ ○</div>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">Falhanço</small>
+                            <div>○ ○ ○</div>
+                        </div>
+                    </div>
+                    <small class="text-muted d-block text-center mt-1">Testes de Morte</small>
+                </div>
+            </div>
+
+            <!-- Coluna Direita -->
+            <div class="col-md-4">
+                <!-- Ataques e Magias -->
+                <div class="section-box" style="min-height: 200px;">
+                    <small class="text-muted d-block mb-2">Ataques e Magias</small>
+                    <table class="table table-sm table-bordered" style="font-size: 0.8rem;">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Bónus</th>
+                                <th>Dano/Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="input-line"></td><td class="input-line"></td><td class="input-line"></td></tr>
+                            <tr><td class="input-line"></td><td class="input-line"></td><td class="input-line"></td></tr>
+                            <tr><td class="input-line"></td><td class="input-line"></td><td class="input-line"></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Equipamento -->
+                <div class="section-box" style="min-height: 150px;">
+                    <small class="text-muted d-block mb-2">Equipamento</small>
+                    {% for i in range(8) %}
+                    <div class="input-line"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Linha Inferior -->
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="section-box" style="min-height: 150px;">
+                    <small class="text-muted d-block mb-2">Características e Traços</small>
+                    {% for i in range(6) %}
+                    <div class="input-line"></div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="section-box" style="min-height: 150px;">
+                    <small class="text-muted d-block mb-2">Proficiências e Idiomas</small>
+                    {% for i in range(6) %}
+                    <div class="input-line"></div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="section-box" style="min-height: 150px;">
+                    <small class="text-muted d-block mb-2">Notas</small>
+                    {% for i in range(6) %}
+                    <div class="input-line"></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

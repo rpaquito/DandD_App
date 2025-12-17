@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Criar Personagem{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('players.list_players') }}">Jogadores</a></li>
+            <li class="breadcrumb-item active">Criar Personagem</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h3 class="mb-0"><i class="bi bi-person-plus me-2"></i>Criar Personagem Personalizado</h3>
+                </div>
+
+                <div class="card-body">
+                    <form action="{{ url_for('players.add_player') }}" method="post">
+                        <!-- Informações Básicas -->
+                        <h5 class="text-muted mb-3">Informações Básicas</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="nome_jogador" class="form-label">Nome do Jogador</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary"
+                                       id="nome_jogador" name="nome_jogador" placeholder="Pessoa que vai jogar" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="nome" class="form-label">Nome do Personagem</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary"
+                                       id="nome" name="nome" placeholder="Nome do personagem" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="classe" class="form-label">Classe</label>
+                                <select class="form-select bg-dark text-light border-secondary" id="classe" name="classe">
+                                    <option value="Guerreiro">Guerreiro</option>
+                                    <option value="Mago">Mago</option>
+                                    <option value="Clérigo">Clérigo</option>
+                                    <option value="Ladino">Ladino</option>
+                                    <option value="Ranger">Ranger</option>
+                                    <option value="Paladino">Paladino</option>
+                                    <option value="Bárbaro">Bárbaro</option>
+                                    <option value="Bardo">Bardo</option>
+                                    <option value="Druida">Druida</option>
+                                    <option value="Monge">Monge</option>
+                                    <option value="Feiticeiro">Feiticeiro</option>
+                                    <option value="Bruxo">Bruxo</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="raca" class="form-label">Raça</label>
+                                <select class="form-select bg-dark text-light border-secondary" id="raca" name="raca">
+                                    <option value="Humano">Humano</option>
+                                    <option value="Elfo">Elfo</option>
+                                    <option value="Anão">Anão</option>
+                                    <option value="Halfling">Halfling</option>
+                                    <option value="Meio-Elfo">Meio-Elfo</option>
+                                    <option value="Meio-Orc">Meio-Orc</option>
+                                    <option value="Gnomo">Gnomo</option>
+                                    <option value="Tiefling">Tiefling</option>
+                                    <option value="Draconato">Draconato</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="nivel" class="form-label">Nível</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary"
+                                       id="nivel" name="nivel" value="1" min="1" max="20">
+                            </div>
+                        </div>
+
+                        <!-- Atributos -->
+                        <h5 class="text-muted mb-3">Atributos</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-4 col-md-2">
+                                <label for="forca" class="form-label text-center d-block">FOR</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary text-center"
+                                       id="forca" name="forca" value="10" min="1" max="30">
+                            </div>
+                            <div class="col-4 col-md-2">
+                                <label for="destreza" class="form-label text-center d-block">DES</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary text-center"
+                                       id="destreza" name="destreza" value="10" min="1" max="30">
+                            </div>
+                            <div class="col-4 col-md-2">
+                                <label for="constituicao" class="form-label text-center d-block">CON</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary text-center"
+                                       id="constituicao" name="constituicao" value="10" min="1" max="30">
+                            </div>
+                            <div class="col-4 col-md-2">
+                                <label for="inteligencia" class="form-label text-center d-block">INT</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary text-center"
+                                       id="inteligencia" name="inteligencia" value="10" min="1" max="30">
+                            </div>
+                            <div class="col-4 col-md-2">
+                                <label for="sabedoria" class="form-label text-center d-block">SAB</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary text-center"
+                                       id="sabedoria" name="sabedoria" value="10" min="1" max="30">
+                            </div>
+                            <div class="col-4 col-md-2">
+                                <label for="carisma" class="form-label text-center d-block">CAR</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary text-center"
+                                       id="carisma" name="carisma" value="10" min="1" max="30">
+                            </div>
+                        </div>
+
+                        <!-- Combate -->
+                        <h5 class="text-muted mb-3">Estatísticas de Combate</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="hp_max" class="form-label">HP Máximo</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary"
+                                       id="hp_max" name="hp_max" value="10" min="1" max="500">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ac" class="form-label">Classe de Armadura (AC)</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary"
+                                       id="ac" name="ac" value="10" min="1" max="30">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="velocidade" class="form-label">Velocidade</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary"
+                                       id="velocidade" name="velocidade" value="9m">
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle me-1"></i>Criar Personagem
+                            </button>
+                            <a href="{{ url_for('players.list_players') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Voltar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Dica -->
+            <div class="alert alert-info mt-4">
+                <i class="bi bi-lightbulb me-2"></i>
+                <strong>Dica:</strong> Para começar mais rápido, usa um dos personagens pré-criados na página de jogadores.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

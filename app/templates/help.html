@@ -1,0 +1,401 @@
+{% extends "base.html" %}
+
+{% block title %}Ajuda{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4"><i class="bi bi-question-circle me-2"></i>Como Usar o Companheiro de Mestre</h1>
+    <p class="lead text-muted mb-5">Guia completo para tirar o máximo proveito desta ferramenta durante as tuas sessões de D&D.</p>
+
+    <!-- Índice -->
+    <div class="card bg-dark border-secondary mb-5">
+        <div class="card-header border-secondary">
+            <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Índice</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li><a href="#inicio-rapido" class="text-info">1. Início Rápido</a></li>
+                        <li><a href="#preparar-sessao" class="text-info">2. Preparar uma Sessão</a></li>
+                        <li><a href="#durante-sessao" class="text-info">3. Durante a Sessão</a></li>
+                        <li><a href="#gestao-jogadores" class="text-info">4. Gestão de Jogadores</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li><a href="#combate" class="text-info">5. Rastreador de Combate</a></li>
+                        <li><a href="#impressao" class="text-info">6. Impressão de Materiais</a></li>
+                        <li><a href="#aventuras" class="text-info">7. Criar Novas Aventuras</a></li>
+                        <li><a href="#dicas" class="text-info">8. Dicas para Novos Mestres</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. Início Rápido -->
+    <section id="inicio-rapido" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-lightning me-2 text-warning"></i>1. Início Rápido
+        </h2>
+        <div class="row">
+            <div class="col-lg-8">
+                <p>Para começar a jogar em menos de 5 minutos:</p>
+                <ol class="mb-4">
+                    <li class="mb-2">
+                        <strong>Adiciona os jogadores:</strong> Vai a <a href="{{ url_for('players.list_players') }}">Jogadores</a> e escolhe personagens pré-criados para cada pessoa.
+                    </li>
+                    <li class="mb-2">
+                        <strong>Imprime as fichas:</strong> Clica em "Imprimir Todos" para dar uma ficha a cada jogador.
+                    </li>
+                    <li class="mb-2">
+                        <strong>Escolhe uma aventura:</strong> Na <a href="{{ url_for('main.index') }}">página inicial</a>, clica em "Iniciar Aventura".
+                    </li>
+                    <li class="mb-2">
+                        <strong>Segue o guia:</strong> A aventura guia-te passo a passo com texto para ler aos jogadores e notas privadas.
+                    </li>
+                </ol>
+
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle me-2"></i>
+                    <strong>Dica:</strong> Usa a aventura "A Cripta dos Reis Esquecidos" para a tua primeira sessão - é desenhada para novos Mestres!
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-secondary">
+                    <div class="card-body">
+                        <h6>Checklist Pré-Sessão</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="bi bi-square me-2"></i>Jogadores adicionados</li>
+                            <li><i class="bi bi-square me-2"></i>Fichas impressas</li>
+                            <li><i class="bi bi-square me-2"></i>Mapa impresso (opcional)</li>
+                            <li><i class="bi bi-square me-2"></i>Dados prontos</li>
+                            <li><i class="bi bi-square me-2"></i>Aventura escolhida</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Preparar uma Sessão -->
+    <section id="preparar-sessao" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-calendar-check me-2 text-info"></i>2. Preparar uma Sessão
+        </h2>
+
+        <h5>Antes da Sessão</h5>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning">1. Ler a Aventura</h6>
+                        <p class="small mb-0">Lê todos os passos da aventura para teres uma ideia geral. Não precisas de memorizar - a aplicação guia-te durante o jogo.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning">2. Conhecer os NPCs</h6>
+                        <p class="small mb-0">Vê a lista de NPCs e as suas personalidades. Pratica algumas vozes ou maneirismos se te sentires confortável.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning">3. Preparar Monstros</h6>
+                        <p class="small mb-0">Vê as fichas dos monstros na secção de combate. Familiariza-te com os ataques e habilidades especiais.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning">4. Imprimir Materiais</h6>
+                        <p class="small mb-0">Imprime o mapa, fichas de personagens e qualquer referência que aches útil ter em papel.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Durante a Sessão -->
+    <section id="durante-sessao" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-play-circle me-2 text-success"></i>3. Durante a Sessão
+        </h2>
+
+        <h5>Navegação da Aventura</h5>
+        <p>Cada passo da aventura tem várias secções:</p>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card bg-info bg-opacity-25 h-100">
+                    <div class="card-body">
+                        <h6><i class="bi bi-chat-quote me-2"></i>Texto para Jogadores</h6>
+                        <p class="small mb-0">Texto descritivo para ler em voz alta. Define o cenário e atmosfera.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning bg-opacity-25 h-100">
+                    <div class="card-body">
+                        <h6><i class="bi bi-eye-slash me-2"></i>Notas do Mestre</h6>
+                        <p class="small mb-0">Informação secreta só para ti. Inclui segredos, motivações e consequências.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success bg-opacity-25 h-100">
+                    <div class="card-body">
+                        <h6><i class="bi bi-lightbulb me-2"></i>Dicas de Improvisação</h6>
+                        <p class="small mb-0">Sugestões para situações comuns e perguntas dos jogadores.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Navegação:</strong> Usa os botões "Anterior" e "Próximo" para navegar, ou clica diretamente num passo na barra lateral.
+        </div>
+    </section>
+
+    <!-- 4. Gestão de Jogadores -->
+    <section id="gestao-jogadores" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-people me-2 text-primary"></i>4. Gestão de Jogadores
+        </h2>
+
+        <h5>Adicionar Jogadores</h5>
+        <ol class="mb-4">
+            <li>Vai a <a href="{{ url_for('players.list_players') }}">Jogadores</a></li>
+            <li>Escolhe um dos 6 personagens pré-criados</li>
+            <li>Dá o nome da pessoa real que vai jogar (ex: "João", "Maria")</li>
+            <li>Repete para cada jogador do grupo</li>
+        </ol>
+
+        <h5>Durante o Jogo</h5>
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-heart-fill text-danger display-6 mb-2"></i>
+                        <h6>Gerir HP</h6>
+                        <p class="small mb-0">Usa os botões +/- para dano e cura</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-dark border-warning h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-exclamation-triangle text-warning display-6 mb-2"></i>
+                        <h6>Condições</h6>
+                        <p class="small mb-0">Aplica condições como Envenenado, Cego, etc.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-dark border-info h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-printer text-info display-6 mb-2"></i>
+                        <h6>Imprimir</h6>
+                        <p class="small mb-0">Imprime fichas individuais ou todas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-bar-chart text-secondary display-6 mb-2"></i>
+                        <h6>Resumo</h6>
+                        <p class="small mb-0">Vê HP total do grupo e inconscientes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Combate -->
+    <section id="combate" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-shield-shaded me-2 text-danger"></i>5. Rastreador de Combate
+        </h2>
+
+        <h5>Iniciar Combate</h5>
+        <ol class="mb-4">
+            <li>Vai ao <a href="{{ url_for('combat.tracker') }}">Rastreador de Combate</a></li>
+            <li>Adiciona os monstros usando o formulário</li>
+            <li>Adiciona os jogadores (ou usa o botão na página de personagens)</li>
+            <li>Define a iniciativa de cada participante</li>
+            <li>Clica em "Ordenar por Iniciativa"</li>
+        </ol>
+
+        <h5>Durante o Combate</h5>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h6 class="text-success">O que podes fazer:</h6>
+                <ul>
+                    <li>Ajustar HP com dano/cura</li>
+                    <li>Marcar condições de status</li>
+                    <li>Ver CD de referência rápida</li>
+                    <li>Reordenar iniciativa</li>
+                    <li>Remover criaturas mortas</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6 class="text-info">Dicas do Mestre:</h6>
+                <ul>
+                    <li>Descrições de ataques temáticas</li>
+                    <li>Táticas dos monstros</li>
+                    <li>Situações comuns (cobertura, flanquear)</li>
+                    <li>Ajuste de dificuldade em tempo real</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert alert-warning">
+            <i class="bi bi-lightbulb me-2"></i>
+            <strong>Dica de Combate:</strong> Se o combate está muito difícil, reduz o HP dos monstros. Se está muito fácil, adiciona mais um monstro ou aumenta o dano.
+        </div>
+    </section>
+
+    <!-- 6. Impressão -->
+    <section id="impressao" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-printer me-2 text-secondary"></i>6. Impressão de Materiais
+        </h2>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h6><i class="bi bi-person-badge me-2"></i>Fichas Pré-Preenchidas</h6>
+                        <p class="small">6 personagens completos prontos a distribuir aos jogadores.</p>
+                        <a href="{{ url_for('print.premade_sheets') }}" class="btn btn-sm btn-outline-light">Imprimir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h6><i class="bi bi-file-earmark me-2"></i>Fichas em Branco</h6>
+                        <p class="small">Para jogadores que preferem criar personagens próprios.</p>
+                        <a href="{{ url_for('print.character_sheets') }}" class="btn btn-sm btn-outline-light">Imprimir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h6><i class="bi bi-map me-2"></i>Mapa da Aventura</h6>
+                        <p class="small">Mapa visual para ajudar na navegação da dungeon.</p>
+                        <span class="text-muted small">Disponível na página da aventura</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Criar Aventuras -->
+    <section id="aventuras" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-book me-2 text-warning"></i>7. Criar Novas Aventuras
+        </h2>
+
+        <p>As aventuras são ficheiros JSON na pasta <code>app/data/quests/</code>. Para criar uma nova:</p>
+
+        <ol class="mb-4">
+            <li>Copia o ficheiro <code>cripta-reis-esquecidos.json</code> como base</li>
+            <li>Renomeia para <code>nome-da-tua-aventura.json</code></li>
+            <li>Edita o conteúdo seguindo a estrutura existente</li>
+            <li>Reinicia o servidor para carregar a nova aventura</li>
+        </ol>
+
+        <h5>Estrutura Básica</h5>
+        <pre class="bg-dark p-3 rounded"><code>{
+  "id": "minha-aventura",
+  "titulo": "Nome da Aventura",
+  "descricao": "Descrição breve",
+  "nivel_min": 1,
+  "nivel_max": 3,
+  "passos": [...],
+  "npcs": {...},
+  "monstros": {...}
+}</code></pre>
+
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            Consulta o ficheiro <code>README.md</code> na raiz do projeto para um guia completo de criação de aventuras.
+        </div>
+    </section>
+
+    <!-- 8. Dicas -->
+    <section id="dicas" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-stars me-2 text-info"></i>8. Dicas para Novos Mestres
+        </h2>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-header border-success">
+                        <h5 class="mb-0 text-success">Fazer</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><strong>Diz "sim, e..."</strong> às ideias criativas dos jogadores</li>
+                            <li><strong>Improvisa</strong> quando os jogadores saem do script</li>
+                            <li><strong>Descreve com os 5 sentidos</strong> - não só o que veem</li>
+                            <li><strong>Dá vozes aos NPCs</strong> - mesmo simples diferenças ajudam</li>
+                            <li><strong>Celebra os sucessos</strong> dos jogadores</li>
+                            <li><strong>Faz pausas</strong> - toda a gente precisa de descanso</li>
+                            <li><strong>Pergunta feedback</strong> no fim da sessão</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-header border-danger">
+                        <h5 class="mb-0 text-danger">Evitar</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li><strong>Não digas "não"</strong> - diz "podes tentar, mas..."</li>
+                            <li><strong>Não mates jogadores</strong> arbitrariamente</li>
+                            <li><strong>Não forces um caminho</strong> - deixa-os explorar</li>
+                            <li><strong>Não ignores jogadores</strong> mais tímidos</li>
+                            <li><strong>Não te preocupes</strong> em saber todas as regras</li>
+                            <li><strong>Não compares</strong> com outros grupos ou streams</li>
+                            <li><strong>Não tenhas medo</strong> de errar - faz parte!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-dark border-warning mt-4">
+            <div class="card-body">
+                <h5 class="text-warning"><i class="bi bi-chat-quote me-2"></i>Lembra-te:</h5>
+                <p class="lead mb-0 fst-italic">"A regra mais importante de D&D é que todos se divirtam. Se uma regra está a atrapalhar a diversão, ignora-a."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section class="mb-5">
+        <div class="card bg-secondary">
+            <div class="card-body text-center">
+                <h5>Precisas de mais ajuda?</h5>
+                <p class="mb-0">Este é um projeto open-source. Consulta o código e a documentação no repositório do projeto.</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

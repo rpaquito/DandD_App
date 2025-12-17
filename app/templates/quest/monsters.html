@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Monstros - {{ quest.titulo }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Início</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('quest.overview', quest_id=quest.id) }}">{{ quest.titulo }}</a></li>
+            <li class="breadcrumb-item active">Monstros</li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-4"><i class="bi bi-bug me-2"></i>Monstros da Aventura</h1>
+
+    {% if quest.monstros %}
+    <div class="row g-4">
+        {% for monster_id, monster in quest.monstros.items() %}
+        <div class="col-lg-6">
+            <div class="card bg-dark border-danger h-100 monster-card">
+                <div class="card-header border-danger d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">{{ monster.nome }}</h4>
+                    <span class="badge bg-danger fs-6">CR {{ monster.cr }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted fst-italic">
+                        {{ monster.tamanho }} {{ monster.tipo }}, {{ monster.alinhamento }}
+                    </p>
+
+                    <hr class="border-secondary">
+
+                    <!-- Estatísticas de Combate -->
+                    <div class="row mb-3">
+                        <div class="col-4 text-center">
+                            <strong class="text-danger">AC</strong><br>
+                            <span class="fs-4">{{ monster.ac }}</span>
+                        </div>
+                        <div class="col-4 text-center">
+                            <strong class="text-success">HP</strong><br>
+                            <span class="fs-4">{{ monster.hp_max }}</span>
+                            <small class="text-muted d-block">({{ monster.hp_dice }})</small>
+                        </div>
+                        <div class="col-4 text-center">
+                            <strong class="text-info">Velocidade</strong><br>
+                            <span class="fs-5">{{ monster.velocidade }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Atributos -->
+                    <div class="row text-center mb-3 small">
+                        <div class="col-2">
+                            <strong>FOR</strong><br>
+                            {{ monster.forca }} ({{ '%+d'|format(monster.mod_forca) }})
+                        </div>
+                        <div class="col-2">
+                            <strong>DES</strong><br>
+                            {{ monster.destreza }} ({{ '%+d'|format(monster.mod_destreza) }})
+                        </div>
+                        <div class="col-2">
+                            <strong>CON</strong><br>
+                            {{ monster.constituicao }} ({{ '%+d'|format(monster.mod_constituicao) }})
+                        </div>
+                        <div class="col-2">
+                            <strong>INT</strong><br>
+                            {{ monster.inteligencia }} ({{ '%+d'|format(monster.mod_inteligencia) }})
+                        </div>
+                        <div class="col-2">
+                            <strong>SAB</strong><br>
+                            {{ monster.sabedoria }} ({{ '%+d'|format(monster.mod_sabedoria) }})
+                        </div>
+                        <div class="col-2">
+                            <strong>CAR</strong><br>
+                            {{ monster.carisma }} ({{ '%+d'|format(monster.mod_carisma) }})
+                        </div>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <!-- Defesas -->
+                    {% if monster.imunidades %}
+                    <p><strong>Imunidades:</strong> {{ monster.imunidades|join(', ') }}</p>
+                    {% endif %}
+                    {% if monster.resistencias %}
+                    <p><strong>Resistências:</strong> {{ monster.resistencias|join(', ') }}</p>
+                    {% endif %}
+                    {% if monster.vulnerabilidades %}
+                    <p><strong>Vulnerabilidades:</strong> {{ monster.vulnerabilidades|join(', ') }}</p>
+                    {% endif %}
+
+                    {% if monster.sentidos %}
+                    <p><strong>Sentidos:</strong> {{ monster.sentidos }}</p>
+                    {% endif %}
+
+                    <!-- Ações -->
+                    {% if monster.acoes %}
+                    <h6 class="text-danger mt-3">Ações</h6>
+                    {% for acao in monster.acoes %}
+                    <p>
+                        <strong>{{ acao.nome }}.</strong>
+                        {{ acao.descricao }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+
+                    <!-- Habilidades Especiais -->
+                    {% if monster.habilidades_especiais %}
+                    <h6 class="text-warning mt-3">Habilidades Especiais</h6>
+                    {% for hab in monster.habilidades_especiais %}
+                    <p>
+                        <strong>{{ hab.nome }}.</strong>
+                        {{ hab.descricao }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="card-footer border-danger">
+                    <div class="d-flex justify-content-between">
+                        <small class="text-muted">XP: {{ monster.xp }}</small>
+                        <button class="btn btn-sm btn-outline-danger" onclick="adicionarAoCombate('{{ monster.nome }}', {{ monster.hp_max }}, {{ monster.ac }})">
+                            <i class="bi bi-plus-circle me-1"></i>Adicionar ao Combate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        Esta aventura não tem monstros definidos.
+    </div>
+    {% endif %}
+</div>
+
+{% block extra_js %}
+<script>
+function adicionarAoCombate(nome, hp, ac) {
+    const url = '{{ url_for("combat.tracker") }}?add=' + encodeURIComponent(nome) + '&hp=' + hp + '&ac=' + ac;
+    window.open(url, '_blank');
+}
+</script>
+{% endblock %}
+{% endblock %}

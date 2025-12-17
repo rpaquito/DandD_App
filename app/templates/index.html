@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Início{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Cabeçalho -->
+    <div class="text-center mb-5">
+        <h1 class="display-4">
+            <i class="bi bi-dice-6-fill text-danger me-2"></i>
+            Companheiro de Mestre de Dungeon
+        </h1>
+        <p class="lead text-muted">
+            O teu guia para aventuras épicas em Dungeons & Dragons 5ª Edição
+        </p>
+    </div>
+
+    <!-- Aventuras Disponíveis -->
+    <section class="mb-5">
+        <h2 class="mb-4">
+            <i class="bi bi-book me-2"></i>Aventuras Disponíveis
+        </h2>
+
+        {% if quests %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for quest in quests %}
+                <div class="col">
+                    <div class="card h-100 bg-dark text-light border-secondary quest-card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ quest.titulo }}</h5>
+                            <p class="card-text text-muted">{{ quest.descricao }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-people me-1"></i>Nível {{ quest.nivel_min }}-{{ quest.nivel_max }}
+                                </span>
+                                <span class="badge bg-info">
+                                    <i class="bi bi-list-ol me-1"></i>{{ quest.passos|length }} passos
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-secondary">
+                            <a href="{{ url_for('quest.overview', quest_id=quest.id) }}" class="btn btn-outline-danger w-100">
+                                <i class="bi bi-play-fill me-1"></i>Iniciar Aventura
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                Ainda não há aventuras disponíveis. As aventuras são carregadas da pasta <code>app/data/quests/</code>.
+            </div>
+        {% endif %}
+    </section>
+
+    <!-- Ferramentas Rápidas -->
+    <section class="mb-5">
+        <h2 class="mb-4">
+            <i class="bi bi-tools me-2"></i>Ferramentas Rápidas
+        </h2>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <a href="{{ url_for('players.list_players') }}" class="card bg-dark text-light border-success text-decoration-none tool-card h-100">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-people-fill display-4 text-success mb-3"></i>
+                        <h5>Gerir Jogadores</h5>
+                        <p class="text-muted mb-0">Adicionar e gerir jogadores da sessão</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{{ url_for('main.characters') }}" class="card bg-dark text-light border-info text-decoration-none tool-card h-100">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-person-badge display-4 text-info mb-3"></i>
+                        <h5>Personagens Pré-Criados</h5>
+                        <p class="text-muted mb-0">6 personagens prontos a usar e imprimir</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{{ url_for('combat.tracker') }}" class="card bg-dark text-light border-danger text-decoration-none tool-card h-100">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-shield-shaded display-4 text-danger mb-3"></i>
+                        <h5>Rastreador de Combate</h5>
+                        <p class="text-muted mb-0">Gerir iniciativa, HP e condições</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{{ url_for('print.character_sheets') }}" class="card bg-dark text-light border-secondary text-decoration-none tool-card h-100">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-file-earmark display-4 text-secondary mb-3"></i>
+                        <h5>Fichas em Branco</h5>
+                        <p class="text-muted mb-0">Fichas vazias para imprimir</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{{ url_for('print.premade_sheets') }}" class="card bg-dark text-light border-warning text-decoration-none tool-card h-100">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-printer display-4 text-warning mb-3"></i>
+                        <h5>Imprimir Personagens</h5>
+                        <p class="text-muted mb-0">Fichas pré-preenchidas para imprimir</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <button class="card bg-dark text-light border-secondary text-decoration-none tool-card h-100 w-100" data-bs-toggle="modal" data-bs-target="#diceModal" style="border: none;">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-dice-5 display-4 text-light mb-3"></i>
+                        <h5>Lançar Dados</h5>
+                        <p class="text-muted mb-0">d4, d6, d8, d10, d12, d20</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guia Rápido para Novos Mestres -->
+    <section class="mb-5">
+        <div class="card bg-dark border-secondary">
+            <div class="card-header border-secondary">
+                <h5 class="mb-0">
+                    <i class="bi bi-lightbulb me-2 text-warning"></i>Dicas para Novos Mestres
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>A regra mais importante: <strong>divirtam-se!</strong></li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Não precisas de saber todas as regras de cor</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Diz "sim" às ideias criativas dos jogadores</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Se não souberes uma regra, improvisa e verifica depois</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Prepara-te, mas estás pronto para mudar os planos</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Os teus jogadores são os heróis da história</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

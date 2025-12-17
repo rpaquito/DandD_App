@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Confirmar Personagem{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stat-block {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 5px;
+        text-align: center;
+    }
+    .stat-item {
+        background: #333;
+        padding: 8px 5px;
+        border-radius: 5px;
+    }
+    .stat-name {
+        font-size: 0.7rem;
+        color: #aaa;
+        text-transform: uppercase;
+    }
+    .stat-value {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .stat-mod {
+        font-size: 0.8rem;
+        color: #ffc107;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('players.list_players') }}">Jogadores</a></li>
+            <li class="breadcrumb-item active">Confirmar Personagem</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card bg-dark border-success">
+                <div class="card-header border-success">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">{{ template.nome }}</h3>
+                        <span class="badge bg-danger fs-5">{{ template.classe }}</span>
+                    </div>
+                    <small class="text-muted">{{ template.raca }} - Nível {{ template.nivel }}</small>
+                </div>
+
+                <div class="card-body">
+                    <p class="fst-italic text-muted mb-4">{{ template.descricao }}</p>
+
+                    <!-- Stats Principais -->
+                    <div class="row mb-4">
+                        <div class="col-4 text-center">
+                            <div class="bg-danger bg-opacity-25 rounded p-3">
+                                <small class="text-muted d-block">HP</small>
+                                <span class="fs-3 fw-bold">{{ template.hp_max }}</span>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="bg-info bg-opacity-25 rounded p-3">
+                                <small class="text-muted d-block">AC</small>
+                                <span class="fs-3 fw-bold">{{ template.ac }}</span>
+                            </div>
+                        </div>
+                        <div class="col-4 text-center">
+                            <div class="bg-success bg-opacity-25 rounded p-3">
+                                <small class="text-muted d-block">Velocidade</small>
+                                <span class="fs-4 fw-bold">{{ template.velocidade }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Atributos -->
+                    <div class="stat-block mb-4">
+                        <div class="stat-item">
+                            <div class="stat-name">FOR</div>
+                            <div class="stat-value">{{ template.forca }}</div>
+                            <div class="stat-mod">{{ '%+d'|format((template.forca - 10) // 2) }}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-name">DES</div>
+                            <div class="stat-value">{{ template.destreza }}</div>
+                            <div class="stat-mod">{{ '%+d'|format((template.destreza - 10) // 2) }}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-name">CON</div>
+                            <div class="stat-value">{{ template.constituicao }}</div>
+                            <div class="stat-mod">{{ '%+d'|format((template.constituicao - 10) // 2) }}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-name">INT</div>
+                            <div class="stat-value">{{ template.inteligencia }}</div>
+                            <div class="stat-mod">{{ '%+d'|format((template.inteligencia - 10) // 2) }}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-name">SAB</div>
+                            <div class="stat-value">{{ template.sabedoria }}</div>
+                            <div class="stat-mod">{{ '%+d'|format((template.sabedoria - 10) // 2) }}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-name">CAR</div>
+                            <div class="stat-value">{{ template.carisma }}</div>
+                            <div class="stat-mod">{{ '%+d'|format((template.carisma - 10) // 2) }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Ataques -->
+                    {% if template.ataques %}
+                    <h6 class="text-danger"><i class="bi bi-lightning me-1"></i>Ataques</h6>
+                    <table class="table table-sm table-dark mb-4">
+                        <thead>
+                            <tr>
+                                <th>Arma</th>
+                                <th>Bónus</th>
+                                <th>Dano</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ataque in template.ataques %}
+                            <tr>
+                                <td>{{ ataque.nome }}</td>
+                                <td class="text-success">{{ ataque.bonus }}</td>
+                                <td>{{ ataque.dano }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+
+                    <!-- Características -->
+                    {% if template.caracteristicas %}
+                    <h6 class="text-success"><i class="bi bi-magic me-1"></i>Características</h6>
+                    <ul class="small mb-4">
+                        {% for carac in template.caracteristicas %}
+                        <li>{{ carac }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <hr class="border-secondary">
+
+                    <!-- Formulário para adicionar -->
+                    <form action="{{ url_for('players.confirm_template', template_id=template.id) }}" method="post">
+                        <div class="mb-3">
+                            <label for="nome_jogador" class="form-label">Nome do Jogador (pessoa real)</label>
+                            <input type="text" class="form-control bg-dark text-light border-secondary"
+                                   id="nome_jogador" name="nome_jogador" placeholder="Ex: João, Maria, Pedro..."
+                                   required>
+                            <div class="form-text">Este é o nome da pessoa que vai jogar com este personagem.</div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle me-1"></i>Adicionar à Aventura
+                            </button>
+                            <a href="{{ url_for('players.list_players') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Voltar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
