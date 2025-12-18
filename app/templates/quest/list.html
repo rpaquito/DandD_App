@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Aventuras{% endblock %}
+
+{% block extra_css %}
+<style>
+    .quest-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .quest-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    .session-badge {
+        font-size: 0.75rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1><i class="bi bi-map me-2"></i>Aventuras</h1>
+            <p class="text-light opacity-75">Escolhe uma aventura para jogar</p>
+        </div>
+    </div>
+
+    {% if quests_data %}
+        <div class="row g-4">
+            {% for item in quests_data %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-dark border-secondary quest-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.quest.titulo }}</h5>
+                        <p class="card-text text-light opacity-75">{{ item.quest.descricao }}</p>
+
+                        <div class="d-flex gap-2 mb-3">
+                            <span class="badge bg-secondary">
+                                <i class="bi bi-people me-1"></i>Nivel {{ item.quest.nivel_min }}-{{ item.quest.nivel_max }}
+                            </span>
+                            <span class="badge bg-info">
+                                <i class="bi bi-list-ol me-1"></i>{{ item.quest.passos|length }} passos
+                            </span>
+                        </div>
+
+                        {% if item.sessions %}
+                        <div class="mb-3">
+                            <small class="text-light opacity-75 d-block mb-2">Sessoes existentes:</small>
+                            {% for s in item.sessions[:2] %}
+                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                <span class="session-badge badge bg-{{ 'success' if s.estado == 'activa' else 'warning' if s.estado == 'pausada' else 'secondary' }}">
+                                    <i class="bi bi-controller me-1"></i>
+                                    Passo {{ s.passo_atual }}/{{ item.quest.passos|length }}
+                                </span>
+                                <small class="text-light opacity-75">{{ s.jogadores.count() }} jogadores</small>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-footer bg-transparent border-secondary">
+                        <a href="{{ url_for('quest.start_quest', quest_id=item.quest.id) }}" class="btn btn-outline-danger w-100">
+                            {% if item.sessions %}
+                                <i class="bi bi-play-fill me-1"></i>Continuar/Nova Sessao
+                            {% else %}
+                                <i class="bi bi-play-fill me-1"></i>Iniciar Aventura
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            Ainda nao ha aventuras disponiveis. As aventuras sao carregadas da pasta <code>app/data/quests/</code>.
+        </div>
+    {% endif %}
+
+    <!-- Voltar -->
+    <div class="mt-4">
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Voltar ao Menu
+        </a>
+    </div>
+</div>
+{% endblock %}

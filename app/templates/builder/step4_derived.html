@@ -1,0 +1,147 @@
+{% extends "builder/wizard_base.html" %}
+
+{% block step_subtitle %}Passo 4: Stats Derivados{% endblock %}
+
+{% block step_content %}
+{% set race = builder_data.get('raca', {}) %}
+{% set cls = builder_data.get('classe', {}) %}
+{% set attrs = builder_data.get('atributos', {}) %}
+
+<!-- Resumo -->
+<div class="alert alert-secondary mb-4">
+    <div class="row">
+        <div class="col-md-6">
+            <strong>Raca:</strong> {{ race.get('nome_completo', race.get('nome', 'N/A')) }}
+        </div>
+        <div class="col-md-6">
+            <strong>Classe:</strong> {{ cls.get('nome', 'N/A') }}
+        </div>
+    </div>
+</div>
+
+<!-- Stats Principais -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card bg-dark border-danger h-100">
+            <div class="card-body text-center">
+                <h6 class="text-danger text-uppercase mb-3">Pontos de Vida</h6>
+                <div class="display-3 text-danger mb-2">{{ hp }}</div>
+                <p class="small text-muted mb-0">
+                    {{ cls.get('dado_vida', 'd8') }} + {{ modifiers.get('constituicao', 0) }} (CON)
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark border-info h-100">
+            <div class="card-body text-center">
+                <h6 class="text-info text-uppercase mb-3">Classe de Armadura</h6>
+                <div class="display-3 text-info mb-2">{{ ac }}</div>
+                <p class="small text-muted mb-0">
+                    10 + {{ modifiers.get('destreza', 0) }} (DES) <small>(sem armadura)</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark border-success h-100">
+            <div class="card-body text-center">
+                <h6 class="text-success text-uppercase mb-3">Velocidade</h6>
+                <div class="display-3 text-success mb-2">{{ race.get('velocidade', '9m') }}</div>
+                <p class="small text-muted mb-0">Base da raca</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Atributos Finais -->
+<div class="card bg-dark border-secondary mb-4">
+    <div class="card-header border-secondary">
+        <h5 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Atributos Finais</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 text-center">
+            {% set attr_names = {'forca': 'FOR', 'destreza': 'DES', 'constituicao': 'CON', 'inteligencia': 'INT', 'sabedoria': 'SAB', 'carisma': 'CAR'} %}
+            {% for attr, short in attr_names.items() %}
+            <div class="col-4 col-md-2">
+                <div class="bg-secondary rounded p-3">
+                    <small class="text-muted d-block">{{ short }}</small>
+                    <h3 class="mb-0">{{ attrs.get(attr, 10) }}</h3>
+                    <span class="badge bg-dark">{{ '%+d'|format(modifiers.get(attr, 0)) }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Proficiencias -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card bg-dark border-warning h-100">
+            <div class="card-header border-warning">
+                <h5 class="mb-0"><i class="bi bi-shield-check me-2"></i>Salvaguardas</h5>
+            </div>
+            <div class="card-body">
+                <p class="small text-muted">Proficiente em:</p>
+                {% for save in cls.get('salvaguardas', []) %}
+                <span class="badge bg-warning text-dark me-1 mb-1">{{ save }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-dark border-primary h-100">
+            <div class="card-header border-primary">
+                <h5 class="mb-0"><i class="bi bi-tools me-2"></i>Proficiencias</h5>
+            </div>
+            <div class="card-body">
+                <p class="small text-muted">Armas e Armaduras:</p>
+                {% if cls.get('proficiencias_armaduras') %}
+                    {% for arm in cls.get('proficiencias_armaduras', []) %}
+                    <span class="badge bg-primary me-1 mb-1">{{ arm|capitalize }}</span>
+                    {% endfor %}
+                {% else %}
+                <span class="badge bg-secondary">Nenhuma armadura</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Caracteristicas -->
+<div class="card bg-dark border-success mb-4">
+    <div class="card-header border-success">
+        <h5 class="mb-0"><i class="bi bi-star me-2"></i>Caracteristicas de Nivel 1</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <!-- Caracteristicas da Raca -->
+            {% for carac in race.get('caracteristicas_todas', race.get('caracteristicas', [])) %}
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <h6 class="mb-1"><span class="badge bg-info me-2">Raca</span>{{ carac.nome }}</h6>
+                    <small class="text-muted">{{ carac.descricao }}</small>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Caracteristicas da Classe -->
+            {% for carac in cls.get('caracteristicas_nivel_1', []) %}
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <h6 class="mb-1"><span class="badge bg-danger me-2">Classe</span>{{ carac.nome }}</h6>
+                    <small class="text-muted">{{ carac.descricao[:150] }}{% if carac.descricao|length > 150 %}...{% endif %}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Info -->
+<div class="alert alert-info">
+    <i class="bi bi-info-circle me-2"></i>
+    Estes valores sao calculados automaticamente. No proximo passo vais escolher o teu equipamento, que pode alterar a tua CA.
+</div>
+{% endblock %}

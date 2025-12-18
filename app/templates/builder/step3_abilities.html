@@ -1,0 +1,332 @@
+{% extends "builder/wizard_base.html" %}
+
+{% block step_subtitle %}Passo 3: Define os teus Atributos{% endblock %}
+
+{% block wizard_css %}
+<style>
+    .ability-card {
+        background: #2d2d2d;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+    }
+    .ability-name {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: #aaa;
+        margin-bottom: 5px;
+    }
+    .ability-input {
+        font-size: 1.5rem;
+        font-weight: bold;
+        width: 70px;
+        text-align: center;
+        background: #1a1a1a;
+        border: 2px solid #444;
+        color: white;
+        border-radius: 5px;
+    }
+    .ability-input:focus {
+        border-color: #dc3545;
+        outline: none;
+    }
+    .ability-modifier {
+        font-size: 1rem;
+        color: #28a745;
+        margin-top: 5px;
+    }
+    .ability-bonus {
+        font-size: 0.75rem;
+        color: #ffc107;
+    }
+    .method-card {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .method-card.active {
+        border-color: #dc3545 !important;
+    }
+    .array-value {
+        cursor: pointer;
+        padding: 8px 15px;
+        border-radius: 5px;
+        background: #333;
+        margin: 3px;
+        display: inline-block;
+        transition: all 0.2s ease;
+    }
+    .array-value:hover {
+        background: #dc3545;
+    }
+    .array-value.used {
+        opacity: 0.3;
+        text-decoration: line-through;
+    }
+    .points-remaining {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block step_content %}
+<!-- Raca escolhida -->
+{% set race = builder_data.get('raca', {}) %}
+<div class="alert alert-secondary mb-4">
+    <strong>Raca:</strong> {{ race.get('nome_completo', race.get('nome', 'N/A')) }}
+    <span class="ms-3">
+        <strong>Bonus:</strong>
+        {% for attr, val in race.get('bonus_atributos_total', race.get('bonus_atributos', {})).items() %}
+        <span class="badge bg-success">+{{ val }} {{ attr[:3]|upper }}</span>
+        {% endfor %}
+    </span>
+</div>
+
+<!-- Metodo de Atribuicao -->
+<div class="card bg-dark border-secondary mb-4">
+    <div class="card-header border-secondary">
+        <h4 class="mb-0"><i class="bi bi-sliders me-2"></i>Metodo de Atribuicao</h4>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="method-card card bg-secondary h-100 active" data-method="array">
+                    <div class="card-body text-center">
+                        <h5>Array Padrao</h5>
+                        <p class="small text-muted mb-0">Distribui os valores: 15, 14, 13, 12, 10, 8</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="method-card card bg-secondary h-100" data-method="pointbuy">
+                    <div class="card-body text-center">
+                        <h5>Compra de Pontos</h5>
+                        <p class="small text-muted mb-0">27 pontos para gastar (8-15)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="method-card card bg-secondary h-100" data-method="manual">
+                    <div class="card-body text-center">
+                        <h5>Manual</h5>
+                        <p class="small text-muted mb-0">Insere os valores diretamente</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" name="metodo" id="metodo" value="array">
+
+<!-- Array Padrao -->
+<div id="arrayMethod" class="card bg-dark border-secondary mb-4">
+    <div class="card-header border-secondary">
+        <h5 class="mb-0">Valores Disponiveis</h5>
+    </div>
+    <div class="card-body text-center">
+        <div id="arrayValues">
+            {% for val in standard_array %}
+            <span class="array-value" data-value="{{ val }}">{{ val }}</span>
+            {% endfor %}
+        </div>
+        <p class="small text-muted mt-2">Clica num valor e depois no atributo onde o queres colocar</p>
+    </div>
+</div>
+
+<!-- Compra de Pontos -->
+<div id="pointBuyMethod" class="card bg-dark border-info mb-4" style="display: none;">
+    <div class="card-header border-info">
+        <h5 class="mb-0">Pontos Restantes: <span id="pointsRemaining" class="points-remaining">27</span></h5>
+    </div>
+    <div class="card-body">
+        <p class="small text-muted">Usa os botoes + e - para ajustar cada atributo (8-15). Custo aumenta para valores altos.</p>
+    </div>
+</div>
+
+<!-- Atributos -->
+<div class="card bg-dark border-danger mb-4">
+    <div class="card-header border-danger">
+        <h4 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Atributos</h4>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            {% set attrs = [('forca', 'FOR', 'Forca'), ('destreza', 'DES', 'Destreza'), ('constituicao', 'CON', 'Constituicao'), ('inteligencia', 'INT', 'Inteligencia'), ('sabedoria', 'SAB', 'Sabedoria'), ('carisma', 'CAR', 'Carisma')] %}
+            {% for attr_id, attr_short, attr_name in attrs %}
+            {% set bonus = race.get('bonus_atributos_total', race.get('bonus_atributos', {})).get(attr_id, 0) %}
+            <div class="col-md-4 col-6">
+                <div class="ability-card" data-attr="{{ attr_id }}">
+                    <div class="ability-name">{{ attr_name }}</div>
+                    <div class="d-flex justify-content-center align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-danger ability-btn" data-action="decrease">-</button>
+                        <input type="number" name="{{ attr_id }}" id="{{ attr_id }}"
+                               class="ability-input" value="10" min="3" max="18">
+                        <button type="button" class="btn btn-sm btn-outline-success ability-btn" data-action="increase">+</button>
+                    </div>
+                    {% if bonus > 0 %}
+                    <div class="ability-bonus">+{{ bonus }} racial</div>
+                    {% endif %}
+                    <div class="ability-modifier" id="mod_{{ attr_id }}">+0</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Dica -->
+<div class="alert alert-info">
+    <i class="bi bi-lightbulb me-2"></i>
+    <strong>Dica:</strong> Coloca o valor mais alto no atributo principal da tua classe
+    ({{ builder_data.get('classe', {}).get('atributo_principal', 'N/A')|capitalize }}).
+    Constituicao e sempre util para mais HP!
+</div>
+{% endblock %}
+
+{% block wizard_js %}
+<script>
+const standardArray = {{ standard_array|tojson }};
+const pointBuyCosts = {{ point_buy.custos|tojson }};
+let currentMethod = 'array';
+let selectedArrayValue = null;
+let pointsRemaining = 27;
+
+// Method selection
+document.querySelectorAll('.method-card').forEach(card => {
+    card.addEventListener('click', function() {
+        document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+
+        currentMethod = this.dataset.method;
+        document.getElementById('metodo').value = currentMethod;
+
+        // Show/hide method-specific UI
+        document.getElementById('arrayMethod').style.display = currentMethod === 'array' ? 'block' : 'none';
+        document.getElementById('pointBuyMethod').style.display = currentMethod === 'pointbuy' ? 'block' : 'none';
+
+        // Reset values
+        if (currentMethod === 'array') {
+            resetArrayValues();
+        } else if (currentMethod === 'pointbuy') {
+            resetPointBuy();
+        }
+    });
+});
+
+// Array method
+function resetArrayValues() {
+    document.querySelectorAll('.array-value').forEach(v => v.classList.remove('used'));
+    document.querySelectorAll('.ability-input').forEach(input => {
+        input.value = 10;
+        updateModifier(input.id);
+    });
+}
+
+document.querySelectorAll('.array-value').forEach(val => {
+    val.addEventListener('click', function() {
+        if (this.classList.contains('used')) return;
+
+        document.querySelectorAll('.array-value').forEach(v => v.classList.remove('active'));
+        this.classList.add('active');
+        selectedArrayValue = parseInt(this.dataset.value);
+    });
+});
+
+document.querySelectorAll('.ability-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+        if (e.target.classList.contains('ability-btn') || e.target.classList.contains('ability-input')) return;
+
+        if (currentMethod === 'array' && selectedArrayValue !== null) {
+            const input = this.querySelector('.ability-input');
+            const oldValue = parseInt(input.value);
+
+            // Unmark old value if it was from array
+            if (standardArray.includes(oldValue)) {
+                document.querySelectorAll('.array-value').forEach(v => {
+                    if (parseInt(v.dataset.value) === oldValue && v.classList.contains('used')) {
+                        v.classList.remove('used');
+                    }
+                });
+            }
+
+            input.value = selectedArrayValue;
+            updateModifier(input.id);
+
+            // Mark new value as used
+            document.querySelectorAll('.array-value').forEach(v => {
+                if (parseInt(v.dataset.value) === selectedArrayValue) {
+                    v.classList.add('used');
+                    v.classList.remove('active');
+                }
+            });
+
+            selectedArrayValue = null;
+        }
+    });
+});
+
+// Point buy method
+function resetPointBuy() {
+    pointsRemaining = 27;
+    document.getElementById('pointsRemaining').textContent = pointsRemaining;
+    document.querySelectorAll('.ability-input').forEach(input => {
+        input.value = 8;
+        updateModifier(input.id);
+    });
+}
+
+function getPointCost(value) {
+    return pointBuyCosts[String(value)] || 0;
+}
+
+// +/- buttons
+document.querySelectorAll('.ability-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const card = this.closest('.ability-card');
+        const input = card.querySelector('.ability-input');
+        let value = parseInt(input.value);
+
+        if (this.dataset.action === 'increase') {
+            if (currentMethod === 'pointbuy') {
+                if (value >= 15) return;
+                const newCost = getPointCost(value + 1) - getPointCost(value);
+                if (newCost > pointsRemaining) return;
+                pointsRemaining -= newCost;
+            }
+            value = Math.min(18, value + 1);
+        } else {
+            if (currentMethod === 'pointbuy') {
+                if (value <= 8) return;
+                const refund = getPointCost(value) - getPointCost(value - 1);
+                pointsRemaining += refund;
+            }
+            value = Math.max(3, value - 1);
+        }
+
+        input.value = value;
+        updateModifier(input.id);
+
+        if (currentMethod === 'pointbuy') {
+            document.getElementById('pointsRemaining').textContent = pointsRemaining;
+        }
+    });
+});
+
+// Update modifier display
+function updateModifier(attrId) {
+    const input = document.getElementById(attrId);
+    const value = parseInt(input.value);
+    const modifier = Math.floor((value - 10) / 2);
+    const modDisplay = document.getElementById('mod_' + attrId);
+    modDisplay.textContent = (modifier >= 0 ? '+' : '') + modifier;
+}
+
+// Initialize
+document.querySelectorAll('.ability-input').forEach(input => {
+    updateModifier(input.id);
+    input.addEventListener('change', function() {
+        updateModifier(this.id);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Definicoes{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1><i class="bi bi-gear me-2"></i>Definicoes</h1>
+            <p class="text-muted">Configuracoes da aplicacao</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Impressao -->
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-printer me-2"></i>Impressao</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Materiais para imprimir:</p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('print.character_sheets') }}" class="btn btn-outline-light">
+                            <i class="bi bi-file-earmark me-2"></i>Fichas em Branco
+                        </a>
+                        <a href="{{ url_for('print.premade_sheets') }}" class="btn btn-outline-light">
+                            <i class="bi bi-file-earmark-person me-2"></i>Fichas Pre-Preenchidas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Glossario -->
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-book me-2"></i>Referencia</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Consulta rapida de termos e regras:</p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('glossary.index') }}" class="btn btn-outline-light">
+                            <i class="bi bi-book me-2"></i>Glossario de D&D
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dados da Aplicacao -->
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-database me-2"></i>Dados</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">A aplicacao guarda dados localmente:</p>
+                    <ul class="list-unstyled text-muted small">
+                        <li><i class="bi bi-folder me-2"></i>Aventuras: <code>app/data/quests/</code></li>
+                        <li><i class="bi bi-folder me-2"></i>Personagens: <code>app/data/characters.json</code></li>
+                        <li><i class="bi bi-folder me-2"></i>Base de dados: <code>instance/dm_companion.db</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sobre -->
+        <div class="col-md-6">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Sobre</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-2"><strong>Companheiro de Mestre de Dungeon</strong></p>
+                    <p class="text-muted small mb-0">
+                        Uma ferramenta para ajudar novos Mestres de Dungeon a conduzir
+                        aventuras de D&D 5a Edicao.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voltar -->
+    <div class="mt-4">
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Voltar ao Menu
+        </a>
+    </div>
+</div>
+{% endblock %}

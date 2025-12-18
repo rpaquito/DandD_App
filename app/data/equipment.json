@@ -1,0 +1,133 @@
+{
+  "armas_simples": {
+    "melee": [
+      {"id": "bordao", "nome": "Bordao", "dano": "1d6", "tipo_dano": "impacto", "propriedades": ["versatil (1d8)"], "preco": "2 pp", "peso": "2 kg"},
+      {"id": "adaga", "nome": "Adaga", "dano": "1d4", "tipo_dano": "perfurante", "propriedades": ["finesse", "leve", "arremesso (6/18)"], "preco": "2 po", "peso": "0,5 kg"},
+      {"id": "clava", "nome": "Clava Grande", "dano": "1d8", "tipo_dano": "impacto", "propriedades": ["duas maos"], "preco": "2 pp", "peso": "5 kg"},
+      {"id": "machadinha", "nome": "Machadinha", "dano": "1d6", "tipo_dano": "cortante", "propriedades": ["leve", "arremesso (6/18)"], "preco": "5 po", "peso": "1 kg"},
+      {"id": "dardo", "nome": "Dardo", "dano": "1d4", "tipo_dano": "perfurante", "propriedades": ["finesse", "arremesso (6/18)"], "preco": "5 pc", "peso": "0,1 kg"},
+      {"id": "azagaia", "nome": "Azagaia", "dano": "1d6", "tipo_dano": "perfurante", "propriedades": ["arremesso (9/36)"], "preco": "5 pp", "peso": "1 kg"},
+      {"id": "martelo_leve", "nome": "Martelo Leve", "dano": "1d4", "tipo_dano": "impacto", "propriedades": ["leve", "arremesso (6/18)"], "preco": "2 po", "peso": "1 kg"},
+      {"id": "maca", "nome": "Maca", "dano": "1d6", "tipo_dano": "impacto", "propriedades": [], "preco": "5 po", "peso": "2 kg"},
+      {"id": "foice", "nome": "Foice", "dano": "1d4", "tipo_dano": "cortante", "propriedades": ["leve"], "preco": "1 po", "peso": "1 kg"},
+      {"id": "lanca", "nome": "Lanca", "dano": "1d6", "tipo_dano": "perfurante", "propriedades": ["arremesso (6/18)", "versatil (1d8)"], "preco": "1 po", "peso": "1,5 kg"}
+    ],
+    "distancia": [
+      {"id": "besta_leve", "nome": "Besta Leve", "dano": "1d8", "tipo_dano": "perfurante", "propriedades": ["municao (24/96)", "carregamento", "duas maos"], "preco": "25 po", "peso": "2,5 kg"},
+      {"id": "arco_curto", "nome": "Arco Curto", "dano": "1d6", "tipo_dano": "perfurante", "propriedades": ["municao (24/96)", "duas maos"], "preco": "25 po", "peso": "1 kg"},
+      {"id": "funda", "nome": "Funda", "dano": "1d4", "tipo_dano": "impacto", "propriedades": ["municao (9/36)"], "preco": "1 pp", "peso": "0 kg"}
+    ]
+  },
+  "armas_marciais": {
+    "melee": [
+      {"id": "machado_batalha", "nome": "Machado de Batalha", "dano": "1d8", "tipo_dano": "cortante", "propriedades": ["versatil (1d10)"], "preco": "10 po", "peso": "2 kg"},
+      {"id": "mangual", "nome": "Mangual", "dano": "1d8", "tipo_dano": "impacto", "propriedades": [], "preco": "10 po", "peso": "1 kg"},
+      {"id": "glaive", "nome": "Glaive", "dano": "1d10", "tipo_dano": "cortante", "propriedades": ["pesada", "alcance", "duas maos"], "preco": "20 po", "peso": "3 kg"},
+      {"id": "machado_grande", "nome": "Machado Grande", "dano": "1d12", "tipo_dano": "cortante", "propriedades": ["pesada", "duas maos"], "preco": "30 po", "peso": "3,5 kg"},
+      {"id": "espada_grande", "nome": "Espada Grande", "dano": "2d6", "tipo_dano": "cortante", "propriedades": ["pesada", "duas maos"], "preco": "50 po", "peso": "3 kg"},
+      {"id": "alabarda", "nome": "Alabarda", "dano": "1d10", "tipo_dano": "cortante", "propriedades": ["pesada", "alcance", "duas maos"], "preco": "20 po", "peso": "3 kg"},
+      {"id": "espada_longa", "nome": "Espada Longa", "dano": "1d8", "tipo_dano": "cortante", "propriedades": ["versatil (1d10)"], "preco": "15 po", "peso": "1,5 kg"},
+      {"id": "malho", "nome": "Malho", "dano": "2d6", "tipo_dano": "impacto", "propriedades": ["pesada", "duas maos"], "preco": "10 po", "peso": "5 kg"},
+      {"id": "estrela_matutina", "nome": "Estrela Matutina", "dano": "1d8", "tipo_dano": "perfurante", "propriedades": [], "preco": "15 po", "peso": "2 kg"},
+      {"id": "picareta", "nome": "Picareta de Guerra", "dano": "1d8", "tipo_dano": "perfurante", "propriedades": [], "preco": "5 po", "peso": "1 kg"},
+      {"id": "rapieira", "nome": "Rapieira", "dano": "1d8", "tipo_dano": "perfurante", "propriedades": ["finesse"], "preco": "25 po", "peso": "1 kg"},
+      {"id": "cimitarra", "nome": "Cimitarra", "dano": "1d6", "tipo_dano": "cortante", "propriedades": ["finesse", "leve"], "preco": "25 po", "peso": "1,5 kg"},
+      {"id": "espada_curta", "nome": "Espada Curta", "dano": "1d6", "tipo_dano": "perfurante", "propriedades": ["finesse", "leve"], "preco": "10 po", "peso": "1 kg"},
+      {"id": "tridente", "nome": "Tridente", "dano": "1d6", "tipo_dano": "perfurante", "propriedades": ["arremesso (6/18)", "versatil (1d8)"], "preco": "5 po", "peso": "2 kg"},
+      {"id": "martelo_guerra", "nome": "Martelo de Guerra", "dano": "1d8", "tipo_dano": "impacto", "propriedades": ["versatil (1d10)"], "preco": "15 po", "peso": "1 kg"},
+      {"id": "chicote", "nome": "Chicote", "dano": "1d4", "tipo_dano": "cortante", "propriedades": ["finesse", "alcance"], "preco": "2 po", "peso": "1,5 kg"}
+    ],
+    "distancia": [
+      {"id": "zarabatana", "nome": "Zarabatana", "dano": "1", "tipo_dano": "perfurante", "propriedades": ["municao (7,5/30)", "carregamento"], "preco": "10 po", "peso": "0,5 kg"},
+      {"id": "besta_mao", "nome": "Besta de Mao", "dano": "1d6", "tipo_dano": "perfurante", "propriedades": ["municao (9/36)", "leve", "carregamento"], "preco": "75 po", "peso": "1,5 kg"},
+      {"id": "besta_pesada", "nome": "Besta Pesada", "dano": "1d10", "tipo_dano": "perfurante", "propriedades": ["municao (30/120)", "pesada", "carregamento", "duas maos"], "preco": "50 po", "peso": "9 kg"},
+      {"id": "arco_longo", "nome": "Arco Longo", "dano": "1d8", "tipo_dano": "perfurante", "propriedades": ["municao (45/180)", "pesada", "duas maos"], "preco": "50 po", "peso": "1 kg"}
+    ]
+  },
+  "armaduras": {
+    "leves": [
+      {"id": "acolchoada", "nome": "Armadura Acolchoada", "ac": "11 + mod DES", "forca_min": null, "furtividade": "desvantagem", "preco": "5 po", "peso": "4 kg"},
+      {"id": "couro", "nome": "Armadura de Couro", "ac": "11 + mod DES", "forca_min": null, "furtividade": null, "preco": "10 po", "peso": "5 kg"},
+      {"id": "couro_batido", "nome": "Couro Batido", "ac": "12 + mod DES", "forca_min": null, "furtividade": null, "preco": "45 po", "peso": "6,5 kg"}
+    ],
+    "medias": [
+      {"id": "gibao_peles", "nome": "Gibao de Peles", "ac": "12 + mod DES (max 2)", "forca_min": null, "furtividade": null, "preco": "10 po", "peso": "6 kg"},
+      {"id": "cota_malha", "nome": "Camisao de Malha", "ac": "13 + mod DES (max 2)", "forca_min": null, "furtividade": null, "preco": "50 po", "peso": "10 kg"},
+      {"id": "cota_escamas", "nome": "Cota de Escamas", "ac": "14 + mod DES (max 2)", "forca_min": null, "furtividade": "desvantagem", "preco": "50 po", "peso": "22,5 kg"},
+      {"id": "coraca", "nome": "Couraca", "ac": "14 + mod DES (max 2)", "forca_min": null, "furtividade": null, "preco": "400 po", "peso": "10 kg"},
+      {"id": "meia_armadura", "nome": "Meia Armadura", "ac": "15 + mod DES (max 2)", "forca_min": null, "furtividade": "desvantagem", "preco": "750 po", "peso": "20 kg"}
+    ],
+    "pesadas": [
+      {"id": "cota_aneis", "nome": "Cota de Aneis", "ac": "14", "forca_min": null, "furtividade": "desvantagem", "preco": "30 po", "peso": "20 kg"},
+      {"id": "cota_malha_pesada", "nome": "Cota de Malha", "ac": "16", "forca_min": 13, "furtividade": "desvantagem", "preco": "75 po", "peso": "27,5 kg"},
+      {"id": "armadura_tala", "nome": "Armadura de Tala", "ac": "17", "forca_min": 15, "furtividade": "desvantagem", "preco": "200 po", "peso": "30 kg"},
+      {"id": "armadura_placas", "nome": "Armadura de Placas", "ac": "18", "forca_min": 15, "furtividade": "desvantagem", "preco": "1500 po", "peso": "32,5 kg"}
+    ],
+    "escudos": [
+      {"id": "escudo", "nome": "Escudo", "ac": "+2", "forca_min": null, "furtividade": null, "preco": "10 po", "peso": "3 kg"}
+    ]
+  },
+  "pacotes": {
+    "pacote_assaltante": {
+      "nome": "Pacote de Assaltante",
+      "preco": "16 po",
+      "conteudo": ["Mochila", "Saco com 1000 esferas de metal", "3m de fio", "Sino", "5 velas", "Pe de cabra", "Martelo", "10 pitons", "Lanterna coberta", "2 frascos de oleo", "5 dias de racoes", "Caixa de isca", "Odre", "15m de corda de canamo"]
+    },
+    "pacote_diplomata": {
+      "nome": "Pacote de Diplomata",
+      "preco": "39 po",
+      "conteudo": ["Bau", "2 estojos para mapas ou pergaminhos", "Roupa fina", "Frasco de tinta", "Caneta de tinta", "Lampada", "2 frascos de oleo", "5 folhas de papel", "Frasco de perfume", "Cera de lacrar", "Sabao"]
+    },
+    "pacote_masmorra": {
+      "nome": "Pacote de Masmorra",
+      "preco": "12 po",
+      "conteudo": ["Mochila", "Pe de cabra", "Martelo", "10 pitons", "10 tochas", "Caixa de isca", "10 dias de racoes", "Odre", "15m de corda de canamo"]
+    },
+    "pacote_artista": {
+      "nome": "Pacote de Artista",
+      "preco": "40 po",
+      "conteudo": ["Mochila", "Saco-cama", "2 trajes", "5 velas", "5 dias de racoes", "Odre", "Kit de disfarce"]
+    },
+    "pacote_explorador": {
+      "nome": "Pacote de Explorador",
+      "preco": "10 po",
+      "conteudo": ["Mochila", "Saco-cama", "Kit de refeicao", "Caixa de isca", "10 tochas", "10 dias de racoes", "Odre", "15m de corda de canamo"]
+    },
+    "pacote_sacerdote": {
+      "nome": "Pacote de Sacerdote",
+      "preco": "19 po",
+      "conteudo": ["Mochila", "Cobertor", "10 velas", "Caixa de isca", "Caixa de esmolas", "2 blocos de incenso", "Incensario", "Vestimentas", "2 dias de racoes", "Odre"]
+    },
+    "pacote_erudito": {
+      "nome": "Pacote de Erudito",
+      "preco": "40 po",
+      "conteudo": ["Mochila", "Livro de conhecimento", "Frasco de tinta", "Caneta de tinta", "10 folhas de pergaminho", "Saquinho de areia", "Canivete"]
+    }
+  },
+  "municao": [
+    {"id": "flechas_20", "nome": "Flechas (20)", "preco": "1 po", "peso": "0,5 kg"},
+    {"id": "virotes_20", "nome": "Virotes de Besta (20)", "preco": "1 po", "peso": "0,75 kg"},
+    {"id": "balas_funda_20", "nome": "Balas de Funda (20)", "preco": "4 pc", "peso": "0,75 kg"},
+    {"id": "agulhas_zarabatana_50", "nome": "Agulhas de Zarabatana (50)", "preco": "1 po", "peso": "0,5 kg"}
+  ],
+  "focos": [
+    {"id": "foco_arcano", "nome": "Foco Arcano", "tipos": ["Cristal", "Orbe", "Varinha", "Vara", "Bordao"], "preco": "5-20 po"},
+    {"id": "foco_druidico", "nome": "Foco Druidico", "tipos": ["Ramo de visco", "Totem", "Bordao de madeira", "Vara de teixo"], "preco": "1-10 po"},
+    {"id": "simbolo_sagrado", "nome": "Simbolo Sagrado", "tipos": ["Amuleto", "Emblema", "Relicario"], "preco": "5 po"},
+    {"id": "bolsa_componentes", "nome": "Bolsa de Componentes", "descricao": "Contem todos os componentes materiais para magias", "preco": "25 po"}
+  ],
+  "ferramentas": [
+    {"id": "ferramentas_ladrao", "nome": "Ferramentas de Ladrao", "preco": "25 po", "peso": "0,5 kg"},
+    {"id": "kit_herbalismo", "nome": "Kit de Herbalismo", "preco": "5 po", "peso": "1,5 kg"},
+    {"id": "kit_disfarce", "nome": "Kit de Disfarce", "preco": "25 po", "peso": "1,5 kg"},
+    {"id": "kit_venenos", "nome": "Kit de Venenos", "preco": "50 po", "peso": "1 kg"}
+  ],
+  "instrumentos_musicais": [
+    {"id": "alaude", "nome": "Alaude", "preco": "35 po", "peso": "1 kg"},
+    {"id": "flauta", "nome": "Flauta", "preco": "2 po", "peso": "0,5 kg"},
+    {"id": "flauta_pan", "nome": "Flauta de Pan", "preco": "12 po", "peso": "1 kg"},
+    {"id": "lira", "nome": "Lira", "preco": "30 po", "peso": "1 kg"},
+    {"id": "tambor", "nome": "Tambor", "preco": "6 po", "peso": "1,5 kg"},
+    {"id": "gaita_foles", "nome": "Gaita de Foles", "preco": "30 po", "peso": "3 kg"}
+  ]
+}

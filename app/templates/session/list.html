@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Sessoes de Jogo{% endblock %}
+
+{% block extra_css %}
+<style>
+    .session-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .session-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(220, 53, 69, 0.2);
+    }
+    .status-badge {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+    }
+    .quest-preview {
+        background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+        border-radius: 8px;
+        padding: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1><i class="bi bi-journal-bookmark-fill me-2"></i>Sessoes de Jogo</h1>
+            <p class="text-muted mb-0">Gere as tuas sessoes de D&D</p>
+        </div>
+        <a href="{{ url_for('session.create_session') }}" class="btn btn-danger">
+            <i class="bi bi-plus-circle me-1"></i>Nova Sessao
+        </a>
+    </div>
+
+    {% if sessions %}
+    <div class="row g-3">
+        {% for s in sessions %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card bg-dark border-secondary session-card h-100">
+                <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{ s.nome }}</h5>
+                    {% if s.estado == 'activa' %}
+                    <span class="badge bg-success status-badge">Activa</span>
+                    {% elif s.estado == 'pausada' %}
+                    <span class="badge bg-warning text-dark status-badge">Pausada</span>
+                    {% else %}
+                    <span class="badge bg-secondary status-badge">Terminada</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if s.quest %}
+                    <div class="quest-preview mb-3">
+                        <small class="text-muted d-block">Aventura:</small>
+                        <span class="fw-bold">{{ s.quest.titulo }}</span>
+                        <div class="mt-1">
+                            <span class="badge bg-secondary me-1">Passo {{ s.passo_atual }}/{{ s.quest.passos|length }}</span>
+                            <span class="badge bg-info">Nivel {{ s.quest.nivel_min }}-{{ s.quest.nivel_max }}</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-secondary py-2 mb-3">
+                        <small><i class="bi bi-info-circle me-1"></i>Nenhuma aventura selecionada</small>
+                    </div>
+                    {% endif %}
+
+                    <div class="d-flex gap-3 text-muted small mb-3">
+                        <div>
+                            <i class="bi bi-people me-1"></i>{{ s.num_jogadores }} jogador(es)
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar me-1"></i>{{ s.atualizado_em[:10] if s.atualizado_em else 'N/A' }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer border-secondary">
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('session.dashboard', session_id=s.id) }}" class="btn btn-sm btn-outline-light flex-grow-1">
+                            <i class="bi bi-gear me-1"></i>Gerir
+                        </a>
+                        {% if s.quest and s.estado == 'activa' %}
+                        <a href="{{ url_for('session.resume_session', session_id=s.id) }}" class="btn btn-sm btn-success flex-grow-1">
+                            <i class="bi bi-play-fill me-1"></i>Jogar
+                        </a>
+                        {% endif %}
+                        <form action="{{ url_for('session.delete_session', session_id=s.id) }}" method="post" class="d-inline"
+                              onsubmit="return confirm('Tens a certeza que queres apagar esta sessao? Todos os dados serao perdidos.');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card bg-dark border-secondary">
+        <div class="card-body text-center py-5">
+            <i class="bi bi-journal-x display-1 text-muted mb-3"></i>
+            <h4>Nenhuma sessao encontrada</h4>
+            <p class="text-muted">Cria a tua primeira sessao para comecar a jogar!</p>
+            <a href="{{ url_for('session.create_session') }}" class="btn btn-danger btn-lg">
+                <i class="bi bi-plus-circle me-1"></i>Criar Primeira Sessao
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Dica para Novos DMs -->
+    <div class="card bg-dark border-info mt-4">
+        <div class="card-body">
+            <h6 class="text-info"><i class="bi bi-lightbulb me-2"></i>Dica para Novos Mestres</h6>
+            <p class="mb-0 small text-muted">
+                Uma <strong>sessao</strong> representa uma noite de jogo. Podes pausar uma sessao e retomar mais tarde,
+                mantendo o progresso na aventura e o estado dos jogadores. Cria uma nova sessao para cada campanha ou grupo diferente.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

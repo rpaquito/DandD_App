@@ -1,0 +1,370 @@
+{
+  "racas": [
+    {
+      "id": "humano",
+      "nome": "Humano",
+      "descricao": "Os humanos sao os mais adaptaveis e ambiciosos de todas as racas. Nao tem habilidades especiais mas sao versateis.",
+      "bonus_atributos": {
+        "forca": 1,
+        "destreza": 1,
+        "constituicao": 1,
+        "inteligencia": 1,
+        "sabedoria": 1,
+        "carisma": 1
+      },
+      "velocidade": "9m",
+      "tamanho": "Medio",
+      "idiomas": ["Comum", "um idioma a escolha"],
+      "caracteristicas": [],
+      "subracas": []
+    },
+    {
+      "id": "elfo",
+      "nome": "Elfo",
+      "descricao": "Elfos sao criaturas magicas de graca sobrenatural, vivendo no mundo mas nao fazendo totalmente parte dele.",
+      "bonus_atributos": {
+        "destreza": 2
+      },
+      "velocidade": "9m",
+      "tamanho": "Medio",
+      "idiomas": ["Comum", "Elfico"],
+      "caracteristicas": [
+        {
+          "nome": "Visao no Escuro",
+          "descricao": "Podes ver na penumbra a 18m como se fosse luz brilhante, e no escuro como se fosse penumbra."
+        },
+        {
+          "nome": "Sentidos Aguados",
+          "descricao": "Tens proficiencia na pericia Percepcao."
+        },
+        {
+          "nome": "Ancestral Ferico",
+          "descricao": "Tens vantagem em salvaguardas contra ser enfeiticado e magia nao te pode por a dormir."
+        },
+        {
+          "nome": "Transe",
+          "descricao": "Nao precisas de dormir. Em vez disso, meditas profundamente durante 4 horas por dia."
+        }
+      ],
+      "subracas": [
+        {
+          "id": "elfo_alto",
+          "nome": "Elfo Alto",
+          "bonus_atributos": {"inteligencia": 1},
+          "caracteristicas": [
+            {
+              "nome": "Treino com Armas Elficas",
+              "descricao": "Tens proficiencia com espada longa, espada curta, arco longo e arco curto."
+            },
+            {
+              "nome": "Truque",
+              "descricao": "Conheces um truque a tua escolha da lista de magias de mago. Inteligencia e o teu atributo de conjuracao."
+            }
+          ]
+        },
+        {
+          "id": "elfo_floresta",
+          "nome": "Elfo da Floresta",
+          "bonus_atributos": {"sabedoria": 1},
+          "caracteristicas": [
+            {
+              "nome": "Treino com Armas Elficas",
+              "descricao": "Tens proficiencia com espada longa, espada curta, arco longo e arco curto."
+            },
+            {
+              "nome": "Pes Ligeiros",
+              "descricao": "A tua velocidade base aumenta para 10,5m."
+            },
+            {
+              "nome": "Mascara da Natureza",
+              "descricao": "Podes tentar esconder-te mesmo quando estas apenas ligeiramente obscurecido por folhagem, chuva forte, neve ou nevoeiro."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "anao",
+      "nome": "Anao",
+      "descricao": "Reinos ricos em antiga grandeza, saloes escavados nas raizes das montanhas, o eco de picaretas e martelos.",
+      "bonus_atributos": {
+        "constituicao": 2
+      },
+      "velocidade": "7,5m",
+      "tamanho": "Medio",
+      "idiomas": ["Comum", "Ananico"],
+      "caracteristicas": [
+        {
+          "nome": "Visao no Escuro",
+          "descricao": "Podes ver na penumbra a 18m como se fosse luz brilhante, e no escuro como se fosse penumbra."
+        },
+        {
+          "nome": "Resiliencia Ananica",
+          "descricao": "Tens vantagem em salvaguardas contra veneno e resistencia a dano de veneno."
+        },
+        {
+          "nome": "Treino de Combate Ananico",
+          "descricao": "Tens proficiencia com machado de batalha, machadinha, martelo leve e martelo de guerra."
+        },
+        {
+          "nome": "Proficiencia com Ferramentas",
+          "descricao": "Tens proficiencia com ferramentas de artesao a tua escolha: ferramentas de ferreiro, suprimentos de cervejeiro ou ferramentas de pedreiro."
+        },
+        {
+          "nome": "Conhecimento de Pedra",
+          "descricao": "Sempre que fizeres um teste de Inteligencia (Historia) relacionado com a origem de trabalhos em pedra, es considerado proficiente e adiciona o dobro do teu bonus de proficiencia."
+        }
+      ],
+      "subracas": [
+        {
+          "id": "anao_colina",
+          "nome": "Anao da Colina",
+          "bonus_atributos": {"sabedoria": 1},
+          "caracteristicas": [
+            {
+              "nome": "Tenacidade Ananica",
+              "descricao": "O teu maximo de pontos de vida aumenta em 1, e aumenta em 1 cada vez que ganhas um nivel."
+            }
+          ]
+        },
+        {
+          "id": "anao_montanha",
+          "nome": "Anao da Montanha",
+          "bonus_atributos": {"forca": 2},
+          "caracteristicas": [
+            {
+              "nome": "Treino com Armadura Ananica",
+              "descricao": "Tens proficiencia com armaduras leves e medias."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "halfling",
+      "nome": "Halfling",
+      "descricao": "Os confortos de casa sao os objetivos da maioria dos halflings: um lugar para se instalar em paz e sossego.",
+      "bonus_atributos": {
+        "destreza": 2
+      },
+      "velocidade": "7,5m",
+      "tamanho": "Pequeno",
+      "idiomas": ["Comum", "Halfling"],
+      "caracteristicas": [
+        {
+          "nome": "Sortudo",
+          "descricao": "Quando tiras 1 no d20 de uma jogada de ataque, teste de habilidade ou salvaguarda, podes voltar a lancar o dado e tens de usar o novo resultado."
+        },
+        {
+          "nome": "Corajoso",
+          "descricao": "Tens vantagem em salvaguardas contra ser assustado."
+        },
+        {
+          "nome": "Agilidade Halfling",
+          "descricao": "Podes mover-te atraves do espaco de qualquer criatura que seja de um tamanho maior que o teu."
+        }
+      ],
+      "subracas": [
+        {
+          "id": "halfling_pes_leves",
+          "nome": "Halfling Pes-Leves",
+          "bonus_atributos": {"carisma": 1},
+          "caracteristicas": [
+            {
+              "nome": "Furtividade Natural",
+              "descricao": "Podes tentar esconder-te mesmo quando estas obscurecido apenas por uma criatura que seja pelo menos um tamanho maior que tu."
+            }
+          ]
+        },
+        {
+          "id": "halfling_robusto",
+          "nome": "Halfling Robusto",
+          "bonus_atributos": {"constituicao": 1},
+          "caracteristicas": [
+            {
+              "nome": "Resiliencia Robusta",
+              "descricao": "Tens vantagem em salvaguardas contra veneno e resistencia a dano de veneno."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meio_elfo",
+      "nome": "Meio-Elfo",
+      "descricao": "Caminhando em dois mundos mas nao pertencendo verdadeiramente a nenhum, os meio-elfos combinam o que alguns dizem ser as melhores qualidades dos seus pais.",
+      "bonus_atributos": {
+        "carisma": 2,
+        "escolha": 2
+      },
+      "velocidade": "9m",
+      "tamanho": "Medio",
+      "idiomas": ["Comum", "Elfico", "um idioma a escolha"],
+      "caracteristicas": [
+        {
+          "nome": "Visao no Escuro",
+          "descricao": "Podes ver na penumbra a 18m como se fosse luz brilhante, e no escuro como se fosse penumbra."
+        },
+        {
+          "nome": "Ancestral Ferico",
+          "descricao": "Tens vantagem em salvaguardas contra ser enfeiticado e magia nao te pode por a dormir."
+        },
+        {
+          "nome": "Versatilidade em Pericias",
+          "descricao": "Ganhas proficiencia em duas pericias a tua escolha."
+        }
+      ],
+      "subracas": []
+    },
+    {
+      "id": "meio_orc",
+      "nome": "Meio-Orc",
+      "descricao": "Quer estejam unidos sob a lideranca de um poderoso bruxo ou a lutar por um impasse apos anos de conflito, tribos orcs e humanas as vezes formam aliancas.",
+      "bonus_atributos": {
+        "forca": 2,
+        "constituicao": 1
+      },
+      "velocidade": "9m",
+      "tamanho": "Medio",
+      "idiomas": ["Comum", "Orc"],
+      "caracteristicas": [
+        {
+          "nome": "Visao no Escuro",
+          "descricao": "Podes ver na penumbra a 18m como se fosse luz brilhante, e no escuro como se fosse penumbra."
+        },
+        {
+          "nome": "Ameacador",
+          "descricao": "Tens proficiencia na pericia Intimidacao."
+        },
+        {
+          "nome": "Resistencia Implacavel",
+          "descricao": "Quando es reduzido a 0 pontos de vida mas nao morto instantaneamente, podes em vez disso ficar com 1 ponto de vida. Uma vez usada, nao podes usar de novo ate completares um descanso longo."
+        },
+        {
+          "nome": "Ataques Selvagens",
+          "descricao": "Quando obtes um acerto critico com um ataque corpo-a-corpo, podes lancar um dos dados de dano da arma uma vez adicional."
+        }
+      ],
+      "subracas": []
+    },
+    {
+      "id": "gnomo",
+      "nome": "Gnomo",
+      "descricao": "Um zumbido constante de atividade permeia as tocas e bairros onde os gnomos formam as suas comunidades compactas.",
+      "bonus_atributos": {
+        "inteligencia": 2
+      },
+      "velocidade": "7,5m",
+      "tamanho": "Pequeno",
+      "idiomas": ["Comum", "Gnomico"],
+      "caracteristicas": [
+        {
+          "nome": "Visao no Escuro",
+          "descricao": "Podes ver na penumbra a 18m como se fosse luz brilhante, e no escuro como se fosse penumbra."
+        },
+        {
+          "nome": "Asticia Gnomica",
+          "descricao": "Tens vantagem em todas as salvaguardas de Inteligencia, Sabedoria e Carisma contra magia."
+        }
+      ],
+      "subracas": [
+        {
+          "id": "gnomo_floresta",
+          "nome": "Gnomo da Floresta",
+          "bonus_atributos": {"destreza": 1},
+          "caracteristicas": [
+            {
+              "nome": "Ilusionista Natural",
+              "descricao": "Conheces o truque ilusao menor. Inteligencia e o teu atributo de conjuracao."
+            },
+            {
+              "nome": "Falar com Animais Pequenos",
+              "descricao": "Atraves de sons e gestos, podes comunicar ideias simples a animais Pequenos ou menores."
+            }
+          ]
+        },
+        {
+          "id": "gnomo_rocha",
+          "nome": "Gnomo da Rocha",
+          "bonus_atributos": {"constituicao": 1},
+          "caracteristicas": [
+            {
+              "nome": "Conhecimento de Artificer",
+              "descricao": "Sempre que fizeres um teste de Inteligencia (Historia) relacionado com itens magicos, objetos alquimicos ou dispositivos tecnologicos, es considerado proficiente e adiciona o dobro do teu bonus de proficiencia."
+            },
+            {
+              "nome": "Engenhoqueiro",
+              "descricao": "Podes gastar 1 hora e 10 po de materiais para construir um dispositivo mecanico Minusculo."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tiefling",
+      "nome": "Tiefling",
+      "descricao": "Ser cumprimentado com olhares e sussurros, sofrer violencia e insulto na rua, ver desconfianca nos olhos de todos.",
+      "bonus_atributos": {
+        "inteligencia": 1,
+        "carisma": 2
+      },
+      "velocidade": "9m",
+      "tamanho": "Medio",
+      "idiomas": ["Comum", "Infernal"],
+      "caracteristicas": [
+        {
+          "nome": "Visao no Escuro",
+          "descricao": "Podes ver na penumbra a 18m como se fosse luz brilhante, e no escuro como se fosse penumbra."
+        },
+        {
+          "nome": "Resistencia Infernal",
+          "descricao": "Tens resistencia a dano de fogo."
+        },
+        {
+          "nome": "Legado Infernal",
+          "descricao": "Conheces o truque taumaturgia. Ao 3o nivel podes lancar chama infernal uma vez por dia. Ao 5o nivel podes lancar escuridao uma vez por dia. Carisma e o teu atributo de conjuracao."
+        }
+      ],
+      "subracas": []
+    },
+    {
+      "id": "draconato",
+      "nome": "Draconato",
+      "descricao": "Nascidos de dragoes, os draconatos caminham orgulhosamente por um mundo que os recebe com olhares temerosos.",
+      "bonus_atributos": {
+        "forca": 2,
+        "carisma": 1
+      },
+      "velocidade": "9m",
+      "tamanho": "Medio",
+      "idiomas": ["Comum", "Draconico"],
+      "caracteristicas": [
+        {
+          "nome": "Ancestral Draconico",
+          "descricao": "Tens ancestralidade draconica. Escolhe um tipo de dragao que determina o teu sopro e resistencia."
+        },
+        {
+          "nome": "Arma de Sopro",
+          "descricao": "Podes usar a tua acao para exalar energia destrutiva. O tipo de dano e area dependem do teu ancestral draconico."
+        },
+        {
+          "nome": "Resistencia a Dano",
+          "descricao": "Tens resistencia ao tipo de dano associado ao teu ancestral draconico."
+        }
+      ],
+      "subracas": [],
+      "ancestrais_draconicos": [
+        {"tipo": "Negro", "dano": "Acido", "sopro": "Linha 1,5x9m (DES save)"},
+        {"tipo": "Azul", "dano": "Relampago", "sopro": "Linha 1,5x9m (DES save)"},
+        {"tipo": "Latao", "dano": "Fogo", "sopro": "Linha 1,5x9m (DES save)"},
+        {"tipo": "Bronze", "dano": "Relampago", "sopro": "Linha 1,5x9m (DES save)"},
+        {"tipo": "Cobre", "dano": "Acido", "sopro": "Linha 1,5x9m (DES save)"},
+        {"tipo": "Ouro", "dano": "Fogo", "sopro": "Cone 4,5m (DES save)"},
+        {"tipo": "Verde", "dano": "Veneno", "sopro": "Cone 4,5m (CON save)"},
+        {"tipo": "Vermelho", "dano": "Fogo", "sopro": "Cone 4,5m (DES save)"},
+        {"tipo": "Prata", "dano": "Frio", "sopro": "Cone 4,5m (CON save)"},
+        {"tipo": "Branco", "dano": "Frio", "sopro": "Cone 4,5m (CON save)"}
+      ]
+    }
+  ]
+}

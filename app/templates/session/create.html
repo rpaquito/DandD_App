@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Nova Sessao{% endblock %}
+
+{% block extra_css %}
+<style>
+    .quest-card {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+    }
+    .quest-card:hover {
+        border-color: #dc3545;
+        transform: scale(1.02);
+    }
+    .quest-card.selected {
+        border-color: #28a745;
+        background-color: rgba(40, 167, 69, 0.1);
+    }
+    .quest-card input[type="radio"] {
+        display: none;
+    }
+    .step-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+    .step-indicator .step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+    .step-indicator .step.active {
+        background: #dc3545;
+    }
+    .step-indicator .step-line {
+        width: 60px;
+        height: 3px;
+        background: #333;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-4">
+                <h1><i class="bi bi-plus-circle me-2"></i>Nova Sessao</h1>
+                <p class="text-muted">Configura uma nova sessao de jogo</p>
+            </div>
+
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active">1</div>
+                <div class="step-line"></div>
+                <div class="step">2</div>
+                <div class="step-line"></div>
+                <div class="step">3</div>
+            </div>
+
+            <form action="{{ url_for('session.create_session') }}" method="post">
+                <!-- Passo 1: Nome da Sessao -->
+                <div class="card bg-dark border-secondary mb-4">
+                    <div class="card-header border-secondary">
+                        <h5 class="mb-0"><i class="bi bi-1-circle me-2"></i>Nome da Sessao</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Como queres chamar esta sessao?</label>
+                            <input type="text" class="form-control bg-dark text-light border-secondary"
+                                   id="nome" name="nome" placeholder="Ex: Aventura na Taverna, Sessao 1, Grupo do Joao..."
+                                   required>
+                            <div class="form-text">Um nome que te ajude a identificar esta sessao mais tarde</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 2: Escolher Aventura -->
+                <div class="card bg-dark border-secondary mb-4">
+                    <div class="card-header border-secondary">
+                        <h5 class="mb-0"><i class="bi bi-2-circle me-2"></i>Escolher Aventura (Opcional)</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">Seleciona uma aventura para jogar ou deixa em branco para escolher depois:</p>
+
+                        {% if quests %}
+                        <div class="row g-3 mb-3">
+                            <!-- Opcao: Sem aventura -->
+                            <div class="col-md-6">
+                                <label class="quest-card card bg-secondary h-100">
+                                    <input type="radio" name="quest_id" value="" checked>
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-question-circle display-4 text-muted mb-2"></i>
+                                        <h6>Escolher Depois</h6>
+                                        <small class="text-muted">Configurar aventura mais tarde</small>
+                                    </div>
+                                </label>
+                            </div>
+
+                            {% for quest in quests %}
+                            <div class="col-md-6">
+                                <label class="quest-card card bg-secondary h-100">
+                                    <input type="radio" name="quest_id" value="{{ quest.id }}">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <h6 class="mb-1">{{ quest.titulo }}</h6>
+                                            <span class="badge bg-danger">Nivel {{ quest.nivel_min }}-{{ quest.nivel_max }}</span>
+                                        </div>
+                                        <p class="small text-muted mb-2">{{ quest.descricao[:100] }}{% if quest.descricao|length > 100 %}...{% endif %}</p>
+                                        <div class="d-flex gap-2">
+                                            <span class="badge bg-dark"><i class="bi bi-list-ol me-1"></i>{{ quest.passos|length }} passos</span>
+                                            <span class="badge bg-dark"><i class="bi bi-people me-1"></i>{{ quest.npcs|length }} NPCs</span>
+                                            <span class="badge bg-dark"><i class="bi bi-bug me-1"></i>{{ quest.monstros|length }} monstros</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="alert alert-secondary">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Nenhuma aventura disponivel. Adiciona ficheiros JSON a pasta <code>app/data/quests/</code>.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Passo 3: Criar -->
+                <div class="card bg-dark border-success mb-4">
+                    <div class="card-header border-success">
+                        <h5 class="mb-0"><i class="bi bi-3-circle me-2"></i>Criar Sessao</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="text-muted mb-3">
+                            Apos criar a sessao, poderás adicionar jogadores e comecar a aventura!
+                        </p>
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-check-circle me-2"></i>Criar Sessao
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="text-center">
+                <a href="{{ url_for('session.list_sessions') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Voltar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Highlight selected quest card
+document.querySelectorAll('.quest-card').forEach(card => {
+    const radio = card.querySelector('input[type="radio"]');
+
+    // Set initial state
+    if (radio.checked) {
+        card.classList.add('selected');
+    }
+
+    card.addEventListener('click', function() {
+        // Remove selected from all
+        document.querySelectorAll('.quest-card').forEach(c => c.classList.remove('selected'));
+        // Add selected to clicked
+        this.classList.add('selected');
+    });
+});
+</script>
+{% endblock %}

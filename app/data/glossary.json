@@ -1,0 +1,383 @@
+{
+    "termos": {
+        "dm": {
+            "nome": "DM (Dungeon Master / Mestre)",
+            "abreviatura": "DM",
+            "descricao": "A pessoa que narra a historia, controla os NPCs e monstros, e arbitra as regras. E o narrador e facilitador do jogo.",
+            "exemplo": "O DM descreve: 'Entram numa sala escura. Ouvem um barulho vindo da esquerda...'",
+            "categoria": "geral"
+        },
+        "pc": {
+            "nome": "PC (Personagem do Jogador)",
+            "abreviatura": "PC",
+            "descricao": "Um personagem controlado por um jogador (nao pelo DM). Os herois da historia.",
+            "exemplo": "Temos 4 PCs no grupo: um guerreiro, um mago, um clerigo e um ladino.",
+            "categoria": "geral"
+        },
+        "npc": {
+            "nome": "NPC (Personagem Nao-Jogador)",
+            "abreviatura": "NPC",
+            "descricao": "Qualquer personagem controlado pelo DM - aldeoes, mercadores, aliados, viloes, etc.",
+            "exemplo": "O taverneiro e um NPC amigavel que pode dar informacoes aos jogadores.",
+            "categoria": "geral"
+        },
+        "for": {
+            "nome": "FOR (Forca)",
+            "abreviatura": "FOR",
+            "descricao": "Atributo que representa poder fisico, musculo e capacidade atletica. Usado para ataques corpo a corpo com armas de forca.",
+            "exemplo": "Um guerreiro com FOR 16 (+3) adiciona +3 aos ataques com espada e aos testes de Atletismo.",
+            "categoria": "atributos"
+        },
+        "des": {
+            "nome": "DES (Destreza)",
+            "abreviatura": "DES",
+            "descricao": "Atributo que representa agilidade, reflexos e equilibrio. Usado para CA, ataques a distancia e iniciativa.",
+            "exemplo": "Um ladino com DES 18 (+4) tem +4 em testes de Acrobacia e Furtividade, e adiciona +4 a sua CA.",
+            "categoria": "atributos"
+        },
+        "con": {
+            "nome": "CON (Constituicao)",
+            "abreviatura": "CON",
+            "descricao": "Atributo que representa saude, resistencia e vitalidade. Determina HP e salvaguardas contra venenos e doencas.",
+            "exemplo": "Um clerigo com CON 14 (+2) adiciona +2 ao HP ganho por nivel e tem +2 em salvaguardas de Constituicao.",
+            "categoria": "atributos"
+        },
+        "int": {
+            "nome": "INT (Inteligencia)",
+            "abreviatura": "INT",
+            "descricao": "Atributo que representa raciocinio, memoria e capacidade de aprendizagem. Usado por magos para lancar magias.",
+            "exemplo": "Um mago com INT 17 (+3) tem CD 13 para suas magias (8 + 3 INT + 2 proficiencia).",
+            "categoria": "atributos"
+        },
+        "sab": {
+            "nome": "SAB (Sabedoria)",
+            "abreviatura": "SAB",
+            "descricao": "Atributo que representa percepcao, intuicao e sintonia com o mundo. Usado por clerigos e druidas para lancar magias.",
+            "exemplo": "Um clerigo com SAB 16 (+3) tem +3 em testes de Percepcao e Intuicao, e suas magias tem CD mais alta.",
+            "categoria": "atributos"
+        },
+        "car": {
+            "nome": "CAR (Carisma)",
+            "abreviatura": "CAR",
+            "descricao": "Atributo que representa forca de personalidade, persuasao e lideranca. Usado por bards, feiticeiros e paladinos.",
+            "exemplo": "Um bardo com CAR 18 (+4) tem +4 em testes de Persuasao e Performance, e suas magias tem CD mais alta.",
+            "categoria": "atributos"
+        },
+        "cd": {
+            "nome": "CD (Classe de Dificuldade)",
+            "abreviatura": "CD",
+            "descricao": "O numero alvo que um dado deve igualar ou superar para ter sucesso num teste ou salvaguarda. Quanto maior a CD, mais dificil e a tarefa.",
+            "exemplo": "Para escalar uma parede escorregadia, a CD pode ser 15. Se rolares 14+modificador e obtiveres 15 ou mais, tens sucesso.",
+            "categoria": "mecanica"
+        },
+        "ca": {
+            "nome": "CA (Classe de Armadura)",
+            "abreviatura": "CA",
+            "descricao": "Representa quao dificil e acertar em alguem. Um ataque deve igualar ou superar a CA do alvo para acertar.",
+            "exemplo": "Um guerreiro com cota de malha tem CA 16. Um goblin precisa de rolar 16 ou mais no d20 (mais modificadores) para acertar.",
+            "categoria": "combate"
+        },
+        "hp": {
+            "nome": "HP (Pontos de Vida)",
+            "abreviatura": "HP",
+            "descricao": "Representa a vitalidade de uma criatura. Quando os HP chegam a 0, a criatura cai inconsciente ou morre.",
+            "exemplo": "Um guerreiro nivel 1 pode ter 12 HP. Ao levar 5 de dano, fica com 7 HP.",
+            "categoria": "combate"
+        },
+        "d20": {
+            "nome": "d20 (Dado de 20 lados)",
+            "abreviatura": "d20",
+            "descricao": "O dado principal do jogo. Usado para ataques, testes de habilidade e salvaguardas. Resultados: 1 e falha critica, 20 e sucesso critico.",
+            "exemplo": "Ao atacar um orc, rolos o d20 e adiciono o meu bonus de ataque (+5). Se obtiver 15 ou mais, acerto.",
+            "categoria": "dados"
+        },
+        "vantagem": {
+            "nome": "Vantagem",
+            "abreviatura": "Vant.",
+            "descricao": "Rola dois d20 e usa o resultado mais alto. Representa circunstancias favoraveis.",
+            "exemplo": "Atacar um inimigo que nao te ve da vantagem. Rolas dois d20 e ficas com o maior.",
+            "categoria": "mecanica"
+        },
+        "desvantagem": {
+            "nome": "Desvantagem",
+            "abreviatura": "Desv.",
+            "descricao": "Rola dois d20 e usa o resultado mais baixo. Representa circunstancias desfavoraveis.",
+            "exemplo": "Atacar enquanto caido da desvantagem. Rolas dois d20 e ficas com o menor.",
+            "categoria": "mecanica"
+        },
+        "proficiencia": {
+            "nome": "Bonus de Proficiencia",
+            "abreviatura": "Prof.",
+            "descricao": "Um bonus que aumenta com o nivel. Adicionado a testes e ataques em que tens treino especifico.",
+            "exemplo": "No nivel 1, o bonus e +2. Um ladino proficiente em Furtividade adiciona +2 aos seus testes de Furtividade.",
+            "categoria": "personagem"
+        },
+        "salvaguarda": {
+            "nome": "Salvaguarda (Save)",
+            "abreviatura": "Save",
+            "descricao": "Um teste para resistir a efeitos como magias, armadilhas ou venenos. Usa-se um atributo especifico.",
+            "exemplo": "Uma bola de fogo pede salvaguarda de Destreza CD 15. Se falhares, levas dano total; se passares, levas metade.",
+            "categoria": "mecanica"
+        },
+        "ataque_oportunidade": {
+            "nome": "Ataque de Oportunidade",
+            "abreviatura": "AO",
+            "descricao": "Reacao que permite atacar quando um inimigo sai do teu alcance sem usar a acao Desengajar.",
+            "exemplo": "O goblin tenta fugir. Como estava ao teu alcance, podes usar a tua reacao para fazer um ataque gratuito.",
+            "categoria": "combate"
+        },
+        "reacao": {
+            "nome": "Reacao",
+            "abreviatura": "Reac.",
+            "descricao": "Uma resposta instantanea a um gatilho especifico. Tens uma reacao por ronda que recuperas no inicio do teu turno.",
+            "exemplo": "O escudo magico e uma reacao que aumenta a tua CA quando es atacado.",
+            "categoria": "combate"
+        },
+        "acao_bonus": {
+            "nome": "Acao Bonus",
+            "abreviatura": "AB",
+            "descricao": "Uma acao rapida adicional no teu turno. So podes usar se tiveres uma habilidade que a permita.",
+            "exemplo": "Um ladino pode usar Acao Astuta como acao bonus para Desengajar, Dash ou Esconder.",
+            "categoria": "combate"
+        },
+        "concentracao": {
+            "nome": "Concentracao",
+            "abreviatura": "Conc.",
+            "descricao": "Algumas magias requerem concentracao para manter. Se levares dano, deves fazer uma salvaguarda de Constituicao para manter a magia.",
+            "exemplo": "A magia Bendicao requer concentracao. Se levares 10 de dano, deves passar uma salvaguarda CD 10 para nao perder a magia.",
+            "categoria": "magia"
+        },
+        "espaco_magia": {
+            "nome": "Espaco de Magia (Spell Slot)",
+            "abreviatura": "Slot",
+            "descricao": "Recurso gasto para lancar magias. Recuperado apos um descanso longo. Magias de nivel superior gastam espacos de nivel superior.",
+            "exemplo": "Um mago nivel 1 tem dois espacos de nivel 1. Apos lancar duas magias de nivel 1, tem de descansar para recupera-los.",
+            "categoria": "magia"
+        },
+        "truque": {
+            "nome": "Truque (Cantrip)",
+            "abreviatura": "Truque",
+            "descricao": "Magia simples que pode ser lancada a vontade sem gastar espacos de magia. Escala com o nivel do personagem.",
+            "exemplo": "Fogo Fato e um truque que faz 1d10 de dano de fogo. Aos niveis 5, 11 e 17, o dano aumenta.",
+            "categoria": "magia"
+        },
+        "descanso_curto": {
+            "nome": "Descanso Curto",
+            "abreviatura": "DC",
+            "descricao": "Periodo de pelo menos 1 hora de descanso. Permite gastar Dados de Vida para recuperar HP.",
+            "exemplo": "Apos o combate, o grupo descansa 1 hora. O guerreiro gasta 2 Dados de Vida e recupera 2d10+CON de HP.",
+            "categoria": "descanso"
+        },
+        "descanso_longo": {
+            "nome": "Descanso Longo",
+            "abreviatura": "DL",
+            "descricao": "Periodo de pelo menos 8 horas incluindo sono. Recupera todos os HP e metade dos Dados de Vida gastos.",
+            "exemplo": "Apos uma noite de sono, o mago recupera todos os HP e espacos de magia.",
+            "categoria": "descanso"
+        },
+        "dado_vida": {
+            "nome": "Dado de Vida (Hit Die)",
+            "abreviatura": "DV",
+            "descricao": "Recurso usado em descansos curtos para recuperar HP. O tipo de dado depende da classe.",
+            "exemplo": "Um guerreiro usa d10 como Dado de Vida. Num descanso curto, pode rolar 1d10+CON para recuperar HP.",
+            "categoria": "personagem"
+        },
+        "nivel_personagem": {
+            "nome": "Nivel de Personagem",
+            "abreviatura": "Niv.",
+            "descricao": "Indica o poder e experiencia do personagem. Vai de 1 a 20. Nivel mais alto significa mais HP, habilidades e poder.",
+            "exemplo": "Um personagem nivel 5 tem mais HP, bonus de proficiencia +3, e acesso a magias/habilidades mais poderosas que um nivel 1.",
+            "categoria": "personagem"
+        },
+        "iniciativa": {
+            "nome": "Iniciativa",
+            "abreviatura": "Init.",
+            "descricao": "Teste de Destreza feito no inicio do combate para determinar a ordem dos turnos.",
+            "exemplo": "O DM pede iniciativa. Rolas 1d20+DES. Quem tiver maior valor age primeiro.",
+            "categoria": "combate"
+        },
+        "teste_habilidade": {
+            "nome": "Teste de Habilidade",
+            "abreviatura": "Teste",
+            "descricao": "Rolar d20 + modificador de atributo (+ proficiencia se aplicavel) contra uma CD para determinar sucesso.",
+            "exemplo": "Para convencer o guarda, fazes um teste de Carisma (Persuasao) contra CD 15.",
+            "categoria": "mecanica"
+        },
+        "modificador": {
+            "nome": "Modificador de Atributo",
+            "abreviatura": "Mod.",
+            "descricao": "Numero derivado do valor do atributo. Calcula-se: (Atributo - 10) / 2, arredondado para baixo.",
+            "exemplo": "Forca 16 da modificador +3. Forca 8 da modificador -1.",
+            "categoria": "personagem"
+        },
+        "dano_tipo": {
+            "nome": "Tipos de Dano",
+            "abreviatura": "Dano",
+            "descricao": "Existem varios tipos: cortante, perfurante, contundente, fogo, gelo, relampago, acido, veneno, necrotico, radiante, forca, psiquico.",
+            "exemplo": "Uma espada faz dano cortante. Uma bola de fogo faz dano de fogo. Algumas criaturas sao resistentes ou vulneraveis a certos tipos.",
+            "categoria": "combate"
+        },
+        "resistencia": {
+            "nome": "Resistencia",
+            "abreviatura": "Resist.",
+            "descricao": "Criatura leva metade do dano de um tipo especifico.",
+            "exemplo": "Um demonio tem resistencia a dano de fogo. Se levar 10 de dano de fogo, so perde 5 HP.",
+            "categoria": "combate"
+        },
+        "imunidade": {
+            "nome": "Imunidade",
+            "abreviatura": "Imune",
+            "descricao": "Criatura nao leva nenhum dano de um tipo especifico, ou e imune a uma condicao.",
+            "exemplo": "Mortos-vivos sao imunes a veneno. Um ataque com veneno nao lhes causa dano.",
+            "categoria": "combate"
+        },
+        "vulnerabilidade": {
+            "nome": "Vulnerabilidade",
+            "abreviatura": "Vuln.",
+            "descricao": "Criatura leva o dobro do dano de um tipo especifico.",
+            "exemplo": "Um esqueleto tem vulnerabilidade a dano contundente. Uma marretada que faria 8 de dano causa 16.",
+            "categoria": "combate"
+        },
+        "cego": {
+            "nome": "Cego (Condicao)",
+            "abreviatura": "Cego",
+            "descricao": "Criatura nao pode ver. Falha automaticamente testes que requerem visao. Ataques contra ela tem vantagem, seus ataques tem desvantagem.",
+            "exemplo": "A magia Cegueira deixa o alvo cego. Ele ataca com desvantagem e os outros atacam-no com vantagem.",
+            "categoria": "condicao"
+        },
+        "paralisado": {
+            "nome": "Paralisado (Condicao)",
+            "abreviatura": "Paral.",
+            "descricao": "Criatura nao pode mover-se nem falar. Falha automaticamente salvaguardas de FOR e DES. Ataques contra ela tem vantagem e sao criticos automaticos se corpo a corpo.",
+            "exemplo": "A magia Manter Pessoa paralisa humanoides. Enquanto paralisado, ataques corpo a corpo sao criticos automaticos.",
+            "categoria": "condicao"
+        },
+        "incapacitado": {
+            "nome": "Incapacitado (Condicao)",
+            "abreviatura": "Incap.",
+            "descricao": "Criatura nao pode fazer acoes nem reacoes.",
+            "exemplo": "Algumas magias de sono deixam o alvo incapacitado ate ser acordado.",
+            "categoria": "condicao"
+        },
+        "caido": {
+            "nome": "Caido/Prone (Condicao)",
+            "abreviatura": "Caido",
+            "descricao": "Criatura esta no chao. Levantar custa metade do movimento. Ataques corpo a corpo contra ela tem vantagem, ataques a distancia tem desvantagem.",
+            "exemplo": "Apos ser derrubado, o orc esta caido. O guerreiro ataca com vantagem em corpo a corpo.",
+            "categoria": "condicao"
+        },
+        "envenenado": {
+            "nome": "Envenenado (Condicao)",
+            "abreviatura": "Enven.",
+            "descricao": "Criatura tem desvantagem em testes de ataque e testes de habilidade.",
+            "exemplo": "A mordida da aranha envenenou o ladino. Todos os seus ataques e testes tem desvantagem.",
+            "categoria": "condicao"
+        },
+        "agarrado": {
+            "nome": "Agarrado (Condicao)",
+            "abreviatura": "Agarr.",
+            "descricao": "Velocidade da criatura e 0. Termina se o agarrador for incapacitado ou se a criatura for afastada do alcance.",
+            "exemplo": "O golem agarra o mago. O mago nao pode mover-se ate escapar (teste de Atletismo ou Acrobacia).",
+            "categoria": "condicao"
+        },
+        "assustado": {
+            "nome": "Assustado (Condicao)",
+            "abreviatura": "Assust.",
+            "descricao": "Criatura tem desvantagem em testes de habilidade e ataques enquanto consegue ver a fonte do medo. Nao pode aproximar-se voluntariamente.",
+            "exemplo": "O dragao usa Presenca Aterradora. Quem falhar a salvaguarda fica assustado e nao pode aproximar-se.",
+            "categoria": "condicao"
+        },
+        "atordoado": {
+            "nome": "Atordoado (Condicao)",
+            "abreviatura": "Atord.",
+            "descricao": "Criatura esta incapacitada, nao pode mover-se, e so pode falar balbuciando. Falha salvaguardas de FOR e DES. Ataques contra ela tem vantagem.",
+            "exemplo": "O monge usa Palma Atordoante. O inimigo que falhar fica atordoado ate ao fim do proximo turno do monge.",
+            "categoria": "condicao"
+        },
+        "cr": {
+            "nome": "CR (Nivel de Desafio)",
+            "abreviatura": "CR",
+            "descricao": "Indica a dificuldade de um monstro. Um grupo de 4 personagens do mesmo nivel que o CR deve conseguir vence-lo gastando recursos.",
+            "exemplo": "Um goblin e CR 1/4. Um grupo de 4 personagens nivel 1 pode enfrentar 4 goblins como um encontro medio.",
+            "categoria": "monstro"
+        },
+        "xp": {
+            "nome": "XP (Pontos de Experiencia)",
+            "abreviatura": "XP",
+            "descricao": "Pontos ganhos ao derrotar monstros e completar objetivos. Acumular XP suficiente faz subir de nivel.",
+            "exemplo": "Um goblin vale 50 XP. Apos derrotar varios monstros e ganhar 300 XP, o personagem sobe para nivel 2.",
+            "categoria": "personagem"
+        },
+        "alcance": {
+            "nome": "Alcance",
+            "abreviatura": "Alc.",
+            "descricao": "Distancia maxima para um ataque ou magia. Armas corpo a corpo tipicamente tem 1.5m de alcance.",
+            "exemplo": "O arco longo tem alcance 45m/180m. O primeiro numero e alcance normal, o segundo e alcance longo (com desvantagem).",
+            "categoria": "combate"
+        },
+        "movimento": {
+            "nome": "Movimento/Velocidade",
+            "abreviatura": "Vel.",
+            "descricao": "Distancia que uma criatura pode mover num turno. Humanos tipicamente tem 9m de velocidade.",
+            "exemplo": "Com 9m de movimento, podes mover-te 9 metros por turno. Terreno dificil custa o dobro.",
+            "categoria": "combate"
+        },
+        "terreno_dificil": {
+            "nome": "Terreno Dificil",
+            "abreviatura": "TD",
+            "descricao": "Area onde cada metro de movimento custa 2 metros de velocidade. Inclui lama, escombros, vegetacao densa.",
+            "exemplo": "A floresta densa e terreno dificil. Com 9m de velocidade, so consegues mover 4.5m atraves dela.",
+            "categoria": "ambiente"
+        },
+        "cobertura": {
+            "nome": "Cobertura",
+            "abreviatura": "Cob.",
+            "descricao": "Protecao fisica contra ataques. Meia cobertura (+2 CA), 3/4 cobertura (+5 CA), cobertura total (nao pode ser alvejado).",
+            "exemplo": "Atras de uma parede baixa tens meia cobertura (+2 CA). Atras de um pilar tens 3/4 de cobertura (+5 CA).",
+            "categoria": "ambiente"
+        },
+        "luz": {
+            "nome": "Niveis de Luz",
+            "abreviatura": "Luz",
+            "descricao": "Luz brilhante permite ver normalmente. Luz fraca da desvantagem em Percepcao. Escuridao bloqueia visao normal.",
+            "exemplo": "Na masmorra sem tochas, esta escuro. Criaturas sem visao no escuro nao podem ver e estao efetivamente cegas.",
+            "categoria": "ambiente"
+        },
+        "visao_escuro": {
+            "nome": "Visao no Escuro (Darkvision)",
+            "abreviatura": "VE",
+            "descricao": "Capacidade de ver na escuridao como se fosse luz fraca, tipicamente ate 18m. Nao ve cores, apenas tons de cinzento.",
+            "exemplo": "Elfos e anoes tem visao no escuro. Na masmorra escura, veem em tons de cinzento ate 18m.",
+            "categoria": "sentidos"
+        },
+        "percepcao_passiva": {
+            "nome": "Percepcao Passiva",
+            "abreviatura": "PP",
+            "descricao": "Valor base de Percepcao sem rolar dados. Calcula-se: 10 + modificador de Sabedoria + proficiencia (se aplicavel).",
+            "exemplo": "Com Sabedoria 14 (+2) e proficiencia em Percepcao (+2), a Percepcao Passiva e 14.",
+            "categoria": "sentidos"
+        },
+        "furtividade": {
+            "nome": "Furtividade (Stealth)",
+            "abreviatura": "Furt.",
+            "descricao": "Pericia de Destreza para mover-se sem ser notado. Opoe-se a Percepcao dos inimigos.",
+            "exemplo": "O ladino rola Furtividade (15). Se a Percepcao Passiva dos guardas for menor que 15, ele passa despercebido.",
+            "categoria": "pericias"
+        }
+    },
+    "categorias": {
+        "geral": "Termos Gerais",
+        "atributos": "Atributos",
+        "mecanica": "Mecanicas de Jogo",
+        "combate": "Combate",
+        "magia": "Magia",
+        "personagem": "Personagem",
+        "condicao": "Condicoes",
+        "dados": "Dados",
+        "descanso": "Descanso",
+        "monstro": "Monstros",
+        "ambiente": "Ambiente",
+        "sentidos": "Sentidos",
+        "pericias": "Pericias"
+    }
+}

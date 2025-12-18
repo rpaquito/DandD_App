@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Escolher Personagens{% endblock %}
+
+{% block extra_css %}
+<style>
+    .character-card {
+        cursor: pointer;
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    .character-card:hover {
+        transform: translateY(-2px);
+        border-color: #dc3545 !important;
+    }
+    .character-card.selected {
+        border-color: #198754 !important;
+    }
+    .player-item {
+        background: rgba(255,255,255,0.05);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Cabecalho -->
+    <div class="row mb-4">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('quest.list_quests') }}">Aventuras</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('quest.start_quest', quest_id=quest.id) }}">{{ quest.titulo }}</a></li>
+                    <li class="breadcrumb-item active">Escolher Personagens</li>
+                </ol>
+            </nav>
+            <h1><i class="bi bi-people me-2 text-success"></i>Escolher Personagens</h1>
+            <p class="text-muted">Adiciona os jogadores que vao participar em <strong>{{ quest.titulo }}</strong></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Coluna Esquerda: Party Atual -->
+        <div class="col-lg-5 mb-4">
+            <div class="card bg-dark border-success">
+                <div class="card-header border-success">
+                    <h5 class="mb-0">
+                        <i class="bi bi-people-fill me-2"></i>Party Atual
+                        <span class="badge bg-success ms-2">{{ players|length }}</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if players %}
+                        {% for player in players %}
+                        {% set char = player.get_character_data() %}
+                        <div class="player-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ player.nome_jogador }}</strong>
+                                <br>
+                                <small class="text-muted">
+                                    {{ char.get('nome', 'Personagem') }} -
+                                    {{ char.get('classe', 'Classe') }} Nivel {{ char.get('nivel', 1) }}
+                                </small>
+                                <br>
+                                <small class="text-info">
+                                    <i class="bi bi-heart-fill text-danger"></i> {{ player.hp_max }} HP |
+                                    <i class="bi bi-shield-fill"></i> AC {{ char.get('ac', 10) }}
+                                </small>
+                            </div>
+                            <form action="{{ url_for('quest.remove_session_player', quest_id=quest.id, session_id=game_session.id, player_id=player.id) }}" method="POST">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted text-center mb-0">
+                            <i class="bi bi-arrow-right me-2"></i>
+                            Adiciona personagens da lista ao lado
+                        </p>
+                    {% endif %}
+                </div>
+
+                {% if players %}
+                <div class="card-footer border-success">
+                    <form action="{{ url_for('quest.confirm_and_start', quest_id=quest.id, session_id=game_session.id) }}" method="POST">
+                        <button type="submit" class="btn btn-success w-100 btn-lg">
+                            <i class="bi bi-play-fill me-2"></i>Iniciar Aventura
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Coluna Direita: Personagens Disponiveis -->
+        <div class="col-lg-7">
+            <!-- Personagens Pre-Criados -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0">
+                        <i class="bi bi-collection me-2"></i>Personagens Pre-Criados
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        {% for char in templates %}
+                        <div class="col-6 col-md-4">
+                            <div class="card bg-secondary character-card h-100" data-bs-toggle="modal" data-bs-target="#addPlayerModal" data-template-id="{{ char.id }}" data-char-name="{{ char.nome }}" data-char-class="{{ char.classe }}" data-char-hp="{{ char.hp_max }}" data-char-ac="{{ char.ac }}">
+                                <div class="card-body p-2 text-center">
+                                    <h6 class="card-title mb-1 text-light">{{ char.nome }}</h6>
+                                    <small class="text-light opacity-75 d-block">{{ char.classe }} {{ char.nivel }}</small>
+                                    <small>
+                                        <span class="text-danger"><i class="bi bi-heart-fill"></i> {{ char.hp_max }}</span>
+                                        <span class="text-info ms-2"><i class="bi bi-shield-fill"></i> {{ char.ac }}</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personagens Guardados -->
+            {% if saved_characters %}
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person-badge me-2"></i>Meus Personagens
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        {% for char in saved_characters %}
+                        <div class="col-6 col-md-4">
+                            <div class="card bg-secondary character-card h-100" data-bs-toggle="modal" data-bs-target="#addPlayerModal" data-saved-id="{{ char.id }}" data-char-name="{{ char.nome }}" data-char-class="{{ char.classe }}" data-char-hp="{{ char.to_dict().hp_max }}" data-char-ac="{{ char.to_dict().ac }}">
+                                <div class="card-body p-2 text-center">
+                                    <h6 class="card-title mb-1 text-light">{{ char.nome }}</h6>
+                                    <small class="text-light opacity-75 d-block">{{ char.classe }} {{ char.nivel }}</small>
+                                    <small>
+                                        <span class="text-danger"><i class="bi bi-heart-fill"></i> {{ char.to_dict().hp_max }}</span>
+                                        <span class="text-info ms-2"><i class="bi bi-shield-fill"></i> {{ char.to_dict().ac }}</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Criar Novo Personagem -->
+            <a href="{{ url_for('builder.start') }}" class="btn btn-outline-primary w-100">
+                <i class="bi bi-plus-circle me-2"></i>Criar Novo Personagem
+            </a>
+        </div>
+    </div>
+
+    <!-- Voltar -->
+    <div class="mt-4">
+        <a href="{{ url_for('quest.start_quest', quest_id=quest.id) }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Voltar
+        </a>
+    </div>
+</div>
+
+<!-- Modal para Adicionar Jogador -->
+<div class="modal fade" id="addPlayerModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title">
+                    <i class="bi bi-person-plus me-2"></i>Adicionar Jogador
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('quest.add_session_player', quest_id=quest.id, session_id=game_session.id) }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Personagem Selecionado</label>
+                        <div id="selectedCharInfo" class="alert alert-secondary">
+                            <strong id="charNameDisplay">-</strong>
+                            <br>
+                            <small id="charDetailsDisplay">-</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nome_jogador" class="form-label">Nome do Jogador (pessoa real)</label>
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               id="nome_jogador" name="nome_jogador" placeholder="Ex: Joao, Maria..." required>
+                    </div>
+
+                    <input type="hidden" name="template_id" id="templateIdInput">
+                    <input type="hidden" name="saved_id" id="savedIdInput">
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-plus-circle me-2"></i>Adicionar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Configurar modal quando clicar num personagem
+document.getElementById('addPlayerModal').addEventListener('show.bs.modal', function(event) {
+    var card = event.relatedTarget;
+    var templateId = card.getAttribute('data-template-id');
+    var savedId = card.getAttribute('data-saved-id');
+    var charName = card.getAttribute('data-char-name');
+    var charClass = card.getAttribute('data-char-class');
+    var charHp = card.getAttribute('data-char-hp');
+    var charAc = card.getAttribute('data-char-ac');
+
+    document.getElementById('charNameDisplay').textContent = charName;
+    document.getElementById('charDetailsDisplay').textContent = charClass + ' | HP ' + charHp + ' | AC ' + charAc;
+
+    document.getElementById('templateIdInput').value = templateId || '';
+    document.getElementById('savedIdInput').value = savedId || '';
+});
+</script>
+{% endblock %}

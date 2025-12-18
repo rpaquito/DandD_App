@@ -1,0 +1,210 @@
+{% extends "builder/wizard_base.html" %}
+
+{% block step_subtitle %}Passo 5: Escolhe o teu Equipamento{% endblock %}
+
+{% block step_content %}
+{% set cls = builder_data.get('classe', {}) %}
+
+<!-- Armadura -->
+<div class="card bg-dark border-info mb-4">
+    <div class="card-header border-info">
+        <h5 class="mb-0"><i class="bi bi-shield me-2"></i>Armadura</h5>
+    </div>
+    <div class="card-body">
+        <p class="text-muted mb-3">Escolhe a tua armadura inicial:</p>
+        <div class="row g-2">
+            <div class="col-md-3">
+                <label class="selection-card card bg-secondary h-100">
+                    <input type="radio" name="armadura" value="" checked>
+                    <div class="card-body py-2 text-center">
+                        <h6 class="mb-1">Sem Armadura</h6>
+                        <small class="text-muted">CA = 10 + DES</small>
+                    </div>
+                </label>
+            </div>
+
+            {% if 'leves' in cls.get('proficiencias_armaduras', []) or 'todas' in cls.get('proficiencias_armaduras', []) %}
+            <div class="col-md-3">
+                <label class="selection-card card bg-secondary h-100">
+                    <input type="radio" name="armadura" value="couro">
+                    <div class="card-body py-2 text-center">
+                        <h6 class="mb-1">Couro</h6>
+                        <small class="text-muted">CA = 11 + DES</small>
+                    </div>
+                </label>
+            </div>
+            <div class="col-md-3">
+                <label class="selection-card card bg-secondary h-100">
+                    <input type="radio" name="armadura" value="couro_batido">
+                    <div class="card-body py-2 text-center">
+                        <h6 class="mb-1">Couro Batido</h6>
+                        <small class="text-muted">CA = 12 + DES</small>
+                    </div>
+                </label>
+            </div>
+            {% endif %}
+
+            {% if 'medias' in cls.get('proficiencias_armaduras', []) or 'todas' in cls.get('proficiencias_armaduras', []) %}
+            <div class="col-md-3">
+                <label class="selection-card card bg-secondary h-100">
+                    <input type="radio" name="armadura" value="cota_malha">
+                    <div class="card-body py-2 text-center">
+                        <h6 class="mb-1">Cota de Malha</h6>
+                        <small class="text-muted">CA = 13 + DES (max 2)</small>
+                    </div>
+                </label>
+            </div>
+            <div class="col-md-3">
+                <label class="selection-card card bg-secondary h-100">
+                    <input type="radio" name="armadura" value="cota_escamas">
+                    <div class="card-body py-2 text-center">
+                        <h6 class="mb-1">Cota de Escamas</h6>
+                        <small class="text-muted">CA = 14 + DES (max 2)</small>
+                    </div>
+                </label>
+            </div>
+            {% endif %}
+
+            {% if 'pesadas' in cls.get('proficiencias_armaduras', []) or 'todas' in cls.get('proficiencias_armaduras', []) %}
+            <div class="col-md-3">
+                <label class="selection-card card bg-secondary h-100">
+                    <input type="radio" name="armadura" value="cota_malha_pesada">
+                    <div class="card-body py-2 text-center">
+                        <h6 class="mb-1">Cota de Malha Pesada</h6>
+                        <small class="text-muted">CA = 16</small>
+                    </div>
+                </label>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Armas -->
+<div class="card bg-dark border-danger mb-4">
+    <div class="card-header border-danger">
+        <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Armas</h5>
+    </div>
+    <div class="card-body">
+        <p class="text-muted mb-3">Escolhe ate 2 armas:</p>
+
+        <h6 class="text-muted mb-2">Armas Simples - Corpo a Corpo</h6>
+        <div class="row g-2 mb-3">
+            {% for arma in equipment.armas_simples.melee %}
+            <div class="col-md-3 col-6">
+                <label class="selection-card card bg-secondary">
+                    <input type="checkbox" name="armas" value="{{ arma.id }}">
+                    <div class="card-body py-2">
+                        <strong class="small">{{ arma.nome }}</strong>
+                        <small class="d-block text-muted">{{ arma.dano }} {{ arma.tipo_dano }}</small>
+                    </div>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h6 class="text-muted mb-2">Armas Simples - Distancia</h6>
+        <div class="row g-2 mb-3">
+            {% for arma in equipment.armas_simples.distancia %}
+            <div class="col-md-3 col-6">
+                <label class="selection-card card bg-secondary">
+                    <input type="checkbox" name="armas" value="{{ arma.id }}">
+                    <div class="card-body py-2">
+                        <strong class="small">{{ arma.nome }}</strong>
+                        <small class="d-block text-muted">{{ arma.dano }} {{ arma.tipo_dano }}</small>
+                    </div>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if 'marciais' in cls.get('proficiencias_armas', []) %}
+        <h6 class="text-muted mb-2">Armas Marciais - Corpo a Corpo</h6>
+        <div class="row g-2 mb-3">
+            {% for arma in equipment.armas_marciais.melee %}
+            <div class="col-md-3 col-6">
+                <label class="selection-card card bg-secondary">
+                    <input type="checkbox" name="armas" value="{{ arma.id }}">
+                    <div class="card-body py-2">
+                        <strong class="small">{{ arma.nome }}</strong>
+                        <small class="d-block text-muted">{{ arma.dano }} {{ arma.tipo_dano }}</small>
+                    </div>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h6 class="text-muted mb-2">Armas Marciais - Distancia</h6>
+        <div class="row g-2 mb-3">
+            {% for arma in equipment.armas_marciais.distancia %}
+            <div class="col-md-3 col-6">
+                <label class="selection-card card bg-secondary">
+                    <input type="checkbox" name="armas" value="{{ arma.id }}">
+                    <div class="card-body py-2">
+                        <strong class="small">{{ arma.nome }}</strong>
+                        <small class="d-block text-muted">{{ arma.dano }} {{ arma.tipo_dano }}</small>
+                    </div>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Equipamento Extra -->
+<div class="card bg-dark border-secondary mb-4">
+    <div class="card-header border-secondary">
+        <h5 class="mb-0"><i class="bi bi-backpack me-2"></i>Equipamento Extra</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-2">
+            {% if 'escudos' in cls.get('proficiencias_armaduras', []) or 'todas' in cls.get('proficiencias_armaduras', []) %}
+            <div class="col-md-3 col-6">
+                <label class="selection-card card bg-secondary">
+                    <input type="checkbox" name="equipamento" value="escudo">
+                    <div class="card-body py-2 text-center">
+                        <strong class="small">Escudo</strong>
+                        <small class="d-block text-success">+2 CA</small>
+                    </div>
+                </label>
+            </div>
+            {% endif %}
+
+            <div class="col-md-3 col-6">
+                <label class="selection-card card bg-secondary">
+                    <input type="checkbox" name="equipamento" value="pacote_explorador" checked>
+                    <div class="card-body py-2 text-center">
+                        <strong class="small">Pacote Explorador</strong>
+                        <small class="d-block text-muted">Mochila, tochas, corda...</small>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block wizard_js %}
+<script>
+// Limit weapon selection to 2
+let selectedWeapons = 0;
+const maxWeapons = 2;
+
+document.querySelectorAll('input[name="armas"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            selectedWeapons++;
+            if (selectedWeapons > maxWeapons) {
+                this.checked = false;
+                this.closest('.selection-card').classList.remove('selected');
+                selectedWeapons--;
+                alert('Podes escolher no maximo ' + maxWeapons + ' armas.');
+            }
+        } else {
+            selectedWeapons--;
+        }
+    });
+});
+</script>
+{% endblock %}

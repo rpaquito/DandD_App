@@ -33,6 +33,40 @@ async function loadCombat() {
     }
 }
 
+/**
+ * Carrega participantes de uma sessao de combate guardada.
+ * @param {Array} participants - Lista de participantes da sessao
+ */
+function loadSessionParticipants(participants) {
+    combatState.participants = participants || [];
+    renderInitiativeList();
+
+    if (participants.length > 0) {
+        showNotification('Combate carregado com ' + participants.length + ' participantes!', 'success');
+    }
+}
+
+/**
+ * Sincroniza o estado do combate com a sessao no servidor.
+ */
+async function syncSessionCombat() {
+    if (!window.sessionMode || !window.sessionId) return;
+
+    try {
+        await fetch('/combate/sessao/' + window.sessionId + '/atualizar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                participants: combatState.participants,
+                ronda: combatState.round,
+                turno: combatState.currentTurn
+            })
+        });
+    } catch (error) {
+        console.error('Erro ao sincronizar combate com sessao:', error);
+    }
+}
+
 async function addParticipant() {
     const nome = document.getElementById('participantName').value;
     const iniciativa = parseInt(document.getElementById('participantInit').value) || 10;
@@ -123,7 +157,7 @@ function openDamageModal(id, nome) {
 }
 
 async function applyDamage(isHealing) {
-    const id = parseInt(document.getElementById('damageTargetId').value);
+    const targetId = document.getElementById('damageTargetId').value;
     const amount = parseInt(document.getElementById('damageAmount').value) || 0;
 
     if (amount <= 0) {
@@ -131,11 +165,33 @@ async function applyDamage(isHealing) {
         return;
     }
 
+    // Em modo de sessao, aplicar localmente e sincronizar
+    if (window.sessionMode) {
+        for (let p of combatState.participants) {
+            if (String(p.id) === String(targetId)) {
+                if (isHealing) {
+                    p.hp_atual = Math.min(p.hp_atual + amount, p.hp_max);
+                } else {
+                    p.hp_atual = Math.max(p.hp_atual - amount, 0);
+                }
+                break;
+            }
+        }
+        renderInitiativeList();
+        bootstrap.Modal.getInstance(document.getElementById('damageModal')).hide();
+        syncSessionCombat();
+
+        const msg = isHealing ? '+' + amount + ' HP curado!' : '-' + amount + ' HP de dano!';
+        showNotification(msg, isHealing ? 'success' : 'danger');
+        return;
+    }
+
+    // Modo normal via API
     try {
         const response = await fetch('/combate/dano', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id, amount, healing: isHealing })
+            body: JSON.stringify({ id: parseInt(targetId), amount, healing: isHealing })
         });
 
         const data = await response.json();
@@ -157,6 +213,26 @@ async function applyDamage(isHealing) {
 // ============================================
 
 async function toggleCondition(id, condition) {
+    // Em modo de sessao, aplicar localmente e sincronizar
+    if (window.sessionMode) {
+        for (let p of combatState.participants) {
+            if (String(p.id) === String(id)) {
+                if (!p.condicoes) p.condicoes = [];
+                const idx = p.condicoes.indexOf(condition);
+                if (idx >= 0) {
+                    p.condicoes.splice(idx, 1);
+                } else {
+                    p.condicoes.push(condition);
+                }
+                break;
+            }
+        }
+        renderInitiativeList();
+        syncSessionCombat();
+        return;
+    }
+
+    // Modo normal via API
     try {
         const response = await fetch('/combate/condicao', {
             method: 'POST',
@@ -190,6 +266,11 @@ function nextTurn() {
     }
 
     renderInitiativeList();
+
+    // Sincronizar com sessao se em modo de sessao
+    if (window.sessionMode) {
+        syncSessionCombat();
+    }
 }
 
 function sortByInitiative() {

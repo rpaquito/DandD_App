@@ -4,23 +4,150 @@
 
 {% block content %}
 <div class="container-fluid py-4">
+    <!-- Barra de Sessao (se activa) -->
+    {% if game_session %}
+    <div class="alert alert-dark border-success mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <i class="bi bi-controller me-2 text-success"></i>
+                <strong>Sessao:</strong> {{ game_session.nome }}
+                <span class="badge bg-success ms-2">{{ players|length }} jogadores</span>
+            </div>
+            <a href="{{ url_for('session.dashboard', session_id=game_session.id) }}" class="btn btn-sm btn-outline-success">
+                <i class="bi bi-speedometer2 me-1"></i>Painel da Sessao
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="row">
-        <!-- Sidebar - Navegação -->
+        <!-- Sidebar - Jogadores (se sessao activa) -->
+        {% if game_session and players %}
+        <div class="col-lg-2 mb-4">
+            <div class="card bg-dark border-success sticky-top" style="top: 20px;">
+                <div class="card-header border-success d-flex justify-content-between align-items-center">
+                    <small class="text-success"><i class="bi bi-people me-1"></i>Party</small>
+                    <small class="badge bg-success">{{ players|length }}</small>
+                </div>
+                <div class="list-group list-group-flush" style="max-height: 50vh; overflow-y: auto;">
+                    {% for player in players %}
+                    {% set char = player.get_character_data() %}
+                    <div class="list-group-item bg-dark text-light border-secondary py-2" id="player-{{ player.id }}">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="fw-bold text-truncate" style="max-width: 80px;">{{ char.get('nome', player.nome_jogador) }}</small>
+                            <small class="text-light opacity-75">AC {{ char.get('ac', 10) }}</small>
+                        </div>
+
+                        <!-- HP Bar -->
+                        {% set hp_percent = (player.hp_atual / player.hp_max * 100)|int %}
+                        <div class="progress mb-1" style="height: 6px;">
+                            <div class="progress-bar bg-{% if hp_percent > 50 %}success{% elif hp_percent > 25 %}warning{% else %}danger{% endif %}"
+                                 style="width: {{ hp_percent }}%"></div>
+                        </div>
+
+                        <!-- HP Controls -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <button class="btn btn-outline-danger btn-sm px-1 py-0" style="font-size: 0.7rem;" onclick="updateHp({{ player.id }}, 'damage', 1)">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <span class="hp-display badge {% if hp_percent > 50 %}bg-success{% elif hp_percent > 25 %}bg-warning{% else %}bg-danger{% endif %}" id="hp-{{ player.id }}">
+                                {{ player.hp_atual }}/{{ player.hp_max }}
+                            </span>
+                            <button class="btn btn-outline-success btn-sm px-1 py-0" style="font-size: 0.7rem;" onclick="updateHp({{ player.id }}, 'heal', 1)">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </div>
+
+                        <!-- Condicoes -->
+                        {% if player.get_condicoes() %}
+                        <div class="mt-1">
+                            {% for cond in player.get_condicoes() %}
+                            <span class="badge bg-danger" style="font-size: 0.6em;">{{ cond }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Botao Combate Rapido -->
+                {% if step.tipo == 'combate' %}
+                <div class="card-footer border-success p-2">
+                    <form action="{{ url_for('quest.start_step_combat', quest_id=quest.id, step_id=step_id) }}" method="POST">
+                        <input type="hidden" name="session_id" value="{{ game_session.id }}">
+                        <button type="submit" class="btn btn-danger btn-sm w-100">
+                            <i class="bi bi-shield-shaded me-1"></i>Combate!
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Sidebar - Navegacao Visual -->
         <div class="col-lg-2 mb-4">
             <div class="card bg-dark border-secondary sticky-top" style="top: 20px;">
                 <div class="card-header border-secondary">
-                    <small><i class="bi bi-list-ol me-1"></i>Passos</small>
+                    <small><i class="bi bi-signpost-split me-1"></i>Mapa da Aventura</small>
                 </div>
                 <div class="list-group list-group-flush" style="max-height: 60vh; overflow-y: auto;">
                     {% for s in quest.passos %}
-                    <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=s.id) }}"
-                       class="list-group-item list-group-item-action bg-dark text-light border-secondary py-2 {% if s.id == step_id %}active{% endif %}">
-                        <small>
-                            <span class="badge {% if s.id == step_id %}bg-danger{% else %}bg-secondary{% endif %} me-1">{{ s.id }}</span>
-                            {{ s.titulo[:20] }}{% if s.titulo|length > 20 %}...{% endif %}
-                        </small>
+                    {% set is_current = s.id == step_id %}
+                    {% set is_completed = s.id < step_id %}
+                    <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=s.id, session_id=game_session.id if game_session else None) }}"
+                       class="list-group-item list-group-item-action bg-dark text-light border-secondary py-2 {% if is_current %}active border-danger{% endif %}">
+                        <div class="d-flex align-items-center">
+                            <!-- Icone do tipo -->
+                            <span class="me-2">
+                                {% if s.tipo == 'combate' %}
+                                <i class="bi bi-shield-shaded text-danger"></i>
+                                {% elif s.tipo == 'puzzle' %}
+                                <i class="bi bi-puzzle text-warning"></i>
+                                {% elif s.tipo == 'social' %}
+                                <i class="bi bi-chat-dots text-info"></i>
+                                {% else %}
+                                <i class="bi bi-book text-secondary"></i>
+                                {% endif %}
+                            </span>
+                            <div class="flex-grow-1">
+                                <small class="d-block {% if is_completed %}text-muted text-decoration-line-through{% endif %}">
+                                    {{ s.titulo[:18] }}{% if s.titulo|length > 18 %}...{% endif %}
+                                </small>
+                            </div>
+                            <!-- Indicador de estado -->
+                            {% if is_current %}
+                            <span class="badge bg-danger"><i class="bi bi-geo-alt-fill"></i></span>
+                            {% elif is_completed %}
+                            <span class="badge bg-success"><i class="bi bi-check"></i></span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ s.id }}</span>
+                            {% endif %}
+                        </div>
+                        <!-- Linha de conexao visual -->
+                        {% if not loop.last %}
+                        <div class="text-center mt-1" style="opacity: 0.3;">
+                            <i class="bi bi-arrow-down"></i>
+                        </div>
+                        {% endif %}
                     </a>
                     {% endfor %}
+                </div>
+
+                <!-- Legenda -->
+                <div class="card-footer border-secondary p-2">
+                    <small class="text-light opacity-75 d-block mb-1">Legenda:</small>
+                    <div class="d-flex flex-wrap gap-1">
+                        <span class="badge bg-dark border border-secondary" style="font-size: 0.6em;">
+                            <i class="bi bi-shield-shaded text-danger me-1"></i>Combate
+                        </span>
+                        <span class="badge bg-dark border border-secondary" style="font-size: 0.6em;">
+                            <i class="bi bi-chat-dots text-info me-1"></i>Social
+                        </span>
+                        <span class="badge bg-dark border border-secondary" style="font-size: 0.6em;">
+                            <i class="bi bi-puzzle text-warning me-1"></i>Puzzle
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,7 +199,7 @@
                 <div class="card-header border-info bg-info bg-opacity-10">
                     <h5 class="mb-0 text-info">
                         <i class="bi bi-journal-text me-2"></i>Notas do Mestre
-                        <small class="text-muted">(Só para ti)</small>
+                        <small class="text-light opacity-75">(Só para ti)</small>
                     </h5>
                 </div>
                 <div class="card-body">
@@ -102,7 +229,7 @@
             <!-- Navegação entre Passos -->
             <div class="d-flex justify-content-between mt-4">
                 {% if step_id > 1 %}
-                <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=step_id - 1) }}" class="btn btn-outline-light">
+                <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=step_id - 1, session_id=game_session.id if game_session else None) }}" class="btn btn-outline-light">
                     <i class="bi bi-arrow-left me-1"></i>Passo Anterior
                 </a>
                 {% else %}
@@ -113,7 +240,7 @@
                 <div class="btn-group">
                     {% for next_id in step.proximos_passos %}
                     {% set next_step = quest.get_step(next_id) %}
-                    <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=next_id) }}" class="btn btn-danger">
+                    <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=next_id, session_id=game_session.id if game_session else None) }}" class="btn btn-danger">
                         {{ next_step.titulo if next_step else 'Passo ' + next_id|string }}
                         <i class="bi bi-arrow-right ms-1"></i>
                     </a>
@@ -136,7 +263,7 @@
                     {% for npc in npcs_presentes %}
                     <div class="list-group-item bg-dark text-light border-secondary">
                         <h6 class="mb-1">{{ npc.nome }}</h6>
-                        <small class="text-muted">{{ npc.descricao[:80] }}{% if npc.descricao|length > 80 %}...{% endif %}</small>
+                        <small class="text-light opacity-75">{{ npc.descricao[:80] }}{% if npc.descricao|length > 80 %}...{% endif %}</small>
                         {% if npc.dialogos %}
                         <button class="btn btn-sm btn-outline-info mt-2 w-100" data-bs-toggle="collapse" data-bs-target="#dialogos-{{ npc.id }}">
                             <i class="bi bi-chat-quote me-1"></i>Ver Diálogos
@@ -188,9 +315,22 @@
                 <div class="card-body text-center">
                     <i class="bi bi-shield-shaded display-4 mb-2"></i>
                     <h5>Cena de Combate</h5>
+                    {% if game_session %}
+                    <form action="{{ url_for('quest.start_step_combat', quest_id=quest.id, step_id=step_id) }}" method="POST">
+                        <input type="hidden" name="session_id" value="{{ game_session.id }}">
+                        <button type="submit" class="btn btn-danger w-100 mb-2">
+                            <i class="bi bi-play-circle me-1"></i>Iniciar Combate
+                        </button>
+                    </form>
+                    <small class="text-light opacity-75">Adiciona automaticamente todos os monstros e {{ players|length }} jogadores</small>
+                    {% else %}
                     <a href="{{ url_for('combat.tracker') }}" class="btn btn-danger w-100" target="_blank">
                         <i class="bi bi-box-arrow-up-right me-1"></i>Abrir Rastreador
                     </a>
+                    <small class="text-light opacity-75 d-block mt-2">
+                        <i class="bi bi-info-circle me-1"></i>Inicia uma sessao para auto-popular
+                    </small>
+                    {% endif %}
                 </div>
             </div>
             {% endif %}
@@ -201,10 +341,57 @@
 {% block extra_js %}
 <script>
 function adicionarAoCombate(nome, hp, ac) {
-    // Abrir rastreador de combate com dados pré-preenchidos
+    // Abrir rastreador de combate com dados pre-preenchidos
     const url = '{{ url_for("combat.tracker") }}?add=' + encodeURIComponent(nome) + '&hp=' + hp + '&ac=' + ac;
     window.open(url, '_blank');
 }
+
+{% if game_session %}
+function updateHp(playerId, action, amount) {
+    var formData = new FormData();
+    formData.append('action', action);
+    formData.append('amount', amount);
+
+    fetch('/sessao/{{ game_session.id }}/jogador/' + playerId + '/hp', {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+        if (data.hp_atual !== undefined) {
+            var hpSpan = document.getElementById('hp-' + playerId);
+            hpSpan.textContent = data.hp_atual + '/' + data.hp_max;
+
+            // Atualizar cor baseado na percentagem
+            var percent = (data.hp_atual / data.hp_max) * 100;
+            hpSpan.className = 'hp-display badge';
+            if (percent > 50) {
+                hpSpan.classList.add('bg-success');
+            } else if (percent > 25) {
+                hpSpan.classList.add('bg-warning');
+            } else {
+                hpSpan.classList.add('bg-danger');
+            }
+
+            // Atualizar barra de progresso
+            var playerDiv = document.getElementById('player-' + playerId);
+            var progressBar = playerDiv.querySelector('.progress-bar');
+            if (progressBar) {
+                progressBar.style.width = percent + '%';
+                progressBar.className = 'progress-bar';
+                if (percent > 50) {
+                    progressBar.classList.add('bg-success');
+                } else if (percent > 25) {
+                    progressBar.classList.add('bg-warning');
+                } else {
+                    progressBar.classList.add('bg-danger');
+                }
+            }
+        }
+    });
+}
+{% endif %}
 </script>
 {% endblock %}
 {% endblock %}

@@ -1,0 +1,455 @@
+{
+  "classes": [
+    {
+      "id": "barbaro",
+      "nome": "Barbaro",
+      "descricao": "Um guerreiro feroz que pode entrar numa furia de batalha.",
+      "dado_vida": "d12",
+      "hp_nivel_1": 12,
+      "atributo_principal": "forca",
+      "salvaguardas": ["Forca", "Constituicao"],
+      "proficiencias_armas": ["simples", "marciais"],
+      "proficiencias_armaduras": ["leves", "medias", "escudos"],
+      "pericias_escolher": 2,
+      "pericias_disponiveis": ["Adestrar Animais", "Atletismo", "Intimidacao", "Natureza", "Percepcao", "Sobrevivencia"],
+      "equipamento_inicial": [
+        {"escolha": [["machado_grande"], ["arma_marcial_melee"]]},
+        {"escolha": [["machadinha", "machadinha"], ["arma_simples"]]},
+        {"fixo": ["pacote_explorador", "dardo", "dardo", "dardo", "dardo"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Furia",
+          "descricao": "Em combate, lutas com ferocidade primitiva. No teu turno, podes entrar em furia como acao bonus. Enquanto em furia, tens vantagem em testes de Forca e salvaguardas de Forca, bonus de +2 ao dano corpo-a-corpo, e resistencia a dano cortante, perfurante e de impacto."
+        },
+        {
+          "nome": "Defesa sem Armadura",
+          "descricao": "Quando nao estas a usar armadura, a tua CA e 10 + modificador de Destreza + modificador de Constituicao."
+        }
+      ],
+      "magias": false
+    },
+    {
+      "id": "bardo",
+      "nome": "Bardo",
+      "descricao": "Um mestre inspirador da musica, palavras e magia que o acompanham.",
+      "dado_vida": "d8",
+      "hp_nivel_1": 8,
+      "atributo_principal": "carisma",
+      "salvaguardas": ["Destreza", "Carisma"],
+      "proficiencias_armas": ["simples", "besta_mao", "espada_longa", "rapieira", "espada_curta"],
+      "proficiencias_armaduras": ["leves"],
+      "pericias_escolher": 3,
+      "pericias_disponiveis": ["todas"],
+      "equipamento_inicial": [
+        {"escolha": [["rapieira"], ["espada_longa"], ["arma_simples"]]},
+        {"escolha": [["pacote_diplomata"], ["pacote_artista"]]},
+        {"escolha": [["alaude"], ["instrumento_musical"]]},
+        {"fixo": ["armadura_couro", "adaga"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Conjuracao",
+          "descricao": "Aprendeste a desfazer e remodelar o tecido da realidade em harmonia com os teus desejos e musica. Carisma e o teu atributo de conjuracao."
+        },
+        {
+          "nome": "Inspiracao de Bardo",
+          "descricao": "Podes inspirar outros atraves de palavras ou musica. Para o fazer, usas uma acao bonus para escolher uma criatura a ate 18m que te possa ouvir. Essa criatura ganha um dado de Inspiracao de Bardo (d6)."
+        }
+      ],
+      "magias": true,
+      "atributo_magia": "carisma",
+      "truques_nivel_1": 2,
+      "magias_conhecidas_nivel_1": 4,
+      "espacos_magia_nivel_1": {"1": 2}
+    },
+    {
+      "id": "clerigo",
+      "nome": "Clerigo",
+      "descricao": "Um campea sacerdotal que maneja magia divina ao servico de um poder superior.",
+      "dado_vida": "d8",
+      "hp_nivel_1": 8,
+      "atributo_principal": "sabedoria",
+      "salvaguardas": ["Sabedoria", "Carisma"],
+      "proficiencias_armas": ["simples"],
+      "proficiencias_armaduras": ["leves", "medias", "escudos"],
+      "pericias_escolher": 2,
+      "pericias_disponiveis": ["Historia", "Intuicao", "Medicina", "Persuasao", "Religiao"],
+      "equipamento_inicial": [
+        {"escolha": [["maca"], ["martelo_guerra"]]},
+        {"escolha": [["cota_escamas"], ["armadura_couro"], ["cota_malha"]]},
+        {"escolha": [["besta_leve", "virotes_20"], ["arma_simples"]]},
+        {"escolha": [["pacote_sacerdote"], ["pacote_explorador"]]},
+        {"fixo": ["escudo", "simbolo_sagrado"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Conjuracao",
+          "descricao": "Como canalizador de poder divino, podes lancar magias de clerigo. Sabedoria e o teu atributo de conjuracao."
+        },
+        {
+          "nome": "Dominio Divino",
+          "descricao": "Escolhe um dominio relacionado com a tua divindade. O dominio concede-te magias de dominio e outras caracteristicas."
+        }
+      ],
+      "magias": true,
+      "atributo_magia": "sabedoria",
+      "truques_nivel_1": 3,
+      "prepara_magias": true,
+      "espacos_magia_nivel_1": {"1": 2},
+      "dominios": [
+        {
+          "id": "vida",
+          "nome": "Dominio da Vida",
+          "descricao": "O dominio da Vida foca-se na energia positiva vibrante que sustenta toda a vida.",
+          "magias_dominio": {"1": ["Bencao", "Curar Ferimentos"]},
+          "caracteristica": {
+            "nome": "Discipulo da Vida",
+            "descricao": "Sempre que usares uma magia de 1o nivel ou superior para restaurar pontos de vida a uma criatura, a criatura recupera pontos de vida adicionais iguais a 2 + o nivel da magia."
+          },
+          "proficiencias_bonus": ["pesadas"]
+        },
+        {
+          "id": "luz",
+          "nome": "Dominio da Luz",
+          "descricao": "Os deuses da luz promovem os ideais de renascimento e renovacao, verdade e vigilancia.",
+          "magias_dominio": {"1": ["Maos Ardentes", "Feitico Cegante"]},
+          "caracteristica": {
+            "nome": "Lampejo Protetor",
+            "descricao": "Quando es atacado por uma criatura que possas ver a ate 9m, podes usar a tua reacao para impor desvantagem na jogada de ataque."
+          },
+          "truque_bonus": "Luz"
+        },
+        {
+          "id": "guerra",
+          "nome": "Dominio da Guerra",
+          "descricao": "Os deuses da guerra vigiam os guerreiros e recompensam os seus grandes feitos.",
+          "magias_dominio": {"1": ["Escudo da Fe", "Favor Divino"]},
+          "caracteristica": {
+            "nome": "Sacerdote de Guerra",
+            "descricao": "Quando usas a acao de Atacar, podes fazer um ataque com arma como acao bonus."
+          },
+          "proficiencias_bonus": ["pesadas", "marciais"]
+        }
+      ]
+    },
+    {
+      "id": "druida",
+      "nome": "Druida",
+      "descricao": "Um sacerdote da Fe Antiga, manejando os poderes da natureza e adotando formas animais.",
+      "dado_vida": "d8",
+      "hp_nivel_1": 8,
+      "atributo_principal": "sabedoria",
+      "salvaguardas": ["Inteligencia", "Sabedoria"],
+      "proficiencias_armas": ["clavas", "adagas", "dardos", "azagaias", "macas", "bordoes", "cimitarras", "foices", "fundas", "langas"],
+      "proficiencias_armaduras": ["leves", "medias", "escudos"],
+      "pericias_escolher": 2,
+      "pericias_disponiveis": ["Arcanismo", "Adestrar Animais", "Intuicao", "Medicina", "Natureza", "Percepcao", "Religiao", "Sobrevivencia"],
+      "equipamento_inicial": [
+        {"escolha": [["escudo_madeira"], ["arma_simples"]]},
+        {"escolha": [["cimitarra"], ["arma_simples_melee"]]},
+        {"fixo": ["armadura_couro", "pacote_explorador", "foco_druidico"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Druidico",
+          "descricao": "Conheces Druidico, a linguagem secreta dos druidas. Podes falar a linguagem e usa-la para deixar mensagens ocultas."
+        },
+        {
+          "nome": "Conjuracao",
+          "descricao": "Canalizando a essencia divina da propria natureza, podes lancar magias para moldar essa essencia a tua vontade. Sabedoria e o teu atributo de conjuracao."
+        }
+      ],
+      "magias": true,
+      "atributo_magia": "sabedoria",
+      "truques_nivel_1": 2,
+      "prepara_magias": true,
+      "espacos_magia_nivel_1": {"1": 2}
+    },
+    {
+      "id": "feiticeiro",
+      "nome": "Feiticeiro",
+      "descricao": "Um conjurador que extrai magia inerente de um dom ou linhagem.",
+      "dado_vida": "d6",
+      "hp_nivel_1": 6,
+      "atributo_principal": "carisma",
+      "salvaguardas": ["Constituicao", "Carisma"],
+      "proficiencias_armas": ["adagas", "dardos", "fundas", "bordoes", "bestas_leves"],
+      "proficiencias_armaduras": [],
+      "pericias_escolher": 2,
+      "pericias_disponiveis": ["Arcanismo", "Enganacao", "Intuicao", "Intimidacao", "Persuasao", "Religiao"],
+      "equipamento_inicial": [
+        {"escolha": [["besta_leve", "virotes_20"], ["arma_simples"]]},
+        {"escolha": [["bolsa_componentes"], ["foco_arcano"]]},
+        {"escolha": [["pacote_masmorra"], ["pacote_explorador"]]},
+        {"fixo": ["adaga", "adaga"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Conjuracao",
+          "descricao": "Um evento no teu passado deixou uma marca indelevel em ti, infundindo-te com magia arcana. Carisma e o teu atributo de conjuracao."
+        },
+        {
+          "nome": "Origem Feiticeira",
+          "descricao": "Escolhe uma origem feiticeira que descreve a fonte do teu poder magico inato: Linhagem Draconica ou Magia Selvagem."
+        }
+      ],
+      "magias": true,
+      "atributo_magia": "carisma",
+      "truques_nivel_1": 4,
+      "magias_conhecidas_nivel_1": 2,
+      "espacos_magia_nivel_1": {"1": 2}
+    },
+    {
+      "id": "guerreiro",
+      "nome": "Guerreiro",
+      "descricao": "Um mestre de combate marcial, peritos com uma variedade de armas e armaduras.",
+      "dado_vida": "d10",
+      "hp_nivel_1": 10,
+      "atributo_principal": "forca",
+      "salvaguardas": ["Forca", "Constituicao"],
+      "proficiencias_armas": ["simples", "marciais"],
+      "proficiencias_armaduras": ["todas", "escudos"],
+      "pericias_escolher": 2,
+      "pericias_disponiveis": ["Acrobacia", "Adestrar Animais", "Atletismo", "Historia", "Intuicao", "Intimidacao", "Percepcao", "Sobrevivencia"],
+      "equipamento_inicial": [
+        {"escolha": [["cota_malha"], ["armadura_couro", "arco_longo", "flechas_20"]]},
+        {"escolha": [["arma_marcial", "escudo"], ["arma_marcial", "arma_marcial"]]},
+        {"escolha": [["besta_leve", "virotes_20"], ["machadinha", "machadinha"]]},
+        {"escolha": [["pacote_masmorra"], ["pacote_explorador"]]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Estilo de Luta",
+          "descricao": "Adotas um estilo de luta particular como tua especialidade: Arquearia, Defesa, Duelo, Luta com Armas Grandes, Protecao ou Luta com Duas Armas."
+        },
+        {
+          "nome": "Retomar Folego",
+          "descricao": "Tens uma fonte limitada de resistencia que podes usar para te proteger. No teu turno, podes usar uma acao bonus para recuperar pontos de vida iguais a 1d10 + o teu nivel de guerreiro."
+        }
+      ],
+      "estilos_luta": [
+        {"id": "arquearia", "nome": "Arquearia", "descricao": "+2 bonus nas jogadas de ataque com armas de ataque a distancia."},
+        {"id": "defesa", "nome": "Defesa", "descricao": "+1 bonus a CA quando usas armadura."},
+        {"id": "duelo", "nome": "Duelo", "descricao": "+2 bonus ao dano quando empunhas uma arma corpo-a-corpo numa mao e nenhuma outra arma."},
+        {"id": "armas_grandes", "nome": "Luta com Armas Grandes", "descricao": "Quando tiras 1 ou 2 num dado de dano com arma corpo-a-corpo de duas maos, podes voltar a lancar."},
+        {"id": "protecao", "nome": "Protecao", "descricao": "Quando uma criatura que possas ver ataca um alvo que nao tu a 1,5m, podes impor desvantagem na jogada de ataque usando a tua reacao."},
+        {"id": "duas_armas", "nome": "Luta com Duas Armas", "descricao": "Quando lutas com duas armas, podes adicionar o teu modificador de habilidade ao dano do segundo ataque."}
+      ],
+      "magias": false
+    },
+    {
+      "id": "ladino",
+      "nome": "Ladino",
+      "descricao": "Um patife que usa furtividade e astacia para superar obstaculos e inimigos.",
+      "dado_vida": "d8",
+      "hp_nivel_1": 8,
+      "atributo_principal": "destreza",
+      "salvaguardas": ["Destreza", "Inteligencia"],
+      "proficiencias_armas": ["simples", "bestas_mao", "espadas_longas", "rapieiras", "espadas_curtas"],
+      "proficiencias_armaduras": ["leves"],
+      "pericias_escolher": 4,
+      "pericias_disponiveis": ["Acrobacia", "Atletismo", "Enganacao", "Intuicao", "Intimidacao", "Investigacao", "Percepcao", "Atuacao", "Persuasao", "Prestidigitacao", "Furtividade"],
+      "equipamento_inicial": [
+        {"escolha": [["rapieira"], ["espada_curta"]]},
+        {"escolha": [["arco_curto", "aljava", "flechas_20"], ["espada_curta"]]},
+        {"escolha": [["pacote_assaltante"], ["pacote_masmorra"], ["pacote_explorador"]]},
+        {"fixo": ["armadura_couro", "adaga", "adaga", "ferramentas_ladrao"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Pericia",
+          "descricao": "Escolhe duas das tuas proficiencias em pericias, ou uma proficiencia em pericia e a tua proficiencia com ferramentas de ladrao. O teu bonus de proficiencia e duplicado para qualquer teste de habilidade que facas que use qualquer das proficiencias escolhidas."
+        },
+        {
+          "nome": "Ataque Furtivo",
+          "descricao": "Uma vez por turno, podes infligir 1d6 de dano extra a uma criatura que atinges com um ataque se tiveres vantagem na jogada de ataque. O ataque tem de usar uma arma de finesse ou uma arma de ataque a distancia."
+        },
+        {
+          "nome": "Giria de Ladroes",
+          "descricao": "Durante o teu treino de ladino aprendeste a giria de ladroes, uma mistura secreta de dialeto, jargao e codigo que te permite esconder mensagens em conversas aparentemente normais."
+        }
+      ],
+      "magias": false
+    },
+    {
+      "id": "mago",
+      "nome": "Mago",
+      "descricao": "Um utilizador erudito de magia capaz de manipular as estruturas da realidade.",
+      "dado_vida": "d6",
+      "hp_nivel_1": 6,
+      "atributo_principal": "inteligencia",
+      "salvaguardas": ["Inteligencia", "Sabedoria"],
+      "proficiencias_armas": ["adagas", "dardos", "fundas", "bordoes", "bestas_leves"],
+      "proficiencias_armaduras": [],
+      "pericias_escolher": 2,
+      "pericias_disponiveis": ["Arcanismo", "Historia", "Intuicao", "Investigacao", "Medicina", "Religiao"],
+      "equipamento_inicial": [
+        {"escolha": [["bordao"], ["adaga"]]},
+        {"escolha": [["bolsa_componentes"], ["foco_arcano"]]},
+        {"escolha": [["pacote_erudito"], ["pacote_explorador"]]},
+        {"fixo": ["grimorio"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Conjuracao",
+          "descricao": "Como estudante de magia arcana, tens um grimorio contendo magias que mostram os primeiros vislumbres do teu verdadeiro poder. Inteligencia e o teu atributo de conjuracao."
+        },
+        {
+          "nome": "Recuperacao Arcana",
+          "descricao": "Aprendeste a recuperar alguma da tua energia magica estudando o teu grimorio. Uma vez por dia quando terminas um descanso curto, podes escolher espacos de magia gastos para recuperar."
+        }
+      ],
+      "magias": true,
+      "atributo_magia": "inteligencia",
+      "truques_nivel_1": 3,
+      "grimorio": true,
+      "magias_grimorio_nivel_1": 6,
+      "espacos_magia_nivel_1": {"1": 2}
+    },
+    {
+      "id": "monge",
+      "nome": "Monge",
+      "descricao": "Um mestre das artes marciais, canalizando o poder do corpo em busca da perfeicao fisica e espiritual.",
+      "dado_vida": "d8",
+      "hp_nivel_1": 8,
+      "atributo_principal": "destreza",
+      "salvaguardas": ["Forca", "Destreza"],
+      "proficiencias_armas": ["simples", "espadas_curtas"],
+      "proficiencias_armaduras": [],
+      "pericias_escolher": 2,
+      "pericias_disponiveis": ["Acrobacia", "Atletismo", "Historia", "Intuicao", "Religiao", "Furtividade"],
+      "equipamento_inicial": [
+        {"escolha": [["espada_curta"], ["arma_simples"]]},
+        {"escolha": [["pacote_masmorra"], ["pacote_explorador"]]},
+        {"fixo": ["dardo", "dardo", "dardo", "dardo", "dardo", "dardo", "dardo", "dardo", "dardo", "dardo"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Defesa sem Armadura",
+          "descricao": "Quando nao estas a usar armadura nem escudo, a tua CA e 10 + modificador de Destreza + modificador de Sabedoria."
+        },
+        {
+          "nome": "Artes Marciais",
+          "descricao": "Ganhas os seguintes beneficios quando estas desarmado ou a usar apenas armas de monge e nao estas a usar armadura ou escudo: podes usar Destreza em vez de Forca, podes rolar um d4 para dano, e quando usas a acao Atacar podes fazer um ataque desarmado como acao bonus."
+        }
+      ],
+      "magias": false
+    },
+    {
+      "id": "paladino",
+      "nome": "Paladino",
+      "descricao": "Um guerreiro sagrado ligado a um juramento sagrado.",
+      "dado_vida": "d10",
+      "hp_nivel_1": 10,
+      "atributo_principal": "forca",
+      "salvaguardas": ["Sabedoria", "Carisma"],
+      "proficiencias_armas": ["simples", "marciais"],
+      "proficiencias_armaduras": ["todas", "escudos"],
+      "pericias_escolher": 2,
+      "pericias_disponiveis": ["Atletismo", "Intuicao", "Intimidacao", "Medicina", "Persuasao", "Religiao"],
+      "equipamento_inicial": [
+        {"escolha": [["arma_marcial", "escudo"], ["arma_marcial", "arma_marcial"]]},
+        {"escolha": [["azagaias_5"], ["arma_simples_melee"]]},
+        {"escolha": [["pacote_sacerdote"], ["pacote_explorador"]]},
+        {"fixo": ["cota_malha", "simbolo_sagrado"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Sentido Divino",
+          "descricao": "A presenca de mal forte regista-se nos teus sentidos como um odor nocivo. Como acao, podes abrir a tua consciencia para detetar tais forcas."
+        },
+        {
+          "nome": "Imposicao de Maos",
+          "descricao": "O teu toque abencoad pode curar feridas. Tens uma reserva de poder curativo que se recarrega apos um descanso longo. Com essa reserva, podes restaurar um total de pontos de vida igual ao teu nivel de paladino x 5."
+        }
+      ],
+      "magias": true,
+      "atributo_magia": "carisma",
+      "magias_a_partir_nivel": 2,
+      "prepara_magias": true
+    },
+    {
+      "id": "ranger",
+      "nome": "Ranger",
+      "descricao": "Um guerreiro que usa pericia marcial e magia da natureza para combater ameacas nas bordas da civilizacao.",
+      "dado_vida": "d10",
+      "hp_nivel_1": 10,
+      "atributo_principal": "destreza",
+      "salvaguardas": ["Forca", "Destreza"],
+      "proficiencias_armas": ["simples", "marciais"],
+      "proficiencias_armaduras": ["leves", "medias", "escudos"],
+      "pericias_escolher": 3,
+      "pericias_disponiveis": ["Adestrar Animais", "Atletismo", "Intuicao", "Investigacao", "Natureza", "Percepcao", "Furtividade", "Sobrevivencia"],
+      "equipamento_inicial": [
+        {"escolha": [["cota_escamas"], ["armadura_couro"]]},
+        {"escolha": [["espada_curta", "espada_curta"], ["arma_simples_melee", "arma_simples_melee"]]},
+        {"escolha": [["pacote_masmorra"], ["pacote_explorador"]]},
+        {"fixo": ["arco_longo", "aljava", "flechas_20"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Inimigo Favorito",
+          "descricao": "Tens experiencia significativa a estudar, rastrear, cacar e ate falar com um certo tipo de inimigo. Escolhe um tipo de inimigo favorito: aberracoes, bestas, celestiais, constructos, dragoes, elementais, fadas, demonioa, gigantes, monstruosidades, lodos, plantas ou mortos-vivos."
+        },
+        {
+          "nome": "Explorador Natural",
+          "descricao": "Es particularmente familiar com um tipo de ambiente natural e es habil a viajar e sobreviver em tais regioes. Escolhe um tipo de terreno favorito: artico, costa, deserto, floresta, pastagem, montanha, pantano, ou Underdark."
+        }
+      ],
+      "magias": true,
+      "atributo_magia": "sabedoria",
+      "magias_a_partir_nivel": 2,
+      "magias_conhecidas_nivel_2": 2
+    },
+    {
+      "id": "bruxo",
+      "nome": "Bruxo",
+      "descricao": "Um detentor de magia derivada de um pacto com uma entidade extraplanar.",
+      "dado_vida": "d8",
+      "hp_nivel_1": 8,
+      "atributo_principal": "carisma",
+      "salvaguardas": ["Sabedoria", "Carisma"],
+      "proficiencias_armas": ["simples"],
+      "proficiencias_armaduras": ["leves"],
+      "pericias_escolher": 2,
+      "pericias_disponiveis": ["Arcanismo", "Enganacao", "Historia", "Intimidacao", "Investigacao", "Natureza", "Religiao"],
+      "equipamento_inicial": [
+        {"escolha": [["besta_leve", "virotes_20"], ["arma_simples"]]},
+        {"escolha": [["bolsa_componentes"], ["foco_arcano"]]},
+        {"escolha": [["pacote_erudito"], ["pacote_masmorra"]]},
+        {"fixo": ["armadura_couro", "arma_simples", "adaga", "adaga"]}
+      ],
+      "caracteristicas_nivel_1": [
+        {
+          "nome": "Patrono de Outro Mundo",
+          "descricao": "Ao 1o nivel, fizeste um pacto com um ser de outro mundo a tua escolha: o Arquifada, o Demonio, ou o Grande Antigo."
+        },
+        {
+          "nome": "Magia de Pacto",
+          "descricao": "A tua pesquisa arcana e a magia concedida pelo teu patrono deram-te facilidade com magias. Carisma e o teu atributo de conjuracao."
+        }
+      ],
+      "magias": true,
+      "atributo_magia": "carisma",
+      "truques_nivel_1": 2,
+      "magias_conhecidas_nivel_1": 2,
+      "espacos_magia_nivel_1": {"1": 1},
+      "magia_de_pacto": true
+    }
+  ],
+  "array_padrao": [15, 14, 13, 12, 10, 8],
+  "ponto_compra": {
+    "pontos_disponiveis": 27,
+    "custos": {
+      "8": 0,
+      "9": 1,
+      "10": 2,
+      "11": 3,
+      "12": 4,
+      "13": 5,
+      "14": 7,
+      "15": 9
+    }
+  }
+}

@@ -33,6 +33,31 @@
 
 {% block content %}
 <div class="container-fluid py-4">
+    <!-- Barra de Sessao (se activa) -->
+    {% if game_session %}
+    <div class="alert alert-dark border-success mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <i class="bi bi-controller me-2 text-success"></i>
+                <strong>Sessao:</strong> {{ game_session.nome }}
+                {% if session_combat and session_combat.quest_step_id %}
+                <span class="badge bg-info ms-2">Passo {{ session_combat.quest_step_id }}</span>
+                {% endif %}
+            </div>
+            <div>
+                <a href="{{ url_for('session.dashboard', session_id=game_session.id) }}" class="btn btn-sm btn-outline-secondary me-2">
+                    <i class="bi bi-speedometer2 me-1"></i>Painel
+                </a>
+                <form action="{{ url_for('combat.end_session_combat', session_id=game_session.id) }}" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-success">
+                        <i class="bi bi-check-circle me-1"></i>Terminar Combate
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="row">
         <!-- Painel Principal de Combate -->
         <div class="col-lg-8">
@@ -42,7 +67,7 @@
                         <i class="bi bi-shield-shaded me-2"></i>Rastreador de Combate
                     </h4>
                     <div>
-                        <span class="badge bg-secondary me-2" id="roundCounter">Ronda: 1</span>
+                        <span class="badge bg-secondary me-2" id="roundCounter">Ronda: {{ session_combat.ronda_atual if session_combat else 1 }}</span>
                         <button class="btn btn-sm btn-outline-warning" onclick="nextTurn()">
                             <i class="bi bi-skip-forward me-1"></i>Próximo Turno
                         </button>
@@ -51,7 +76,7 @@
                 <div class="card-body">
                     <!-- Lista de Iniciativa -->
                     <div id="initiativeList" class="mb-4">
-                        <div class="text-center text-muted py-4" id="emptyMessage">
+                        <div class="text-center text-light opacity-75 py-4" id="emptyMessage">
                             <i class="bi bi-people display-4 mb-3 d-block"></i>
                             <p>Adiciona participantes para começar o combate</p>
                         </div>
@@ -121,7 +146,6 @@
                     <ul class="mb-2">
                         <li><strong>Atacar</strong> - Uma ou mais armas</li>
                         <li><strong>Lançar Magia</strong> - Uma magia com tempo de 1 ação</li>
-                        <li><strong>Dash</strong> - Dobra movimento</li>
                         <li><strong>Desengajar</strong> - Evita ataques de oportunidade</li>
                         <li><strong>Esquivar</strong> - Ataques têm desvantagem</li>
                         <li><strong>Ajudar</strong> - Dá vantagem a aliado</li>
@@ -203,10 +227,7 @@
                                 <div class="accordion-body bg-dark">
                                     <p><strong>Empurrar:</strong> Atletismo vs Atletismo/Acrobacia</p>
                                     <p><strong>Agarrar:</strong> Atletismo vs Atletismo/Acrobacia</p>
-                                    <p><strong>Desarmar:</strong> Ataque vs Atletismo/Acrobacia</p>
-                                    <p><strong>Saltar:</strong> FOR metros (corrida) ou FOR/2 (parado)</p>
-                                    <p><strong>Escalar:</strong> Metade do movimento, ou teste</p>
-                                    <p class="mb-0"><strong>Nadar:</strong> Metade do movimento em água calma</p>
+                                    <p class="mb-0"><strong>Desarmar:</strong> Ataque vs Atletismo/Acrobacia</p>
                                 </div>
                             </div>
                         </div>
@@ -346,6 +367,22 @@
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/combat.js') }}"></script>
 <script>
+    // Contexto de sessao
+    {% if game_session %}
+    window.sessionId = {{ game_session.id }};
+    window.sessionMode = true;
+    {% else %}
+    window.sessionId = null;
+    window.sessionMode = false;
+    {% endif %}
+
+    // Participantes iniciais da sessao
+    {% if initial_participants %}
+    window.initialParticipants = {{ initial_participants|tojson|safe }};
+    {% else %}
+    window.initialParticipants = null;
+    {% endif %}
+
     // Inicializar tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -361,7 +398,11 @@
         new bootstrap.Modal(document.getElementById('addParticipantModal')).show();
     }
 
-    // Carregar combate existente
-    loadCombat();
+    // Carregar combate existente ou participantes iniciais
+    if (window.initialParticipants && window.initialParticipants.length > 0) {
+        loadSessionParticipants(window.initialParticipants);
+    } else {
+        loadCombat();
+    }
 </script>
 {% endblock %}

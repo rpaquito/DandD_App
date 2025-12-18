@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block title %}Glossario D&D{% endblock %}
+
+{% block extra_css %}
+<style>
+    .term-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+    .term-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .category-nav .nav-link {
+        color: #adb5bd;
+        border: none;
+        padding: 0.5rem 1rem;
+    }
+    .category-nav .nav-link.active {
+        color: #dc3545;
+        background: transparent;
+        border-bottom: 2px solid #dc3545;
+    }
+    .search-highlight {
+        background: rgba(255, 193, 7, 0.3);
+        padding: 0 2px;
+        border-radius: 2px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1><i class="bi bi-book me-2"></i>Glossario de D&D</h1>
+            <p class="text-light opacity-75">Termos e conceitos essenciais para jogar D&D 5e</p>
+        </div>
+    </div>
+
+    <!-- Pesquisa -->
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-text bg-dark border-secondary">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" class="form-control bg-dark text-light border-secondary"
+                       id="glossarySearch" placeholder="Pesquisar termos..."
+                       autocomplete="off">
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultados da Pesquisa (oculto por defeito) -->
+    <div id="searchResults" class="mb-4" style="display: none;">
+        <h4 class="text-light opacity-75 mb-3">Resultados da Pesquisa</h4>
+        <div id="searchResultsContent" class="row g-3"></div>
+    </div>
+
+    <!-- Categorias -->
+    <div id="categoryContent">
+        {% for cat_id, cat_data in grouped_terms.items() %}
+        <div class="mb-5">
+            <h3 class="mb-3 border-bottom border-secondary pb-2">
+                <i class="bi bi-folder me-2 text-danger"></i>{{ cat_data.nome }}
+            </h3>
+            <div class="row g-3">
+                {% for term_id, term in cat_data.termos.items() %}
+                <div class="col-md-4 col-lg-3">
+                    <div class="card bg-dark border-secondary term-card h-100"
+                         data-term-id="{{ term_id }}" onclick="showTermModal('{{ term_id }}')">
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">
+                                {{ term.nome }}
+                            </h6>
+                            <span class="badge bg-secondary mb-2">{{ term.abreviatura }}</span>
+                            <p class="card-text small text-light opacity-75 mb-0">
+                                {{ term.descricao[:100] }}{% if term.descricao|length > 100 %}...{% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Modal de Termo -->
+<div class="modal fade" id="termModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="termModalTitle">
+                    <i class="bi bi-info-circle me-2"></i>Termo
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="termModalBody">
+                <!-- Conteudo carregado dinamicamente -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Pesquisa com debounce
+let searchTimeout;
+const searchInput = document.getElementById('glossarySearch');
+const searchResults = document.getElementById('searchResults');
+const searchResultsContent = document.getElementById('searchResultsContent');
+const categoryContent = document.getElementById('categoryContent');
+
+searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    const query = this.value.trim();
+
+    if (query.length < 2) {
+        searchResults.style.display = 'none';
+        categoryContent.style.display = 'block';
+        return;
+    }
+
+    searchTimeout = setTimeout(function() {
+        fetch('/glossario/pesquisa?q=' + encodeURIComponent(query), {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            showSearchResults(data.resultados, query);
+        });
+    }, 300);
+});
+
+function showSearchResults(results, query) {
+    // Limpar resultados anteriores
+    while (searchResultsContent.firstChild) {
+        searchResultsContent.removeChild(searchResultsContent.firstChild);
+    }
+
+    const termIds = Object.keys(results);
+
+    if (termIds.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'col-12';
+        noResults.textContent = 'Nenhum resultado encontrado para "' + query + '"';
+        searchResultsContent.appendChild(noResults);
+    } else {
+        termIds.forEach(function(termId) {
+            const term = results[termId];
+            const col = document.createElement('div');
+            col.className = 'col-md-4 col-lg-3';
+
+            const card = document.createElement('div');
+            card.className = 'card bg-dark border-secondary term-card h-100';
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', function() {
+                showTermModal(termId);
+            });
+
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+
+            const title = document.createElement('h6');
+            title.className = 'card-title mb-1';
+            title.textContent = term.nome;
+
+            const badge = document.createElement('span');
+            badge.className = 'badge bg-secondary mb-2';
+            badge.textContent = term.abreviatura;
+
+            const desc = document.createElement('p');
+            desc.className = 'card-text small text-light opacity-75 mb-0';
+            const descText = term.descricao.length > 100 ?
+                term.descricao.substring(0, 100) + '...' : term.descricao;
+            desc.textContent = descText;
+
+            cardBody.appendChild(title);
+            cardBody.appendChild(badge);
+            cardBody.appendChild(desc);
+            card.appendChild(cardBody);
+            col.appendChild(card);
+            searchResultsContent.appendChild(col);
+        });
+    }
+
+    searchResults.style.display = 'block';
+    categoryContent.style.display = 'none';
+}
+
+function showTermModal(termId) {
+    fetch('/glossario/termo/' + termId, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => response.json())
+    .then(term => {
+        document.getElementById('termModalTitle').textContent = term.nome;
+
+        const body = document.getElementById('termModalBody');
+        while (body.firstChild) {
+            body.removeChild(body.firstChild);
+        }
+
+        // Abreviatura
+        const abbr = document.createElement('p');
+        abbr.className = 'mb-3';
+        const abbrBadge = document.createElement('span');
+        abbrBadge.className = 'badge bg-danger fs-6';
+        abbrBadge.textContent = term.abreviatura;
+        abbr.appendChild(abbrBadge);
+        body.appendChild(abbr);
+
+        // Descricao
+        const desc = document.createElement('div');
+        desc.className = 'mb-4';
+        const descTitle = document.createElement('h6');
+        descTitle.className = 'text-light opacity-75';
+        descTitle.textContent = 'Descricao';
+        const descText = document.createElement('p');
+        descText.textContent = term.descricao;
+        desc.appendChild(descTitle);
+        desc.appendChild(descText);
+        body.appendChild(desc);
+
+        // Exemplo
+        if (term.exemplo) {
+            const example = document.createElement('div');
+            example.className = 'alert alert-secondary';
+            const exampleTitle = document.createElement('h6');
+            exampleTitle.className = 'mb-2';
+            const exampleIcon = document.createElement('i');
+            exampleIcon.className = 'bi bi-lightbulb me-2';
+            exampleTitle.appendChild(exampleIcon);
+            exampleTitle.appendChild(document.createTextNode('Exemplo'));
+            const exampleText = document.createElement('p');
+            exampleText.className = 'mb-0 fst-italic';
+            exampleText.textContent = term.exemplo;
+            example.appendChild(exampleTitle);
+            example.appendChild(exampleText);
+            body.appendChild(example);
+        }
+
+        new bootstrap.Modal(document.getElementById('termModal')).show();
+    });
+}
+</script>
+{% endblock %}

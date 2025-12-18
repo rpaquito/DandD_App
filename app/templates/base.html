@@ -28,44 +28,30 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.index') }}">
-                            <i class="bi bi-house me-1"></i>Início
+                            <i class="bi bi-house me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('quest.list_quests') }}">
+                            <i class="bi bi-map me-1"></i>Aventuras
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.characters') }}">
-                            <i class="bi bi-people me-1"></i>Personagens
+                            <i class="bi bi-people me-1"></i>Jogadores
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('players.list_players') }}">
-                            <i class="bi bi-person-badge me-1"></i>Jogadores
+                        <a class="nav-link" href="{{ url_for('main.help_page') }}">
+                            <i class="bi bi-question-circle me-1"></i>Ajuda
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('combat.tracker') }}">
-                            <i class="bi bi-shield-shaded me-1"></i>Combate
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-printer me-1"></i>Imprimir
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="{{ url_for('print.character_sheets') }}">Fichas em Branco</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('main.characters') }}">Personagens Pré-Criados</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><span class="dropdown-item-text text-muted small">Aventura (seleciona primeiro)</span></li>
-                        </ul>
                     </li>
                 </ul>
 
-                <!-- Ferramentas Rápidas -->
+                <!-- Dados -->
                 <div class="d-flex align-items-center">
-                    <a href="{{ url_for('main.help_page') }}" class="btn btn-outline-info btn-sm me-2">
-                        <i class="bi bi-question-circle"></i> Ajuda
-                    </a>
-                    <button class="btn btn-outline-light btn-sm me-2" data-bs-toggle="modal" data-bs-target="#diceModal">
-                        <i class="bi bi-dice-5"></i> Dados
+                    <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#diceModal" title="Lancar Dados">
+                        <i class="bi bi-dice-5 me-1"></i>Dados
                     </button>
                 </div>
             </div>

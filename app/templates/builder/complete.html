@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Personagem Criado - {{ character.nome }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Sucesso -->
+            <div class="text-center mb-4">
+                <div class="display-1 text-success mb-3">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <h1>Personagem Criado!</h1>
+                <p class="lead text-muted">{{ character.nome }} esta pronto para a aventura</p>
+            </div>
+
+            <!-- Ficha Resumida -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">{{ character.nome }}</h4>
+                        <span class="badge bg-danger">{{ character.classe }} {{ character.nivel }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Raca:</strong> {{ character.raca }}</p>
+                            <p class="mb-1"><strong>Classe:</strong> {{ character.classe }}</p>
+                            <p class="mb-0"><strong>Nivel:</strong> {{ character.nivel }}</p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="d-flex justify-content-md-end gap-3">
+                                <div class="text-center">
+                                    <div class="h2 text-danger mb-0">{{ char_data.get('hp_max', 10) }}</div>
+                                    <small class="text-muted">HP</small>
+                                </div>
+                                <div class="text-center">
+                                    <div class="h2 text-info mb-0">{{ char_data.get('ac', 10) }}</div>
+                                    <small class="text-muted">CA</small>
+                                </div>
+                                <div class="text-center">
+                                    <div class="h2 text-success mb-0">{{ char_data.get('velocidade', '9m') }}</div>
+                                    <small class="text-muted">Vel</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Atributos -->
+                    <div class="row g-2 mb-3">
+                        {% set attr_names = {'forca': 'FOR', 'destreza': 'DES', 'constituicao': 'CON', 'inteligencia': 'INT', 'sabedoria': 'SAB', 'carisma': 'CAR'} %}
+                        {% for attr, short in attr_names.items() %}
+                        {% set val = char_data.get(attr, 10) %}
+                        {% set mod = ((val - 10) // 2) %}
+                        <div class="col-4 col-md-2">
+                            <div class="bg-secondary rounded p-2 text-center">
+                                <small class="text-muted d-block">{{ short }}</small>
+                                <strong>{{ val }}</strong>
+                                <small class="d-block text-success">{{ '%+d'|format(mod) }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Ataques -->
+                    {% if char_data.get('ataques') %}
+                    <h6 class="text-muted mb-2">Ataques</h6>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-dark table-sm mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Arma</th>
+                                    <th>Bonus</th>
+                                    <th>Dano</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ataque in char_data.get('ataques', []) %}
+                                <tr>
+                                    <td>{{ ataque.nome }}</td>
+                                    <td><span class="badge bg-success">{{ ataque.bonus }}</span></td>
+                                    <td>{{ ataque.dano }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+
+                    <!-- Caracteristicas -->
+                    {% if char_data.get('caracteristicas') %}
+                    <h6 class="text-muted mb-2">Caracteristicas</h6>
+                    <div>
+                        {% for carac in char_data.get('caracteristicas', []) %}
+                        <span class="badge bg-info me-1 mb-1">{{ carac }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Acoes -->
+            <div class="card bg-dark border-success">
+                <div class="card-header border-success">
+                    <h5 class="mb-0"><i class="bi bi-arrow-right-circle me-2"></i>Proximos Passos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('session.list_sessions') }}" class="btn btn-success btn-lg">
+                            <i class="bi bi-journal-bookmark me-2"></i>Adicionar a uma Sessao
+                        </a>
+                        <a href="{{ url_for('builder.start') }}" class="btn btn-outline-danger">
+                            <i class="bi bi-plus-circle me-2"></i>Criar Outro Personagem
+                        </a>
+                        <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-house me-2"></i>Voltar ao Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,432 @@
+{% extends "base.html" %}
+
+{% block title %}{{ game_session.nome }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .player-mini-card {
+        transition: transform 0.2s ease;
+    }
+    .player-mini-card:hover {
+        transform: translateY(-2px);
+    }
+    .hp-bar {
+        height: 6px;
+        border-radius: 3px;
+        background: #333;
+        overflow: hidden;
+    }
+    .hp-fill {
+        height: 100%;
+        transition: width 0.3s ease;
+    }
+    .hp-high { background: #28a745; }
+    .hp-medium { background: #ffc107; }
+    .hp-low { background: #dc3545; }
+    .condition-badge {
+        font-size: 0.65rem;
+        padding: 2px 5px;
+    }
+    .quest-progress {
+        background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+        border-radius: 10px;
+    }
+    .template-mini {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+    }
+    .template-mini:hover {
+        border-color: #dc3545;
+    }
+    .notes-textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Coluna Principal -->
+        <div class="col-lg-8">
+            <!-- Cabecalho da Sessao -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1><i class="bi bi-journal-text me-2"></i>{{ game_session.nome }}</h1>
+                    <div class="d-flex gap-2 align-items-center">
+                        {% if game_session.estado == 'activa' %}
+                        <span class="badge bg-success">Activa</span>
+                        {% elif game_session.estado == 'pausada' %}
+                        <span class="badge bg-warning text-dark">Pausada</span>
+                        {% else %}
+                        <span class="badge bg-secondary">Terminada</span>
+                        {% endif %}
+                        <small class="text-muted">
+                            <i class="bi bi-clock me-1"></i>
+                            Atualizada: {{ game_session.atualizado_em.strftime('%d/%m/%Y %H:%M') if game_session.atualizado_em else 'N/A' }}
+                        </small>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    {% if quest %}
+                    <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=game_session.passo_atual, session_id=game_session.id) }}" class="btn btn-success">
+                        <i class="bi bi-play-fill me-1"></i>Continuar Aventura
+                    </a>
+                    <a href="{{ url_for('quest.start_quest', quest_id=quest.id) }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Voltar
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('quest.list_quests') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Voltar
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Aventura Atual -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-map me-2"></i>Aventura</h5>
+                    {% if not quest %}
+                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#questModal">
+                        <i class="bi bi-plus me-1"></i>Selecionar Aventura
+                    </button>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if quest %}
+                    <div class="quest-progress p-3">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h4 class="mb-1">{{ quest.titulo }}</h4>
+                                <p class="text-muted mb-0">{{ quest.descricao }}</p>
+                            </div>
+                            <span class="badge bg-danger">Nivel {{ quest.nivel_min }}-{{ quest.nivel_max }}</span>
+                        </div>
+
+                        <!-- Progresso -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <small>Progresso</small>
+                                <small>Passo {{ game_session.passo_atual }} de {{ quest.passos|length }}</small>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-success" style="width: {{ (game_session.passo_atual / quest.passos|length * 100)|int }}%"></div>
+                            </div>
+                        </div>
+
+                        {% if current_step %}
+                        <div class="alert alert-secondary mb-0">
+                            <strong>Passo Atual:</strong> {{ current_step.titulo }}
+                            <span class="badge bg-{{ 'danger' if current_step.tipo == 'combate' else 'info' if current_step.tipo == 'social' else 'warning' if current_step.tipo == 'puzzle' else 'secondary' }} ms-2">
+                                {{ current_step.tipo|capitalize }}
+                            </span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-map display-4 text-muted mb-3"></i>
+                        <p class="text-muted">Nenhuma aventura selecionada</p>
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#questModal">
+                            <i class="bi bi-plus-circle me-1"></i>Selecionar Aventura
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Jogadores -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-people me-2"></i>Jogadores ({{ players|length }})</h5>
+                    <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#addPlayerModal">
+                        <i class="bi bi-plus me-1"></i>Adicionar
+                    </button>
+                </div>
+                <div class="card-body">
+                    {% if players %}
+                    <div class="row g-3">
+                        {% for player in players %}
+                        {% set char_data = player.get_character_data() %}
+                        <div class="col-md-6">
+                            <div class="card bg-secondary player-mini-card">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <strong>{{ char_data.get('nome', 'Personagem') }}</strong>
+                                            <small class="text-muted d-block">{{ player.nome_jogador }}</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge bg-danger">{{ char_data.get('classe', 'N/A') }}</span>
+                                            <small class="d-block text-muted">AC {{ char_data.get('ac', 10) }}</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- HP Bar -->
+                                    <div class="mb-2">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <small>HP</small>
+                                            <small>{{ player.hp_atual }}/{{ player.hp_max }}</small>
+                                        </div>
+                                        <div class="hp-bar">
+                                            {% set hp_percent = (player.hp_atual / player.hp_max * 100)|int if player.hp_max > 0 else 0 %}
+                                            <div class="hp-fill {% if hp_percent > 50 %}hp-high{% elif hp_percent > 25 %}hp-medium{% else %}hp-low{% endif %}"
+                                                 style="width: {{ hp_percent }}%"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- HP Controls -->
+                                    <div class="d-flex gap-1 mb-2">
+                                        <form action="{{ url_for('session.update_player_hp', session_id=game_session.id, player_id=player.id) }}" method="post" class="d-flex gap-1">
+                                            <input type="hidden" name="action" value="damage">
+                                            <input type="number" name="amount" value="1" min="1" max="100" class="form-control form-control-sm bg-dark text-light" style="width: 50px;">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-dash"></i></button>
+                                        </form>
+                                        <form action="{{ url_for('session.update_player_hp', session_id=game_session.id, player_id=player.id) }}" method="post">
+                                            <input type="hidden" name="action" value="heal">
+                                            <input type="hidden" name="amount" value="1">
+                                            <button type="submit" class="btn btn-sm btn-outline-success"><i class="bi bi-plus"></i></button>
+                                        </form>
+                                        <form action="{{ url_for('session.remove_player', session_id=game_session.id, player_id=player.id) }}" method="post" class="ms-auto"
+                                              onsubmit="return confirm('Remover este jogador?');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x"></i></button>
+                                        </form>
+                                    </div>
+
+                                    <!-- Condicoes -->
+                                    {% set condicoes = player.get_condicoes() %}
+                                    {% if condicoes %}
+                                    <div>
+                                        {% for cond in condicoes %}
+                                        <span class="badge bg-warning text-dark condition-badge">{{ cond }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-people display-4 text-muted mb-3"></i>
+                        <p class="text-muted">Nenhum jogador na sessao</p>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPlayerModal">
+                            <i class="bi bi-plus-circle me-1"></i>Adicionar Primeiro Jogador
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Notas da Sessao -->
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-sticky me-2"></i>Notas da Sessao</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('session.update_notes', session_id=game_session.id) }}" method="post">
+                        <textarea name="notas" class="form-control bg-dark text-light border-secondary notes-textarea mb-2"
+                                  placeholder="Escreve aqui notas sobre a sessao, eventos importantes, decisoes dos jogadores...">{{ game_session.notas or '' }}</textarea>
+                        <button type="submit" class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-save me-1"></i>Guardar Notas
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coluna Lateral -->
+        <div class="col-lg-4">
+            <!-- Acoes Rapidas -->
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header border-danger">
+                    <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Acoes Rapidas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        {% if quest %}
+                        <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=game_session.passo_atual, session_id=game_session.id) }}" class="btn btn-success">
+                            <i class="bi bi-play-fill me-1"></i>Continuar Aventura
+                        </a>
+                        <a href="{{ url_for('quest.overview', quest_id=quest.id, session_id=game_session.id) }}" class="btn btn-outline-info">
+                            <i class="bi bi-map me-1"></i>Ver Aventura Completa
+                        </a>
+                        <a href="{{ url_for('quest.npcs', quest_id=quest.id) }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-person-circle me-1"></i>Ver NPCs
+                        </a>
+                        <a href="{{ url_for('quest.monsters', quest_id=quest.id) }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-bug me-1"></i>Ver Monstros
+                        </a>
+                        {% endif %}
+                        <a href="{{ url_for('combat.session_tracker', session_id=game_session.id) }}" class="btn btn-outline-danger">
+                            <i class="bi bi-shield-shaded me-1"></i>Rastreador de Combate
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estado da Sessao -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Estado da Sessao</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('session.update_state', session_id=game_session.id) }}" method="post">
+                        <div class="d-grid gap-2">
+                            <button type="submit" name="estado" value="activa" class="btn {% if game_session.estado == 'activa' %}btn-success{% else %}btn-outline-success{% endif %}">
+                                <i class="bi bi-play-circle me-1"></i>Activa
+                            </button>
+                            <button type="submit" name="estado" value="pausada" class="btn {% if game_session.estado == 'pausada' %}btn-warning{% else %}btn-outline-warning{% endif %}">
+                                <i class="bi bi-pause-circle me-1"></i>Pausada
+                            </button>
+                            <button type="submit" name="estado" value="terminada" class="btn {% if game_session.estado == 'terminada' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
+                                <i class="bi bi-stop-circle me-1"></i>Terminada
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Resumo -->
+            {% if players %}
+            <div class="card bg-dark border-info">
+                <div class="card-header border-info">
+                    <h5 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Resumo do Grupo</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center g-2">
+                        <div class="col-6">
+                            <h4>{{ players|length }}</h4>
+                            <small class="text-muted">Jogadores</small>
+                        </div>
+                        <div class="col-6">
+                            {% set total_hp_atual = players|sum(attribute='hp_atual') %}
+                            {% set total_hp_max = players|sum(attribute='hp_max') %}
+                            <h4>{{ total_hp_atual }}/{{ total_hp_max }}</h4>
+                            <small class="text-muted">HP Total</small>
+                        </div>
+                        <div class="col-6">
+                            {% set avg_ac = (players|map(attribute='hp_max')|list|sum / players|length)|round(0)|int if players else 0 %}
+                            <h4>{{ avg_ac }}</h4>
+                            <small class="text-muted">HP Medio</small>
+                        </div>
+                        <div class="col-6">
+                            <h4>{{ players|selectattr('hp_atual', 'eq', 0)|list|length }}</h4>
+                            <small class="text-muted">Inconscientes</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Selecionar Aventura -->
+<div class="modal fade" id="questModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title"><i class="bi bi-map me-2"></i>Selecionar Aventura</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('session.set_quest', session_id=game_session.id) }}" method="post">
+                <div class="modal-body">
+                    <p class="text-muted mb-3">Para selecionar uma aventura, vai a pagina de Aventuras:</p>
+                    <a href="{{ url_for('quest.list_quests') }}" class="btn btn-danger">
+                        <i class="bi bi-map me-2"></i>Ver Aventuras Disponiveis
+                    </a>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Adicionar Jogador -->
+<div class="modal fade" id="addPlayerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Adicionar Jogador</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('session.add_player', session_id=game_session.id) }}" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nome_jogador" class="form-label">Nome do Jogador</label>
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               id="nome_jogador" name="nome_jogador" placeholder="Nome real do jogador" required>
+                    </div>
+
+                    <hr class="border-secondary">
+                    <h6 class="mb-3">Escolher Personagem Pre-Criado</h6>
+
+                    <div class="row g-2 mb-3">
+                        {% for template in templates %}
+                        <div class="col-md-4">
+                            <label class="template-mini card bg-secondary h-100" style="cursor: pointer;">
+                                <input type="radio" name="template_id" value="{{ template.id }}" class="d-none">
+                                <div class="card-body py-2 px-2">
+                                    <strong class="d-block small">{{ template.nome }}</strong>
+                                    <small class="text-muted">{{ template.classe }} - {{ template.raca }}</small>
+                                    <div class="mt-1">
+                                        <span class="badge bg-dark" style="font-size: 0.65rem;">HP {{ template.hp_max }}</span>
+                                        <span class="badge bg-dark" style="font-size: 0.65rem;">AC {{ template.ac }}</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if saved_characters %}
+                    <hr class="border-secondary">
+                    <h6 class="mb-3">Ou Personagem Guardado</h6>
+                    <div class="row g-2">
+                        {% for char in saved_characters %}
+                        <div class="col-md-4">
+                            <label class="template-mini card bg-secondary h-100" style="cursor: pointer;">
+                                <input type="radio" name="saved_id" value="{{ char.id }}" class="d-none">
+                                <div class="card-body py-2 px-2">
+                                    <strong class="d-block small">{{ char.nome }}</strong>
+                                    <small class="text-muted">{{ char.classe }} {{ char.nivel }}</small>
+                                </div>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-plus-circle me-1"></i>Adicionar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Highlight selected template/quest cards
+document.querySelectorAll('.template-mini, #questModal .card').forEach(card => {
+    card.addEventListener('click', function() {
+        const parent = this.closest('.row');
+        parent.querySelectorAll('.card').forEach(c => {
+            c.style.borderColor = 'transparent';
+        });
+        this.style.borderColor = '#28a745';
+    });
+});
+</script>
+{% endblock %}

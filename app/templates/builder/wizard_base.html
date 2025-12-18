@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Criar Personagem - Passo {{ step_num }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .wizard-progress {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .wizard-step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .wizard-step.completed {
+        background: #28a745;
+        color: white;
+    }
+    .wizard-step.active {
+        background: #dc3545;
+        color: white;
+        transform: scale(1.2);
+    }
+    .wizard-step.pending {
+        background: #333;
+        color: #666;
+    }
+    .wizard-line {
+        width: 30px;
+        height: 3px;
+        background: #333;
+    }
+    .wizard-line.completed {
+        background: #28a745;
+    }
+    .selection-card {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+    }
+    .selection-card:hover {
+        border-color: #dc3545;
+        transform: translateY(-3px);
+    }
+    .selection-card.selected {
+        border-color: #28a745;
+        background-color: rgba(40, 167, 69, 0.1);
+    }
+    .selection-card input[type="radio"],
+    .selection-card input[type="checkbox"] {
+        display: none;
+    }
+    .bonus-badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+    .feature-item {
+        background: #2d2d2d;
+        border-radius: 5px;
+        padding: 8px 12px;
+        margin-bottom: 5px;
+    }
+    .stat-input {
+        width: 60px;
+        text-align: center;
+    }
+    .modifier-display {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+</style>
+{% block wizard_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Titulo -->
+            <div class="text-center mb-4">
+                <h1><i class="bi bi-person-plus-fill me-2"></i>Criar Personagem</h1>
+                <p class="text-muted">{% block step_subtitle %}{% endblock %}</p>
+            </div>
+
+            <!-- Progresso do Wizard -->
+            <div class="wizard-progress">
+                {% for i in range(1, total_steps + 1) %}
+                    {% if i > 1 %}
+                    <div class="wizard-line {% if i <= step_num %}completed{% endif %}"></div>
+                    {% endif %}
+                    <div class="wizard-step {% if i < step_num %}completed{% elif i == step_num %}active{% else %}pending{% endif %}">
+                        {% if i < step_num %}
+                        <i class="bi bi-check"></i>
+                        {% else %}
+                        {{ i }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Labels dos passos -->
+            <div class="text-center mb-4">
+                <small class="text-muted">
+                    {% set step_names = ['Raca', 'Classe', 'Atributos', 'Stats', 'Equipamento', 'Ataques', 'Finalizar'] %}
+                    {% for name in step_names %}
+                        <span class="{% if loop.index == step_num %}text-danger fw-bold{% endif %} mx-2">{{ name }}</span>
+                    {% endfor %}
+                </small>
+            </div>
+
+            <!-- Conteudo do Passo -->
+            <form method="post" id="wizardForm">
+                {% block step_content %}{% endblock %}
+
+                <!-- Navegacao -->
+                <div class="d-flex justify-content-between mt-4">
+                    {% if step_num > 1 %}
+                    <a href="{{ url_for('builder.step', step_num=step_num - 1) }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Anterior
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x me-1"></i>Cancelar
+                    </a>
+                    {% endif %}
+
+                    {% block step_button %}
+                    <button type="submit" class="btn btn-danger">
+                        {% if step_num < total_steps %}
+                        Proximo<i class="bi bi-arrow-right ms-1"></i>
+                        {% else %}
+                        <i class="bi bi-check-circle me-1"></i>Criar Personagem
+                        {% endif %}
+                    </button>
+                    {% endblock %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Highlight selected cards
+document.querySelectorAll('.selection-card').forEach(card => {
+    card.addEventListener('click', function() {
+        const input = this.querySelector('input[type="radio"]');
+        if (input) {
+            // Radio: apenas um selecionado
+            const name = input.name;
+            document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+                r.closest('.selection-card').classList.remove('selected');
+            });
+            this.classList.add('selected');
+            input.checked = true;
+        } else {
+            // Checkbox: toggle
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('selected', checkbox.checked);
+            }
+        }
+    });
+});
+
+// Set initial selected state
+document.querySelectorAll('.selection-card input:checked').forEach(input => {
+    input.closest('.selection-card').classList.add('selected');
+});
+</script>
+{% block wizard_js %}{% endblock %}
+{% endblock %}

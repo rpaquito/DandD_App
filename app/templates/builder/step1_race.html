@@ -1,0 +1,106 @@
+{% extends "builder/wizard_base.html" %}
+
+{% block step_subtitle %}Passo 1: Escolhe a tua Raca{% endblock %}
+
+{% block step_content %}
+<div class="card bg-dark border-secondary mb-4">
+    <div class="card-header border-secondary">
+        <h4 class="mb-0"><i class="bi bi-people me-2"></i>Escolher Raca</h4>
+    </div>
+    <div class="card-body">
+        <p class="text-muted mb-4">A tua raca determina as tuas habilidades naturais, bonus de atributos e caracteristicas especiais.</p>
+
+        <div class="row g-3">
+            {% for race in races %}
+            <div class="col-lg-4 col-md-6">
+                <label class="selection-card card bg-secondary h-100">
+                    <input type="radio" name="raca_id" value="{{ race.id }}"
+                           {% if builder_data.get('raca_id') == race.id %}checked{% endif %}>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ race.nome }}</h5>
+                        <p class="card-text small text-muted">{{ race.descricao[:100] }}{% if race.descricao|length > 100 %}...{% endif %}</p>
+
+                        <!-- Bonus de Atributos -->
+                        <div class="mb-2">
+                            {% for attr, val in race.bonus_atributos.items() %}
+                            <span class="badge bg-success bonus-badge">+{{ val }} {{ attr[:3]|upper }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Info Rapida -->
+                        <div class="small">
+                            <span class="badge bg-dark">{{ race.velocidade }}</span>
+                            <span class="badge bg-dark">{{ race.tamanho }}</span>
+                        </div>
+
+                        <!-- Caracteristicas -->
+                        {% if race.caracteristicas %}
+                        <div class="mt-2">
+                            <small class="text-muted">Caracteristicas:</small>
+                            <div class="small">
+                                {% for carac in race.caracteristicas[:2] %}
+                                <span class="badge bg-info me-1">{{ carac.nome }}</span>
+                                {% endfor %}
+                                {% if race.caracteristicas|length > 2 %}
+                                <span class="badge bg-secondary">+{{ race.caracteristicas|length - 2 }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </label>
+            </div>
+
+            <!-- Subracas -->
+            {% if race.subracas %}
+                {% for subrace in race.subracas %}
+                <div class="col-lg-4 col-md-6">
+                    <label class="selection-card card bg-secondary h-100">
+                        <input type="radio" name="raca_id" value="{{ subrace.id }}"
+                               {% if builder_data.get('raca_id') == subrace.id %}checked{% endif %}>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ race.nome }} <small class="text-muted">({{ subrace.nome }})</small></h5>
+                            <p class="card-text small text-muted">{{ race.descricao[:80] }}...</p>
+
+                            <!-- Bonus Combinados -->
+                            <div class="mb-2">
+                                {% for attr, val in race.bonus_atributos.items() %}
+                                <span class="badge bg-success bonus-badge">+{{ val }} {{ attr[:3]|upper }}</span>
+                                {% endfor %}
+                                {% for attr, val in subrace.bonus_atributos.items() %}
+                                <span class="badge bg-info bonus-badge">+{{ val }} {{ attr[:3]|upper }}</span>
+                                {% endfor %}
+                            </div>
+
+                            <div class="small">
+                                <span class="badge bg-dark">{{ race.velocidade }}</span>
+                                <span class="badge bg-dark">{{ race.tamanho }}</span>
+                            </div>
+
+                            <!-- Caracteristicas da subraca -->
+                            {% if subrace.caracteristicas %}
+                            <div class="mt-2">
+                                <small class="text-muted">Extras:</small>
+                                <div class="small">
+                                    {% for carac in subrace.caracteristicas %}
+                                    <span class="badge bg-warning text-dark me-1">{{ carac.nome }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Dica -->
+<div class="alert alert-info">
+    <i class="bi bi-lightbulb me-2"></i>
+    <strong>Dica:</strong> Se es novo em D&D, o <strong>Humano</strong> e uma boa escolha - bonus a todos os atributos e versatil para qualquer classe.
+</div>
+{% endblock %}

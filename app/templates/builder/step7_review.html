@@ -1,0 +1,162 @@
+{% extends "builder/wizard_base.html" %}
+
+{% block step_subtitle %}Passo 7: Rever e Finalizar{% endblock %}
+
+{% block step_content %}
+<!-- Nome do Personagem -->
+<div class="card bg-dark border-success mb-4">
+    <div class="card-header border-success">
+        <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Nome do Personagem</h5>
+    </div>
+    <div class="card-body">
+        <input type="text" name="nome_personagem" class="form-control form-control-lg bg-dark text-light border-secondary"
+               placeholder="Escreve o nome do teu personagem..." value="{{ preview.get('nome', '') }}" required>
+        <small class="text-muted">O nome que o teu personagem usara nas aventuras</small>
+    </div>
+</div>
+
+<!-- Preview do Personagem -->
+<div class="card bg-dark border-secondary mb-4">
+    <div class="card-header border-secondary">
+        <h5 class="mb-0"><i class="bi bi-file-person me-2"></i>Ficha de Personagem</h5>
+    </div>
+    <div class="card-body">
+        <!-- Cabecalho -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h3 class="mb-1">{{ preview.get('raca', 'Raca') }} {{ preview.get('classe', 'Classe') }}</h3>
+                <p class="text-muted mb-0">Nivel 1</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <div class="d-flex justify-content-end gap-3">
+                    <div class="text-center">
+                        <div class="display-6 text-danger">{{ preview.get('hp_max', 10) }}</div>
+                        <small class="text-muted">HP</small>
+                    </div>
+                    <div class="text-center">
+                        <div class="display-6 text-info">{{ preview.get('ac', 10) }}</div>
+                        <small class="text-muted">CA</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Atributos -->
+        <div class="row g-2 mb-4">
+            {% set attr_names = {'forca': 'FOR', 'destreza': 'DES', 'constituicao': 'CON', 'inteligencia': 'INT', 'sabedoria': 'SAB', 'carisma': 'CAR'} %}
+            {% for attr, short in attr_names.items() %}
+            {% set val = preview.get(attr, 10) %}
+            {% set mod = ((val - 10) // 2) %}
+            <div class="col-4 col-md-2">
+                <div class="bg-secondary rounded p-2 text-center">
+                    <small class="text-muted d-block">{{ short }}</small>
+                    <h4 class="mb-0">{{ val }}</h4>
+                    <span class="badge bg-dark">{{ '%+d'|format(mod) }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Info Adicional -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="bg-secondary rounded p-3">
+                    <small class="text-muted d-block">Velocidade</small>
+                    <strong>{{ preview.get('velocidade', '9m') }}</strong>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-secondary rounded p-3">
+                    <small class="text-muted d-block">Bonus Proficiencia</small>
+                    <strong>+{{ preview.get('bonus_proficiencia', 2) }}</strong>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-secondary rounded p-3">
+                    <small class="text-muted d-block">Salvaguardas</small>
+                    <strong>
+                        {% for save in preview.get('salvaguardas', []) %}
+                        {{ save[:3] }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ataques -->
+        {% if preview.get('ataques') %}
+        <h6 class="text-muted mb-2"><i class="bi bi-lightning me-2"></i>Ataques</h6>
+        <div class="table-responsive mb-4">
+            <table class="table table-dark table-sm">
+                <thead>
+                    <tr>
+                        <th>Arma</th>
+                        <th>Bonus</th>
+                        <th>Dano</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ataque in preview.get('ataques', []) %}
+                    <tr>
+                        <td>{{ ataque.nome }}</td>
+                        <td><span class="badge bg-success">{{ ataque.bonus }}</span></td>
+                        <td>{{ ataque.dano }} {{ ataque.tipo_dano }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- Caracteristicas -->
+        {% if preview.get('caracteristicas') %}
+        <h6 class="text-muted mb-2"><i class="bi bi-star me-2"></i>Caracteristicas</h6>
+        <div class="row g-2 mb-4">
+            {% for carac in preview.get('caracteristicas', []) %}
+            <div class="col-md-6">
+                <span class="badge bg-info">{{ carac }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Equipamento -->
+        {% if preview.get('equipamento') or preview.get('armas') %}
+        <h6 class="text-muted mb-2"><i class="bi bi-backpack me-2"></i>Equipamento</h6>
+        <div class="mb-4">
+            {% if preview.get('armadura') %}
+            <span class="badge bg-secondary me-1">{{ preview.get('armadura')|replace('_', ' ')|title }}</span>
+            {% endif %}
+            {% for item in preview.get('armas', []) %}
+            <span class="badge bg-danger me-1">{{ item|replace('_', ' ')|title }}</span>
+            {% endfor %}
+            {% for item in preview.get('equipamento', []) %}
+            <span class="badge bg-secondary me-1">{{ item|replace('_', ' ')|title }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Confirmacao -->
+<div class="alert alert-success">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-check-circle display-6 me-3"></i>
+        <div>
+            <h5 class="mb-1">Pronto para criar o personagem!</h5>
+            <p class="mb-0">Confirma que os dados estao corretos e clica em "Criar Personagem" para finalizar.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Session ID (se veio de uma sessao) -->
+{% if request.args.get('session_id') %}
+<input type="hidden" name="session_id" value="{{ request.args.get('session_id') }}">
+{% endif %}
+{% endblock %}
+
+{% block step_button %}
+<button type="submit" class="btn btn-success btn-lg">
+    <i class="bi bi-check-circle me-2"></i>Criar Personagem
+</button>
+{% endblock %}

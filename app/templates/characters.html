@@ -52,16 +52,22 @@
 {% block content %}
 <div class="container py-4">
     <div class="no-print mb-4">
-        <h1><i class="bi bi-people me-2"></i>Personagens Pré-Criados</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Inicio</a></li>
+                <li class="breadcrumb-item active">Jogadores</li>
+            </ol>
+        </nav>
+        <h1><i class="bi bi-people me-2"></i>Gerir Jogadores</h1>
         <p class="text-muted">
-            6 personagens de nível 1 prontos a jogar. Escolhe um para cada jogador e começa a aventura!
+            Cria personagens personalizados ou usa os pre-criados para comecar rapidamente
         </p>
         <div class="d-flex gap-2 flex-wrap mb-4">
-            <a href="{{ url_for('players.list_players') }}" class="btn btn-success">
-                <i class="bi bi-people-fill me-1"></i>Gerir Jogadores
+            <a href="{{ url_for('builder.start') }}" class="btn btn-success btn-lg">
+                <i class="bi bi-plus-circle me-1"></i>Criar Novo Personagem
             </a>
-            <a href="{{ url_for('print.premade_sheets') }}" class="btn btn-primary">
-                <i class="bi bi-printer me-1"></i>Imprimir Todos
+            <a href="{{ url_for('print.premade_sheets') }}" class="btn btn-outline-primary">
+                <i class="bi bi-printer me-1"></i>Imprimir Pre-Criados
             </a>
             <a href="{{ url_for('print.character_sheets') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-file-earmark me-1"></i>Fichas em Branco
@@ -69,6 +75,42 @@
         </div>
     </div>
 
+    <!-- Meus Personagens -->
+    {% if saved_characters %}
+    <div class="mb-5 no-print">
+        <h3 class="mb-3"><i class="bi bi-person-badge text-success me-2"></i>Meus Personagens</h3>
+        <div class="row g-3">
+            {% for char in saved_characters %}
+            {% set char_data = char.get_character_data() %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-light">{{ char.nome }}</h5>
+                        <p class="text-light opacity-75 small mb-2">
+                            {{ char.raca }} {{ char.classe }} Nivel {{ char.nivel }}
+                        </p>
+                        <div class="d-flex gap-2 mb-2">
+                            <span class="badge bg-danger">HP {{ char_data.get('hp_max', 10) }}</span>
+                            <span class="badge bg-info">AC {{ char_data.get('ac', 10) }}</span>
+                        </div>
+                        <small class="text-light opacity-75 d-block">
+                            Criado: {{ char.criado_em.strftime('%d/%m/%Y') if char.criado_em else 'N/A' }}
+                        </small>
+                    </div>
+                    <div class="card-footer border-success bg-transparent">
+                        <button class="btn btn-sm btn-success w-100" onclick="viewCharacterDetails({{ char.id }})">
+                            <i class="bi bi-eye me-1"></i>Ver Detalhes
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Personagens Pre-Criados -->
+    <h3 class="mb-3"><i class="bi bi-collection text-danger me-2"></i>Personagens Pre-Criados</h3>
     <div class="row g-4">
         {% for char in characters %}
         <div class="col-lg-6">
@@ -270,6 +312,11 @@
 function adicionarAoCombate(nome, hp, ac) {
     const url = '{{ url_for("combat.tracker") }}?add=' + encodeURIComponent(nome) + '&hp=' + hp + '&ac=' + ac;
     window.open(url, '_blank');
+}
+
+function viewCharacterDetails(charId) {
+    // TODO: Implement character details modal or redirect to detail page
+    alert('Detalhes do personagem #' + charId + ' - Funcionalidade em desenvolvimento');
 }
 </script>
 {% endblock %}

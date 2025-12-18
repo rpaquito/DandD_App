@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container py-4">
     <h1 class="mb-4"><i class="bi bi-question-circle me-2"></i>Como Usar o Companheiro de Mestre</h1>
-    <p class="lead text-muted mb-5">Guia completo para tirar o máximo proveito desta ferramenta durante as tuas sessões de D&D.</p>
+    <p class="lead text-light opacity-75 mb-5">Guia completo para tirar o máximo proveito desta ferramenta durante as tuas sessões de D&D.</p>
 
     <!-- Índice -->
     <div class="card bg-dark border-secondary mb-5">
@@ -25,9 +25,12 @@
                 <div class="col-md-6">
                     <ul class="list-unstyled">
                         <li><a href="#combate" class="text-info">5. Rastreador de Combate</a></li>
-                        <li><a href="#impressao" class="text-info">6. Impressão de Materiais</a></li>
-                        <li><a href="#aventuras" class="text-info">7. Criar Novas Aventuras</a></li>
-                        <li><a href="#dicas" class="text-info">8. Dicas para Novos Mestres</a></li>
+                        <li><a href="#puzzles" class="text-info">6. Puzzles e Enigmas</a></li>
+                        <li><a href="#tempo-movimento" class="text-info">7. Tempo, Movimento e Posicionamento</a></li>
+                        <li><a href="#impressao" class="text-info">8. Impressão de Materiais</a></li>
+                        <li><a href="#aventuras" class="text-info">9. Criar Novas Aventuras</a></li>
+                        <li><a href="#dicas" class="text-info">10. Dicas para Novos Mestres</a></li>
+                        <li><a href="#glossario" class="text-info">11. Acronimos e Glossario</a></li>
                     </ul>
                 </div>
             </div>
@@ -259,16 +262,774 @@
             </div>
         </div>
 
+        <h5 class="mt-5 mb-3">Como Funciona o Combate - Passo a Passo</h5>
+
+        <div class="card bg-dark border-danger mb-4">
+            <div class="card-header border-danger">
+                <h6 class="mb-0"><i class="bi bi-list-ol me-2"></i>Estrutura de um Combate</h6>
+            </div>
+            <div class="card-body">
+                <ol class="mb-0">
+                    <li class="mb-2"><strong>Iniciativa:</strong> Todos rolam 1d20 + modificador de Destreza. Ordem do maior para o menor.</li>
+                    <li class="mb-2"><strong>Rondas:</strong> Cada participante age uma vez por ronda, na ordem de iniciativa.</li>
+                    <li class="mb-2"><strong>Turno:</strong> No teu turno podes fazer: 1 Ação, 1 Movimento, 1 Ação Bonus (se tiveres), interações gratuitas.</li>
+                    <li class="mb-0"><strong>Reação:</strong> Tens 1 reação por ronda (ex: Ataque de Oportunidade) que recuperas no inicio do teu turno.</li>
+                </ol>
+            </div>
+        </div>
+
+        <h6 class="text-warning mb-3"><i class="bi bi-stars me-2"></i>Exemplo Pratico: Combate Completo</h6>
+
+        <div class="card bg-secondary mb-4">
+            <div class="card-body">
+                <p class="text-warning mb-3"><strong>Situação:</strong> O grupo (Thorin o guerreiro, Lyra a maga) encontra 2 goblins numa sala.</p>
+
+                <div class="mb-4">
+                    <h6 class="text-danger"><i class="bi bi-dice-6 me-1"></i>1. Iniciativa</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>DM:</strong> "Combate! Todos rolam iniciativa - d20 + modificador de Destreza"</li>
+                        <li>Lyra (DES +2): Rola 15 no d20 → <strong>17 de iniciativa</strong></li>
+                        <li>Goblin 1 (DES +2): DM rola 12 → <strong>14 de iniciativa</strong></li>
+                        <li>Thorin (DES +1): Rola 10 → <strong>11 de iniciativa</strong></li>
+                        <li>Goblin 2 (DES +2): DM rola 7 → <strong>9 de iniciativa</strong></li>
+                        <li class="text-success mt-2"><strong>Ordem:</strong> Lyra (17) → Goblin 1 (14) → Thorin (11) → Goblin 2 (9)</li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="bi bi-1-circle me-1"></i>Ronda 1 - Turno da Lyra</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>DM:</strong> "Lyra, e o teu turno. Tens 9 metros de movimento, uma ação, e podes usar ação bonus se tiveres."</li>
+                        <li><strong>Lyra:</strong> "Vou lançar Missel Magico no Goblin 1!"</li>
+                        <li><strong>DM:</strong> "Missel Magico acerta automaticamente. Rola o dano: 1d4+1 de força."</li>
+                        <li><strong>Lyra:</strong> Rola 3 no d4 → <strong>4 de dano</strong></li>
+                        <li><strong>DM:</strong> "Os misseis magicos atingem o goblin no peito. Ele tinha 7 HP, agora tem 3 HP."</li>
+                        <li class="text-info mt-1"><em>No rastreador: Reduz HP do Goblin 1 de 7 para 3</em></li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="bi bi-2-circle me-1"></i>Ronda 1 - Turno do Goblin 1</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>DM:</strong> "O goblin ferido avança 6 metros e ataca Thorin com a cimitarra."</li>
+                        <li><strong>DM:</strong> Rola ataque - 1d20 + modificador (+4 para o goblin)</li>
+                        <li><strong>DM:</strong> Rola 14 no d20 → 14 + 4 = <strong>18 total</strong></li>
+                        <li><strong>DM:</strong> "Thorin, qual e a tua AC?" <strong>Thorin:</strong> "18"</li>
+                        <li><strong>DM:</strong> "18 iguala a tua AC - acertou! Rolo o dano..." Rola 1d6+2 → <strong>5 de dano cortante</strong></li>
+                        <li><strong>DM:</strong> "A lamina corta o teu braco. Levas 5 de dano."</li>
+                        <li class="text-info mt-1"><em>No rastreador: Reduz HP de Thorin de 12 para 7</em></li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="bi bi-3-circle me-1"></i>Ronda 1 - Turno do Thorin</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>Thorin:</strong> "Vou atacar o goblin ferido com a minha espada!"</li>
+                        <li><strong>DM:</strong> "Rola 1d20 + bonus de ataque. Qual e o teu bonus?"</li>
+                        <li><strong>Thorin:</strong> "Tenho FOR +3 e proficiencia +2, entao +5 total." Rola 16 → <strong>21 total</strong></li>
+                        <li><strong>DM:</strong> "Acertou! O goblin tem AC 15. Rola o dano da espada: 1d8 + modificador de FOR."</li>
+                        <li><strong>Thorin:</strong> Rola 6 no d8 → 6 + 3 = <strong>9 de dano</strong></li>
+                        <li><strong>DM:</strong> "O goblin tinha 3 HP. Com 9 de dano, desce para -6 HP e morre instantaneamente! Descreve como o matas."</li>
+                        <li><strong>Thorin:</strong> "A minha espada corta-o do ombro ate a cintura. Ele cai no chao."</li>
+                        <li class="text-info mt-1"><em>No rastreador: Remove Goblin 1 ou marca HP como 0</em></li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="bi bi-4-circle me-1"></i>Ronda 1 - Turno do Goblin 2</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>DM:</strong> "O segundo goblin ve o companheiro cair. Ele ataca Thorin com o arco."</li>
+                        <li><strong>DM:</strong> "Distancia: 12 metros. Rolo ataque..." Rola 8 no d20 → 8 + 4 = <strong>12 total</strong></li>
+                        <li><strong>DM:</strong> "A flecha passa ao lado. Falhou!"</li>
+                        <li class="text-warning mt-1"><em>Quando um ataque falha, nao ha dano nem efeito</em></li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-primary"><i class="bi bi-arrow-repeat me-1"></i>Ronda 2 - Turno da Lyra</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>DM:</strong> "Lyra, nova ronda. E o teu turno."</li>
+                        <li><strong>Lyra:</strong> "Lanco outro Missel Magico no goblin que sobrou!"</li>
+                        <li>Rola dano: 1d4+1 → <strong>3 de dano</strong></li>
+                        <li><strong>DM:</strong> "O goblin tinha 7 HP, agora tem 4 HP. Esta ferido mas ainda de pe."</li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-primary"><i class="bi bi-arrow-repeat me-1"></i>Ronda 2 - Turno do Goblin 2</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>DM:</strong> "O goblin esta em panico. Ele larga o arco e tenta fugir correndo!"</li>
+                        <li><strong>DM:</strong> "Thorin, ele esta ao teu alcance. Queres fazer um Ataque de Oportunidade?"</li>
+                        <li><strong>Thorin:</strong> "Sim! Uso a minha reacao."</li>
+                        <li>Thorin rola ataque: 13 + 5 = <strong>18 - Acerta!</strong></li>
+                        <li>Rola dano: 5 + 3 = <strong>8 de dano</strong></li>
+                        <li><strong>DM:</strong> "Quando ele vira as costas, a tua lamina atravessa-o. Ele cai morto. Combate terminado!"</li>
+                        <li class="text-info mt-1"><em>No rastreador: Remove Goblin 2 - Combate acabou!</em></li>
+                    </ul>
+                </div>
+
+                <div class="alert alert-success mb-0">
+                    <h6 class="text-success"><i class="bi bi-trophy me-2"></i>Fim do Combate</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>DM:</strong> "O silencio cai na sala. Os dois goblins estao mortos."</li>
+                        <li><strong>XP:</strong> Cada goblin vale 50 XP. Total: 100 XP dividido pelo grupo.</li>
+                        <li><strong>Estado:</strong> Thorin perdeu 5 HP (tem 7/12). Pode gastar Dados de Vida num descanso curto.</li>
+                        <li><strong>Duracao:</strong> O combate durou 2 rondas (cerca de 12 segundos no mundo do jogo).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h6 class="text-info mb-3"><i class="bi bi-gear me-2"></i>Conceitos Importantes</h6>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-info h-100">
+                    <div class="card-body">
+                        <h6 class="text-info">Acertar um Ataque</h6>
+                        <p class="small mb-2"><strong>Formula:</strong> 1d20 + bonus de ataque</p>
+                        <p class="small mb-2"><strong>Bonus:</strong> Modificador do atributo + bonus de proficiencia</p>
+                        <p class="small mb-2"><strong>Sucesso:</strong> Resultado ≥ AC do alvo</p>
+                        <p class="small mb-0"><strong>Exemplo:</strong> Ataque 15, AC do alvo 14 → Acerta!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-body">
+                        <h6 class="text-success">Calcular Dano</h6>
+                        <p class="small mb-2"><strong>Formula:</strong> Dado da arma + modificador</p>
+                        <p class="small mb-2"><strong>Corpo a corpo:</strong> Usa modificador de FOR</p>
+                        <p class="small mb-2"><strong>Distancia:</strong> Usa modificador de DES</p>
+                        <p class="small mb-0"><strong>Exemplo:</strong> Espada 1d8+3 → Rola 5 → 8 de dano total</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card bg-dark border-warning h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning">Critico (Natural 20)</h6>
+                        <p class="small mb-0">Se rolas 20 no d20, e critico automatico! Rola TODOS os dados de dano duas vezes e soma os modificadores normalmente.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-body">
+                        <h6 class="text-danger">Falha Critica (Natural 1)</h6>
+                        <p class="small mb-0">Se rolas 1 no d20, falhas automaticamente independente dos bonus. Podes descrever algo dramatico!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-secondary h-100">
+                    <div class="card-body">
+                        <h6>Inconsciente (0 HP)</h6>
+                        <p class="small mb-0">Quando chega a 0 HP, cai inconsciente. Faz salvaguardas de morte ou recebe cura. 3 sucessos = estabiliza. 3 falhas = morte.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="alert alert-warning">
             <i class="bi bi-lightbulb me-2"></i>
             <strong>Dica de Combate:</strong> Se o combate está muito difícil, reduz o HP dos monstros. Se está muito fácil, adiciona mais um monstro ou aumenta o dano.
         </div>
     </section>
 
-    <!-- 6. Impressão -->
+    <!-- 6. Puzzles e Enigmas -->
+    <section id="puzzles" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-puzzle me-2 text-warning"></i>6. Puzzles e Enigmas
+        </h2>
+
+        <p class="mb-4">
+            Puzzles sao desafios mentais que os jogadores resolvem usando raciocinio, criatividade e trabalho de equipa - nao rolando dados!
+            Sao otimos para variar o ritmo entre combates e exploração.
+        </p>
+
+        <h5>Quando Usar Puzzles</h5>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card bg-dark border-info h-100">
+                    <div class="card-body">
+                        <h6 class="text-info"><i class="bi bi-door-open me-2"></i>Portas e Barreiras</h6>
+                        <p class="small mb-0">Para bloquear progresso ate os jogadores descobrirem a solucao. Cria sensacao de conquista.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-body">
+                        <h6 class="text-success"><i class="bi bi-key me-2"></i>Tesouros e Segredos</h6>
+                        <p class="small mb-0">Esconder recompensas especiais atras de puzzles opcionais. Jogadores sentem-se espertos ao resolver.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-warning h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning"><i class="bi bi-hourglass-split me-2"></i>Variar o Ritmo</h6>
+                        <p class="small mb-0">Intercalar puzzles entre combates para dar descanso mental e mudar a energia da mesa.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mb-3">Tipos Comuns de Puzzles</h5>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="text-danger"><i class="bi bi-alphabet me-2"></i>Enigmas e Adivinhas</h6>
+                        <p class="small mb-2">Perguntas com resposta especifica. Classico e rapido.</p>
+                        <p class="small text-light opacity-75 mb-0"><strong>Exemplo:</strong> "Vivo sem respirar, frio como a morte, nunca com sede mas sempre a beber. Quem sou eu?" (Resposta: Peixe)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="text-info"><i class="bi bi-gear me-2"></i>Puzzles Mecanicos</h6>
+                        <p class="small mb-2">Alavancas, rodas, placas de pressao que devem ser ativadas na ordem certa.</p>
+                        <p class="small text-light opacity-75 mb-0"><strong>Exemplo:</strong> 4 estatuas devem apontar para direcoes especificas baseadas em pistas na sala.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="text-success"><i class="bi bi-key me-2"></i>Puzzles de Padroes</h6>
+                        <p class="small mb-2">Encontrar a sequencia ou logica que conecta elementos.</p>
+                        <p class="small text-light opacity-75 mb-0"><strong>Exemplo:</strong> Numeros numa parede (2, 4, 8, 16, ?) - dobram cada vez. Resposta: 32</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning"><i class="bi bi-search me-2"></i>Puzzles de Observacao</h6>
+                        <p class="small mb-2">Detalhes escondidos na descricao da sala que dao pistas.</p>
+                        <p class="small text-light opacity-75 mb-0"><strong>Exemplo:</strong> Livros numa estante soletram uma palavra com as primeiras letras dos titulos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h6 class="text-warning mb-3"><i class="bi bi-stars me-2"></i>Exemplo Pratico: Puzzle da Porta das Estatuas</h6>
+
+        <div class="card bg-secondary mb-4">
+            <div class="card-body">
+                <p class="text-warning mb-3"><strong>Situação:</strong> O grupo encontra uma porta fechada numa sala com 4 estatuas de animais.</p>
+
+                <div class="mb-4">
+                    <h6 class="text-info"><i class="bi bi-eye me-1"></i>1. Apresentar o Puzzle</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>DM:</strong> "Entram numa sala circular de pedra. No centro ha uma porta de bronze sem macaneta nem fechadura.
+                        Nas quatro paredes veem estatuas de pedra: um Leao a Este, uma Aguia a Sul, um Urso a Oeste, e um Peixe a Norte.
+                        Cada estatua esta num pedestal que pode rodar."</p>
+
+                        <p class="mb-2"><strong>Jogador:</strong> "Tento empurrar a porta."</p>
+
+                        <p class="mb-2"><strong>DM:</strong> "A porta nao se move. Esta selada magicamente. Nao ha nenhum mecanismo visivel para a abrir."</p>
+
+                        <p class="mb-0 text-info"><em>Dica DM: Deixa os jogadores saberem que ha algo para resolver. Nao escondas o puzzle.</em></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="bi bi-search me-1"></i>2. Dar Pistas</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>Jogador:</strong> "Examino as estatuas mais de perto."</p>
+
+                        <p class="mb-2"><strong>DM:</strong> "No pedestal do Leao esta gravado: 'Rei dos ceus'.
+                        No Urso: 'Senhor das terras'. Na Aguia: 'Guardiao das aguas'. No Peixe: 'Principe das alturas'."</p>
+
+                        <p class="mb-2"><strong>Jogador:</strong> "Espera... isso nao esta certo! As descricoes estao trocadas!"</p>
+
+                        <p class="mb-2"><strong>DM:</strong> "Exatamente! Percebes que as inscricoes nao correspondem aos animais."</p>
+
+                        <p class="mb-0 text-info"><em>Dica DM: Se os jogadores estao bloqueados, da pistas gradualmente. Podes pedir testes de Investigação para revelar detalhes.</em></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-warning"><i class="bi bi-lightbulb me-1"></i>3. Permitir Tentativas</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>Jogador:</strong> "Vou rodar a estatua da Aguia para apontar para o Leao!"</p>
+
+                        <p class="mb-2"><strong>DM:</strong> "A estatua range mas roda facilmente. Agora a Aguia aponta para o Leao."</p>
+
+                        <p class="mb-2"><strong>Jogador:</strong> "Hmm... 'Rei dos ceus' seria a Aguia. 'Guardiao das aguas' seria o Peixe.
+                        'Senhor das terras' seria o Leao. E 'Principe das alturas'... deve ser o Urso? Nao, isso nao faz sentido..."</p>
+
+                        <p class="mb-2"><strong>Outro Jogador:</strong> "Espera! 'Principe das alturas' - a Aguia voa! Cada estatua deve apontar para o animal
+                        que corresponde a sua inscricao!"</p>
+
+                        <p class="mb-0 text-info"><em>Dica DM: Deixa os jogadores discutirem e tentarem. Nao apresses. A descoberta e a melhor parte!</em></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="bi bi-gear-fill me-1"></i>4. Resolver o Puzzle</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>Jogadores rodam as estatuas:</strong></p>
+                        <ul class="mb-2">
+                            <li>Leao ("Rei dos ceus") → aponta para Aguia</li>
+                            <li>Aguia ("Senhor das terras") → aponta para Leao</li>
+                            <li>Urso ("Guardiao das aguas") → aponta para Peixe</li>
+                            <li>Peixe ("Principe das alturas") → aponta para Aguia</li>
+                        </ul>
+
+                        <p class="mb-2"><strong>DM:</strong> "Quando rodas a ultima estatua para a posicao correta, ouvem um 'clique' profundo.
+                        Linhas de luz azul percorrem as paredes, conectando as estatuas. A porta de bronze brilha e lentamente abre-se,
+                        revelando um corredor escuro la dentro."</p>
+
+                        <p class="mb-0 text-success"><em>Recompensa: Os jogadores sentem-se inteligentes! Podes dar XP ou permitir descanso curto aqui.</em></p>
+                    </div>
+                </div>
+
+                <div class="alert alert-info mb-0">
+                    <h6 class="text-info"><i class="bi bi-trophy me-2"></i>Licoes do Puzzle</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>Duracao:</strong> Este puzzle levou cerca de 10-15 minutos de jogo</li>
+                        <li><strong>Pistas:</strong> As inscricoes trocadas eram a pista principal</li>
+                        <li><strong>Solucao:</strong> Logica simples - corresponder descricoes aos animais certos</li>
+                        <li><strong>Falha:</strong> Nao ha "falha" - so tentam ate acertarem (ou desistem e tentam outro caminho)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mb-3">Dicas para Criar e Conduzir Puzzles</h5>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-header border-success">
+                        <h6 class="mb-0 text-success"><i class="bi bi-check-circle me-2"></i>Fazer</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="small mb-0">
+                            <li class="mb-2"><strong>Multiplas pistas</strong> - Nunca uma unica pista. Se perdem, estao bloqueados.</li>
+                            <li class="mb-2"><strong>Solucao logica</strong> - Deve fazer sentido quando descobrem a resposta.</li>
+                            <li class="mb-2"><strong>Permite tentativas</strong> - Puzzles nao devem ter "falhas". So tentam ate acertar.</li>
+                            <li class="mb-2"><strong>Testa previamente</strong> - Resolve o puzzle tu proprio antes da sessao.</li>
+                            <li class="mb-2"><strong>Pistas graduais</strong> - Se estao presos ha 10 minutos, da uma pista extra.</li>
+                            <li class="mb-2"><strong>Testes de habilidade</strong> - Permite Investigação/Percepcao para revelar pistas.</li>
+                            <li class="mb-0"><strong>Plano B</strong> - Sempre tem caminho alternativo se nao conseguirem resolver.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-header border-danger">
+                        <h6 class="mb-0 text-danger"><i class="bi bi-x-circle me-2"></i>Evitar</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="small mb-0">
+                            <li class="mb-2"><strong>Conhecimento obscuro</strong> - "Qual e o quarto rei de Gondor?" - ninguem sabe!</li>
+                            <li class="mb-2"><strong>Matematica complexa</strong> - Equacoes dificeis nao sao divertidas para todos.</li>
+                            <li class="mb-2"><strong>Uma unica solucao</strong> - Se alguem sugere outra logica valida, aceita!</li>
+                            <li class="mb-2"><strong>Punir tentativas</strong> - "Erraste, levas dano" frustra os jogadores.</li>
+                            <li class="mb-2"><strong>Demasiado simples</strong> - "A senha esta escrita na porta" nao e puzzle.</li>
+                            <li class="mb-2"><strong>Demasiado dificil</strong> - Se ninguem resolve em 20 minutos, simplifica.</li>
+                            <li class="mb-0"><strong>Bloquear tudo</strong> - Nunca tornes um puzzle obrigatorio sem alternativa.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-dark border-info mb-4">
+            <div class="card-header border-info">
+                <h6 class="mb-0 text-info"><i class="bi bi-tools me-2"></i>Sistema de Pistas Graduais (Se estiverem presos)</h6>
+            </div>
+            <div class="card-body">
+                <ol class="mb-0 small">
+                    <li class="mb-2"><strong>5 minutos:</strong> Deixa-os tentar e discutir livremente</li>
+                    <li class="mb-2"><strong>10 minutos:</strong> "Fazendo um teste de Investigação, notas que..." (pista subtil)</li>
+                    <li class="mb-2"><strong>15 minutos:</strong> "O personagem mais inteligente percebe que..." (pista media)</li>
+                    <li class="mb-2"><strong>20 minutos:</strong> "Claramente, as inscricoes nao correspondem aos animais..." (pista obvia)</li>
+                    <li class="mb-0"><strong>25+ minutos:</strong> Oferece caminho alternativo ou praticamente da a resposta</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="alert alert-warning">
+            <i class="bi bi-lightbulb me-2"></i>
+            <strong>Regra de Ouro dos Puzzles:</strong> O objetivo e os jogadores sentirem-se espertos, nao sentirem-se estupidos.
+            Se ninguem esta a divertir-se, simplifica ou segue em frente.
+        </div>
+    </section>
+
+    <!-- 7. Tempo, Movimento e Posicionamento -->
+    <section id="tempo-movimento" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-clock-history me-2 text-success"></i>7. Tempo, Movimento e Posicionamento
+        </h2>
+
+        <p class="mb-4">
+            Gerir o tempo e o espaco e essencial para criar tensao, manter o ritmo e tomar decisoes tacticas.
+            Nao precisas de ser ultra-preciso - apenas o suficiente para que tudo faca sentido.
+        </p>
+
+        <h5>Escalas de Tempo em D&D</h5>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-body text-center">
+                        <h1 class="text-danger mb-2">6s</h1>
+                        <h6 class="text-danger">Ronda (Combate)</h6>
+                        <p class="small mb-0">Um turno de cada participante. Ataques, magias, movimento.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-dark border-warning h-100">
+                    <div class="card-body text-center">
+                        <h1 class="text-warning mb-2">10min</h1>
+                        <h6 class="text-warning">Turno (Exploração)</h6>
+                        <p class="small mb-0">Explorar uma sala, procurar armadilhas, descanso rapido.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-dark border-info h-100">
+                    <div class="card-body text-center">
+                        <h1 class="text-info mb-2">1h</h1>
+                        <h6 class="text-info">Hora (Viagem)</h6>
+                        <p class="small mb-0">Descanso curto, viagem entre locais, rituais.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-body text-center">
+                        <h1 class="text-success mb-2">8h</h1>
+                        <h6 class="text-success">Dia (Descanso)</h6>
+                        <p class="small mb-0">Descanso longo, viagem entre cidades, tempo morto.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mb-3">Velocidades de Movimento</h5>
+
+        <div class="card bg-secondary mb-4">
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4 mb-3">
+                        <h6 class="text-danger">Em Combate (por turno)</h6>
+                        <p class="mb-1"><strong>Humano normal:</strong> 9 metros</p>
+                        <p class="mb-1"><strong>Anao:</strong> 7.5 metros</p>
+                        <p class="mb-1"><strong>Elfo da Floresta:</strong> 10.5 metros</p>
+                        <p class="mb-0"><strong>Dash (ação):</strong> Dobra movimento</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h6 class="text-warning">Em Exploração (por hora)</h6>
+                        <p class="mb-1"><strong>Passo normal:</strong> 5 km/h</p>
+                        <p class="mb-1"><strong>Passo rapido:</strong> 6.5 km/h (-5 Percepcao Passiva)</p>
+                        <p class="mb-1"><strong>Passo lento:</strong> 3 km/h (pode usar Furtividade)</p>
+                        <p class="mb-0"><strong>Terreno dificil:</strong> Metade da velocidade</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h6 class="text-info">Viagem (por dia)</h6>
+                        <p class="mb-1"><strong>8 horas a pe:</strong> 40 km</p>
+                        <p class="mb-1"><strong>A cavalo:</strong> 50-80 km</p>
+                        <p class="mb-1"><strong>Carruagem:</strong> 40-50 km</p>
+                        <p class="mb-0"><strong>Terreno dificil:</strong> Metade da distancia</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h6 class="text-warning mb-3"><i class="bi bi-stars me-2"></i>Exemplo Pratico: Explorando a Masmorra</h6>
+
+        <div class="card bg-secondary mb-4">
+            <div class="card-body">
+                <p class="text-warning mb-3"><strong>Situação:</strong> O grupo acabou de derrotar goblins e quer explorar a masmorra.</p>
+
+                <div class="mb-4">
+                    <h6 class="text-info"><i class="bi bi-map me-1"></i>Turno 1 - Sala dos Goblins (10 minutos)</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>DM:</strong> "O combate acabou. Que fazem?"</p>
+                        <p class="mb-2"><strong>Jogadores:</strong> "Queremos procurar tesouros e pistas!"</p>
+                        <p class="mb-2"><strong>DM:</strong> "OK, isso leva cerca de 10 minutos. Rolam testes de Investigação."</p>
+                        <p class="mb-2"><em>Jogadores rolam: 18, 12, 15, 9</em></p>
+                        <p class="mb-2"><strong>DM:</strong> "Encontram 23 peças de ouro, duas tochas, e um mapa rabiscado da masmorra.
+                        Thorin, com 18, notas que ha sangue fresco num corredor a norte - alguem passou aqui recentemente."</p>
+                        <p class="mb-0 text-info"><em>Tempo decorrido: 10 minutos. Marca na tua folha ou mental.</em></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="bi bi-door-open me-1"></i>Turno 2 - Corredor Norte (10 minutos)</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>DM:</strong> "Seguem o corredor? E um tunel de pedra de 15 metros, escuro."</p>
+                        <p class="mb-2"><strong>Jogadores:</strong> "Sim, mas vamos devagar e com cuidado. Lyra acende uma tocha."</p>
+                        <p class="mb-2"><strong>DM:</strong> "Avancam em passo cauteloso. Thorin, estas a frente - rola Percepcao."</p>
+                        <p class="mb-2"><em>Thorin rola: 8 + 1 = 9</em></p>
+                        <p class="mb-2"><strong>DM:</strong> "Nao notas nada de especial. Chegam ao fim do corredor. Ha uma porta de madeira a esquerda
+                        e o corredor continua em frente. Ouvem sons distantes... agua a pingar?"</p>
+                        <p class="mb-0 text-info"><em>Tempo decorrido: 20 minutos (10+10). Exploração cautelosa.</em></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-warning"><i class="bi bi-hourglass-split me-1"></i>Turno 3 - Porta Trancada (10 minutos)</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>Jogadores:</strong> "Queremos abrir a porta. Esta trancada?"</p>
+                        <p class="mb-2"><strong>DM:</strong> "Sim, tem uma fechadura. Lyra, queres tentar?"</p>
+                        <p class="mb-2"><strong>Lyra:</strong> "Vou tentar arrombar com Ferramentas de Ladrão." <em>Rola: 14 + 3 = 17</em></p>
+                        <p class="mb-2"><strong>DM:</strong> "Levas uns 5 minutos mas consegues. A porta abre com um rangido.
+                        La dentro e uma pequena sala com caixotes empilhados."</p>
+                        <p class="mb-2"><strong>Jogadores:</strong> "Procuramos os caixotes!"</p>
+                        <p class="mb-2"><strong>DM:</strong> "Levam mais 5 minutos. Encontram racoes, cordas, e uma pocao vermelha."</p>
+                        <p class="mb-0 text-info"><em>Tempo decorrido: 30 minutos total. Tochas duram 1 hora, ainda tens 30 min.</em></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-danger"><i class="bi bi-exclamation-triangle me-1"></i>Turno 4 - Armadilha! (Instantaneo)</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>DM:</strong> "Voltam ao corredor principal e continuam em frente. Thorin, rola Percepcao."</p>
+                        <p class="mb-2"><em>Thorin rola: 19 + 1 = 20!</em></p>
+                        <p class="mb-2"><strong>DM:</strong> "Paras bruscamente! No chao, quase invisivel, ha um fio esticado a 10 cm do chao.
+                        E uma armadilha! Que fazem?"</p>
+                        <p class="mb-2"><strong>Jogadores:</strong> "Conseguimos desativar?"</p>
+                        <p class="mb-2"><strong>DM:</strong> "Lyra pode tentar com Ferramentas de Ladrão. CD 12."</p>
+                        <p class="mb-2"><em>Lyra rola: 15 + 3 = 18 - Sucesso!</em></p>
+                        <p class="mb-2"><strong>DM:</strong> "Cortas o fio com cuidado. Levou 5 minutos mas esta seguro."</p>
+                        <p class="mb-0 text-info"><em>Tempo decorrido: 35 minutos. Sempre que fazem algo, considera quanto tempo leva.</em></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="bi bi-cup-hot me-1"></i>Turno 5 - Descanso Curto (1 hora)</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>Jogadores:</strong> "Thorin esta com pouco HP. Podemos descansar?"</p>
+                        <p class="mb-2"><strong>DM:</strong> "Sim, mas descanso curto leva 1 hora. Onde querem descansar?"</p>
+                        <p class="mb-2"><strong>Jogadores:</strong> "Voltamos para a sala dos caixotes e trancamos a porta."</p>
+                        <p class="mb-2"><strong>DM:</strong> "OK. Durante a hora, nada acontece. Thorin, podes gastar Dados de Vida para recuperar HP."</p>
+                        <p class="mb-2"><em>Thorin gasta 1 Dado de Vida (1d10+2): rola 7+2 = 9 HP recuperados!</em></p>
+                        <p class="mb-2"><strong>DM:</strong> "Thorin recupera de 7 HP para 16 HP. A tocha de Lyra apagou-se. Acendem outra?"</p>
+                        <p class="mb-0 text-info"><em>Tempo total: 1 hora e 35 minutos desde o combate. Recursos (tochas, magias) vao-se esgotando!</em></p>
+                    </div>
+                </div>
+
+                <div class="alert alert-success mb-0">
+                    <h6 class="text-success"><i class="bi bi-trophy me-2"></i>Licoes de Gestao de Tempo</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>Exploracao:</strong> Cada sala/corredor = ~10 minutos</li>
+                        <li><strong>Procurar/Investigar:</strong> 5-10 minutos por area</li>
+                        <li><strong>Arrombar fechaduras:</strong> 1-10 minutos conforme dificuldade</li>
+                        <li><strong>Descanso curto:</strong> Exatamente 1 hora</li>
+                        <li><strong>Recursos limitados:</strong> Tochas (1h), magias, Dados de Vida criam tensao</li>
+                        <li><strong>Nao sejas exato:</strong> "Cerca de 10 minutos" e suficiente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mb-3">Distancias e Posicionamento</h5>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-info h-100">
+                    <div class="card-header border-info">
+                        <h6 class="mb-0 text-info"><i class="bi bi-rulers me-2"></i>Distancias Comuns</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="small mb-0">
+                            <li class="mb-2"><strong>1.5m:</strong> Alcance arma corpo a corpo normal (espada)</li>
+                            <li class="mb-2"><strong>3m:</strong> Alcance arma longa (lanca, alabarda)</li>
+                            <li class="mb-2"><strong>9m:</strong> Distancia de movimento padrao por turno</li>
+                            <li class="mb-2"><strong>18m:</strong> Alcance de muitas magias (Missel Magico)</li>
+                            <li class="mb-2"><strong>36m:</strong> Alcance arco curto</li>
+                            <li class="mb-2"><strong>45m:</strong> Alcance arco longo (normal)</li>
+                            <li class="mb-0"><strong>180m:</strong> Alcance arco longo (maximo, com desvantagem)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-header border-success">
+                        <h6 class="mb-0 text-success"><i class="bi bi-grid-3x3 me-2"></i>Sistema de Zonas (Simples)</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="small mb-2">Nao precisas de grelha! Usa zonas mentais:</p>
+                        <ul class="small mb-0">
+                            <li class="mb-2"><strong>Perto:</strong> 1.5m - Corpo a corpo</li>
+                            <li class="mb-2"><strong>Proximo:</strong> 3-10m - Uma acao de movimento</li>
+                            <li class="mb-2"><strong>Longe:</strong> 10-30m - Alcance de magias</li>
+                            <li class="mb-2"><strong>Muito longe:</strong> 30m+ - Alcance de arcos</li>
+                        </ul>
+                        <p class="small text-light opacity-75 mb-0 mt-2">
+                            <strong>Exemplo:</strong> "O goblin esta Proximo" = pode mover e atacar no mesmo turno
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h6 class="text-warning mb-3"><i class="bi bi-stars me-2"></i>Exemplo: Rastreamento de Posicao em Combate</h6>
+
+        <div class="card bg-secondary mb-4">
+            <div class="card-body">
+                <p class="text-warning mb-3"><strong>Situação:</strong> Grupo de 3 jogadores enfrenta 4 goblins numa sala de 12m x 12m.</p>
+
+                <div class="small">
+                    <h6 class="text-info mb-2"><i class="bi bi-map me-1"></i>Setup Inicial (Mental ou Teatro da Mente)</h6>
+                    <p class="mb-2"><strong>DM:</strong> "A sala tem 12 metros de largura. Ha uma porta ao norte (por onde entraram) e
+                    uma ao sul. Quatro goblins estao no centro da sala, cerca de 10 metros a vossa frente."</p>
+
+                    <p class="mb-3"><strong>Posicoes Iniciais:</strong></p>
+                    <ul class="mb-3">
+                        <li>Thorin (guerreiro) - Na frente, junto a porta norte - <span class="text-success">PERTO da entrada</span></li>
+                        <li>Lyra (maga) - Atras de Thorin, 3m atras - <span class="text-success">PROXIMO da entrada</span></li>
+                        <li>Aldric (clerigo) - Ao lado de Lyra - <span class="text-success">PROXIMO da entrada</span></li>
+                        <li>4 Goblins - Centro da sala - <span class="text-warning">LONGE (10m dos jogadores)</span></li>
+                    </ul>
+
+                    <h6 class="text-success mb-2">Ronda 1 - Movimento e Posicionamento</h6>
+                    <p class="mb-2"><strong>Thorin (Iniciativa 18):</strong> "Avanço e ataco o goblin mais proximo!"</p>
+                    <p class="mb-2"><strong>DM:</strong> "Moves 9 metros (o teu movimento) e chegas aos goblins. Estas agora corpo a corpo com dois deles.
+                    Qual atacas?"</p>
+                    <p class="mb-2"><em>Nova posicao: Thorin esta PERTO de Goblins 1 e 2</em></p>
+
+                    <p class="mb-2"><strong>Goblin 1 (Iniciativa 15):</strong></p>
+                    <p class="mb-2"><strong>DM:</strong> "O goblin ao pe de Thorin ataca-o com a cimitarra." <em>Ataque normal, estao corpo a corpo</em></p>
+
+                    <p class="mb-2"><strong>Lyra (Iniciativa 12):</strong> "Quero lancar Missel Magico! A que distancia estao os goblins de mim?"</p>
+                    <p class="mb-2"><strong>DM:</strong> "Estas a cerca de 6-7 metros. Bem dentro do alcance de 18m da magia. Podes atingir qualquer um."</p>
+                    <p class="mb-2"><strong>Lyra:</strong> "Ataco o Goblin 3, o que esta longe do Thorin!"</p>
+
+                    <p class="mb-2"><strong>Goblin 2 (Iniciativa 10):</strong></p>
+                    <p class="mb-2"><strong>DM:</strong> "Este goblin quer atacar Lyra com o arco. Mas Thorin esta ao pe dele - se se mexer, Thorin
+                    pode fazer Ataque de Oportunidade."</p>
+                    <p class="mb-2"><strong>DM:</strong> "O goblin decide atacar Thorin com corpo a corpo em vez de arriscar."</p>
+                    <p class="mb-2 text-info"><em>Posicionamento importa! Estar "perto" de inimigos impede movimento livre.</em></p>
+
+                    <p class="mb-2"><strong>Aldric (Iniciativa 9):</strong> "Quero curar Thorin, mas sem entrar em combate corpo a corpo!"</p>
+                    <p class="mb-2"><strong>DM:</strong> "Palavra Curativa tem alcance de 18m e nao requer contacto. Podes ficar onde estas e lancar."</p>
+                    <p class="mb-2"><em>Aldric fica PROXIMO mas seguro, a 6-7m dos goblins</em></p>
+
+                    <h6 class="text-primary mb-2 mt-3">Ronda 2 - Reposicionamento Tatico</h6>
+                    <p class="mb-2"><strong>Thorin:</strong> "Estou a levar muito dano! Vou recuar 9 metros."</p>
+                    <p class="mb-2"><strong>DM:</strong> "Espera - estas corpo a corpo com dois goblins. Se te afastares sem Desengajar,
+                    eles podem fazer Ataques de Oportunidade!"</p>
+                    <p class="mb-2"><strong>Thorin:</strong> "OK, uso a acao Desengajar e depois recuo."</p>
+                    <p class="mb-2"><strong>DM:</strong> "Recuas com seguranca. Agora estas a 9 metros dos goblins, junto com Lyra e Aldric."</p>
+                    <p class="mb-2 text-info"><em>Movimento tatico: Gastar acao para recuar com seguranca.</em></p>
+
+                    <p class="mb-2"><strong>Goblin 3:</strong> "O goblin com o arco ve Thorin recuar. Agora tem linha de visao clara!"</p>
+                    <p class="mb-2"><strong>DM:</strong> "Ele ataca Thorin a distancia..." <em>Rola ataque</em></p>
+                </div>
+
+                <div class="alert alert-info mb-0 mt-3">
+                    <h6 class="text-info"><i class="bi bi-lightbulb me-2"></i>Principios de Posicionamento</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>Nao precisa ser exato</strong> - "Perto", "Proximo", "Longe" e suficiente</li>
+                        <li><strong>Corpo a corpo = Perto</strong> - Impede movimento livre (Ataques de Oportunidade)</li>
+                        <li><strong>Linha de visao</strong> - Aliados a frente podem bloquear ataques a distancia</li>
+                        <li><strong>Alcance de magias</strong> - A maioria 18-36m, verifica antes de lancar</li>
+                        <li><strong>Desengajar</strong> - Gasta acao mas evita Ataques de Oportunidade</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mb-3">Dicas Praticas para Gerir Tempo e Espaco</h5>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-header border-success">
+                        <h6 class="mb-0 text-success"><i class="bi bi-check-circle me-2"></i>Fazer</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="small mb-0">
+                            <li class="mb-2"><strong>Usa estimativas</strong> - "Cerca de 10 minutos", "Mais ou menos 15 metros"</li>
+                            <li class="mb-2"><strong>Marca recursos limitados</strong> - Tochas, magias com duracao, comida</li>
+                            <li class="mb-2"><strong>Teatro da mente</strong> - Descreve posicoes com palavras, nao precisas de grelha</li>
+                            <li class="mb-2"><strong>Pergunta aos jogadores</strong> - "Onde estas exatamente?" ajuda todos a visualizar</li>
+                            <li class="mb-2"><strong>Usa marcos visuais</strong> - "Estas ao pe da estatua", "Atras do pilar"</li>
+                            <li class="mb-2"><strong>Recompensa planeamento</strong> - Posicao tatica deve dar vantagens</li>
+                            <li class="mb-0"><strong>Cria pressao temporal</strong> - "Ouvem passos a aproximar..." aumenta tensao</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-header border-danger">
+                        <h6 class="mb-0 text-danger"><i class="bi bi-x-circle me-2"></i>Evitar</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="small mb-0">
+                            <li class="mb-2"><strong>Precisao obsessiva</strong> - "Estas a 8.3 metros" mata o ritmo</li>
+                            <li class="mb-2"><strong>Esquecer o tempo</strong> - Tochas/magias duram para sempre = sem tensao</li>
+                            <li class="mb-2"><strong>Posicoes confusas</strong> - Se ninguem sabe onde esta, para e clarifica</li>
+                            <li class="mb-2"><strong>Ignorar movimento</strong> - Deixar todos moverem-se livremente sem consequencias</li>
+                            <li class="mb-2"><strong>Negar criatividade</strong> - "Nao podes fazer isso" vs "Como farias isso?"</li>
+                            <li class="mb-2"><strong>Surpresas injustas</strong> - "Ah, esqueci-me de dizer que..." frustra</li>
+                            <li class="mb-0"><strong>Demasiado detalhe</strong> - Foco na diversao, nao na simulacao perfeita</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-dark border-warning mb-4">
+            <div class="card-header border-warning">
+                <h6 class="mb-0 text-warning"><i class="bi bi-tools me-2"></i>Ferramentas Opcionais</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-info">Se Queres Mais Precisao:</h6>
+                        <ul class="small mb-0">
+                            <li>Grelha de batalha (quadrados de 1.5m)</li>
+                            <li>Miniaturas ou tokens</li>
+                            <li>Folha de rastreamento de tempo</li>
+                            <li>Mapa desenhado da masmorra</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-success">Se Queres Mais Simplicidade:</h6>
+                        <ul class="small mb-0">
+                            <li>Sistema de zonas (Perto/Proximo/Longe)</li>
+                            <li>Teatro da mente puro</li>
+                            <li>Rastreamento mental aproximado</li>
+                            <li>Focar em narrativa > mecanica</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-success">
+            <i class="bi bi-lightbulb me-2"></i>
+            <strong>Regra de Ouro:</strong> Gere tempo e espaco ao nivel necessario para manter a tensao e clareza, mas nao mais.
+            Se toda a gente entende o que esta a acontecer e esta a divertir-se, estas a fazer bem.
+        </div>
+    </section>
+
+    <!-- 8. Impressão -->
     <section id="impressao" class="mb-5">
         <h2 class="border-bottom border-danger pb-2 mb-4">
-            <i class="bi bi-printer me-2 text-secondary"></i>6. Impressão de Materiais
+            <i class="bi bi-printer me-2 text-secondary"></i>8. Impressão de Materiais
         </h2>
 
         <div class="row g-3">
@@ -295,17 +1056,17 @@
                     <div class="card-body">
                         <h6><i class="bi bi-map me-2"></i>Mapa da Aventura</h6>
                         <p class="small">Mapa visual para ajudar na navegação da dungeon.</p>
-                        <span class="text-muted small">Disponível na página da aventura</span>
+                        <span class="text-light opacity-75 small">Disponível na página da aventura</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 7. Criar Aventuras -->
+    <!-- 9. Criar Aventuras -->
     <section id="aventuras" class="mb-5">
         <h2 class="border-bottom border-danger pb-2 mb-4">
-            <i class="bi bi-book me-2 text-warning"></i>7. Criar Novas Aventuras
+            <i class="bi bi-book me-2 text-warning"></i>9. Criar Novas Aventuras
         </h2>
 
         <p>As aventuras são ficheiros JSON na pasta <code>app/data/quests/</code>. Para criar uma nova:</p>
@@ -335,10 +1096,10 @@
         </div>
     </section>
 
-    <!-- 8. Dicas -->
+    <!-- 10. Dicas -->
     <section id="dicas" class="mb-5">
         <h2 class="border-bottom border-danger pb-2 mb-4">
-            <i class="bi bi-stars me-2 text-info"></i>8. Dicas para Novos Mestres
+            <i class="bi bi-stars me-2 text-info"></i>10. Dicas para Novos Mestres
         </h2>
 
         <div class="row g-4">
@@ -385,6 +1146,78 @@
                 <h5 class="text-warning"><i class="bi bi-chat-quote me-2"></i>Lembra-te:</h5>
                 <p class="lead mb-0 fst-italic">"A regra mais importante de D&D é que todos se divirtam. Se uma regra está a atrapalhar a diversão, ignora-a."</p>
             </div>
+        </div>
+    </section>
+
+    <!-- 11. Acronimos e Glossario -->
+    <section id="glossario" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-book me-2 text-primary"></i>11. Acronimos e Glossario
+        </h2>
+
+        <p class="mb-4">
+            Encontras-te perdido com as abreviaturas e termos de D&D? Temos um glossario completo com todas as siglas e conceitos essenciais!
+        </p>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card bg-dark border-info h-100">
+                    <div class="card-body">
+                        <h6 class="text-info"><i class="bi bi-alphabet me-2"></i>Acronimos Basicos</h6>
+                        <ul class="small mb-0">
+                            <li><strong>DM</strong> - Dungeon Master / Mestre</li>
+                            <li><strong>PC</strong> - Personagem do Jogador</li>
+                            <li><strong>NPC</strong> - Personagem Nao-Jogador</li>
+                            <li><strong>HP</strong> - Pontos de Vida</li>
+                            <li><strong>AC</strong> - Classe de Armadura</li>
+                            <li><strong>CD</strong> - Classe de Dificuldade</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-body">
+                        <h6 class="text-success"><i class="bi bi-person-badge me-2"></i>Atributos</h6>
+                        <ul class="small mb-0">
+                            <li><strong>FOR</strong> - Forca</li>
+                            <li><strong>DES</strong> - Destreza</li>
+                            <li><strong>CON</strong> - Constituicao</li>
+                            <li><strong>INT</strong> - Inteligencia</li>
+                            <li><strong>SAB</strong> - Sabedoria</li>
+                            <li><strong>CAR</strong> - Carisma</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-warning h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning"><i class="bi bi-shield-shaded me-2"></i>Combate</h6>
+                        <ul class="small mb-0">
+                            <li><strong>CR</strong> - Nivel de Desafio</li>
+                            <li><strong>XP</strong> - Pontos de Experiencia</li>
+                            <li><strong>AO</strong> - Ataque de Oportunidade</li>
+                            <li><strong>AB</strong> - Acao Bonus</li>
+                            <li><strong>Init.</strong> - Iniciativa</li>
+                            <li><strong>DV</strong> - Dado de Vida</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <i class="bi bi-book-half me-2"></i>
+            <strong>Glossario Completo:</strong> Visita a pagina de
+            <a href="{{ url_for('glossary.index') }}" class="alert-link">Glossario</a>
+            para ver todos os termos, definicoes detalhadas e exemplos praticos. Podes pesquisar qualquer termo ou navegar por categorias!
+        </div>
+
+        <div class="text-center">
+            <a href="{{ url_for('glossary.index') }}" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-book me-2"></i>Ver Glossario Completo
+            </a>
         </div>
     </section>
 

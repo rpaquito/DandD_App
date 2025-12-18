@@ -1,0 +1,156 @@
+{% extends "builder/wizard_base.html" %}
+
+{% block step_subtitle %}Passo 2: Escolhe a tua Classe{% endblock %}
+
+{% block step_content %}
+<div class="card bg-dark border-secondary mb-4">
+    <div class="card-header border-secondary">
+        <h4 class="mb-0"><i class="bi bi-shield me-2"></i>Escolher Classe</h4>
+    </div>
+    <div class="card-body">
+        <p class="text-muted mb-4">A tua classe define as tuas habilidades de combate, magias e estilo de jogo.</p>
+
+        <div class="row g-3">
+            {% for cls in classes %}
+            <div class="col-lg-4 col-md-6">
+                <label class="selection-card card bg-secondary h-100">
+                    <input type="radio" name="classe_id" value="{{ cls.id }}"
+                           {% if builder_data.get('classe_id') == cls.id %}checked{% endif %}>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">{{ cls.nome }}</h5>
+                            <span class="badge bg-danger">{{ cls.dado_vida }}</span>
+                        </div>
+                        <p class="card-text small text-muted">{{ cls.descricao }}</p>
+
+                        <!-- HP e Atributo Principal -->
+                        <div class="mb-2">
+                            <span class="badge bg-success">HP {{ cls.hp_nivel_1 }}</span>
+                            <span class="badge bg-info">{{ cls.atributo_principal|capitalize }}</span>
+                            {% if cls.magias %}
+                            <span class="badge bg-purple" style="background: #6f42c1;"><i class="bi bi-stars"></i> Magia</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Salvaguardas -->
+                        <div class="small mb-2">
+                            <span class="text-muted">Saves:</span>
+                            {% for save in cls.salvaguardas %}
+                            <span class="badge bg-dark">{{ save[:3] }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Caracteristicas de Nivel 1 -->
+                        <div class="small">
+                            <span class="text-muted">Nivel 1:</span>
+                            {% for carac in cls.caracteristicas_nivel_1 %}
+                            <span class="badge bg-warning text-dark me-1">{{ carac.nome }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Opcoes de Classe - Pre-renderizadas e ocultas -->
+{% for cls in classes %}
+    {% if cls.dominios %}
+    <div id="options-{{ cls.id }}" class="card bg-dark border-info mb-4 class-options" style="display: none;">
+        <div class="card-header border-info">
+            <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Dominio Divino</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3">Escolhe o teu dominio:</p>
+            <div class="row g-2">
+                {% for dominio in cls.dominios %}
+                <div class="col-md-4">
+                    <label class="selection-card card bg-secondary h-100">
+                        <input type="radio" name="dominio_id" value="{{ dominio.id }}">
+                        <div class="card-body py-2">
+                            <h6 class="mb-1">{{ dominio.nome }}</h6>
+                            <small class="text-muted">{{ dominio.descricao[:80] }}...</small>
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if cls.estilos_luta %}
+    <div id="options-{{ cls.id }}" class="card bg-dark border-info mb-4 class-options" style="display: none;">
+        <div class="card-header border-info">
+            <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Estilo de Luta</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-3">Escolhe o teu estilo de luta:</p>
+            <div class="row g-2">
+                {% for estilo in cls.estilos_luta %}
+                <div class="col-md-4">
+                    <label class="selection-card card bg-secondary h-100">
+                        <input type="radio" name="estilo_id" value="{{ estilo.id }}">
+                        <div class="card-body py-2">
+                            <h6 class="mb-1">{{ estilo.nome }}</h6>
+                            <small class="text-muted">{{ estilo.descricao }}</small>
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
+
+<!-- Dica -->
+<div class="alert alert-info">
+    <i class="bi bi-lightbulb me-2"></i>
+    <strong>Dica para iniciantes:</strong>
+    <ul class="mb-0 small mt-2">
+        <li><strong>Guerreiro</strong> - Simples e eficaz, bom para aprender combate</li>
+        <li><strong>Clerigo</strong> - Cura e combate, util para o grupo</li>
+        <li><strong>Ladino</strong> - Versatil, muitas pericias, bom para exploracao</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block wizard_js %}
+<script>
+// Show/hide class options based on selection
+document.querySelectorAll('input[name="classe_id"]').forEach(input => {
+    input.addEventListener('change', function() {
+        // Hide all class options
+        document.querySelectorAll('.class-options').forEach(opt => {
+            opt.style.display = 'none';
+        });
+
+        // Show options for selected class
+        const optionsDiv = document.getElementById('options-' + this.value);
+        if (optionsDiv) {
+            optionsDiv.style.display = 'block';
+        }
+    });
+});
+
+// Trigger for pre-selected class
+const selectedClass = document.querySelector('input[name="classe_id"]:checked');
+if (selectedClass) {
+    selectedClass.dispatchEvent(new Event('change'));
+}
+
+// Handle selection cards in options
+document.querySelectorAll('.class-options .selection-card').forEach(card => {
+    card.addEventListener('click', function() {
+        const parent = this.closest('.row');
+        parent.querySelectorAll('.selection-card').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+        const radio = this.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+    });
+});
+</script>
+{% endblock %}

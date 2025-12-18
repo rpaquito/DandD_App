@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Definir Iniciativa - Combate{% endblock %}
+
+{% block extra_css %}
+<style>
+    .initiative-card {
+        transition: transform 0.2s;
+    }
+    .initiative-card:hover {
+        transform: translateY(-2px);
+    }
+    .dice-btn {
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .dice-btn:hover {
+        transform: scale(1.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Cabecalho -->
+    <div class="row mb-4">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('quest.list_quests') }}">Aventuras</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('quest.step', quest_id=quest.id, step_id=step.id, session_id=game_session.id) }}">{{ quest.titulo }}</a></li>
+                    <li class="breadcrumb-item active">Iniciativa</li>
+                </ol>
+            </nav>
+            <h1><i class="bi bi-shield-shaded text-danger me-2"></i>Definir Iniciativa</h1>
+            <p class="text-muted">Lanca d20 + modificador de Destreza para cada participante</p>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form action="{{ url_for('quest.confirm_combat', quest_id=quest.id, step_id=step.id) }}" method="POST" id="initiativeForm">
+        <input type="hidden" name="session_id" value="{{ game_session.id }}">
+
+        <div class="row g-3">
+            {% for participant in participants %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-dark border-{{ 'success' if participant.tipo == 'jogador' else 'danger' }} initiative-card">
+                    <div class="card-body">
+                        <!-- Hidden fields -->
+                        <input type="hidden" name="participant_{{ loop.index0 }}_id" value="{{ participant.id }}">
+                        <input type="hidden" name="participant_{{ loop.index0 }}_nome" value="{{ participant.nome }}">
+                        <input type="hidden" name="participant_{{ loop.index0 }}_tipo" value="{{ participant.tipo }}">
+                        <input type="hidden" name="participant_{{ loop.index0 }}_hp_max" value="{{ participant.hp_max }}">
+                        <input type="hidden" name="participant_{{ loop.index0 }}_hp_atual" value="{{ participant.hp_atual }}">
+                        <input type="hidden" name="participant_{{ loop.index0 }}_ac" value="{{ participant.ac }}">
+
+                        <!-- Header -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h5 class="mb-0 text-light">{{ participant.nome }}</h5>
+                                <small class="text-light opacity-75">
+                                    {% if participant.tipo == 'jogador' %}
+                                    <i class="bi bi-person-fill text-success"></i> Jogador
+                                    {% else %}
+                                    <i class="bi bi-bug-fill text-danger"></i> Monstro
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-info">AC {{ participant.ac }}</span>
+                                <small class="d-block text-light opacity-75">HP {{ participant.hp_max }}</small>
+                            </div>
+                        </div>
+
+                        <!-- Initiative Input -->
+                        <div class="mb-2">
+                            <label class="form-label small text-light">Iniciativa</label>
+                            <div class="input-group">
+                                <button type="button" class="btn btn-outline-danger dice-btn"
+                                        onclick="rollInitiative({{ loop.index0 }}, {{ participant.destreza_mod }})">
+                                    <i class="bi bi-dice-6"></i> d20
+                                </button>
+                                <input type="number" class="form-control bg-dark text-light border-secondary text-center"
+                                       name="participant_{{ loop.index0 }}_iniciativa"
+                                       id="init_{{ loop.index0 }}"
+                                       value="0" min="0" max="50" required>
+                                <span class="input-group-text bg-secondary border-secondary text-light">
+                                    <small>+{{ participant.destreza_mod }}</small>
+                                </span>
+                            </div>
+                            <small class="text-light opacity-75">Lancar d20 + {{ participant.destreza_mod }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Acoes -->
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=step.id, session_id=game_session.id) }}"
+               class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Cancelar
+            </a>
+            <button type="button" class="btn btn-outline-warning" onclick="rollAllInitiative()">
+                <i class="bi bi-dice-5 me-1"></i>Lancar Tudo
+            </button>
+            <button type="submit" class="btn btn-danger btn-lg">
+                <i class="bi bi-play-fill me-1"></i>Iniciar Combate
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function rollInitiative(index, modifier) {
+    // Lancar d20
+    var roll = Math.floor(Math.random() * 20) + 1;
+    var total = roll + modifier;
+
+    // Atualizar campo
+    var input = document.getElementById('init_' + index);
+    input.value = total;
+
+    // Feedback visual
+    input.classList.add('border-warning');
+    setTimeout(function() {
+        input.classList.remove('border-warning');
+    }, 500);
+}
+
+// Lancamento automatico para todos
+function rollAllInitiative() {
+    var cards = document.querySelectorAll('.initiative-card');
+    cards.forEach(function(card, index) {
+        var modSpan = card.querySelector('.input-group-text small');
+        var modifier = parseInt(modSpan.textContent.replace('+', '')) || 0;
+        setTimeout(function() {
+            rollInitiative(index, modifier);
+        }, index * 100);
+    });
+}
+</script>
+{% endblock %}
