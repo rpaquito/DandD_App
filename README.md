@@ -48,9 +48,24 @@ Uma aplicação web local para ajudar novos Mestres de Dungeon a conduzir aventu
 - Mapas de aventura
 - Fichas de monstros (em desenvolvimento)
 
+### Rastreamento de Tempo (4 Sistemas)
+- **Tempo de Sessão**: Cronómetro real-world com start/pause
+- **Rondas de Combate**: 6 segundos por ronda (D&D 5e)
+- **Turnos de Exploração**: 10 minutos por turno
+- **Tempo no Jogo**: Hora do dia, dias decorridos, rastreamento de descansos
+
+### Mapas Tácticos Interactivos
+- Grelha visual com drag-and-drop de entidades
+- Posicionamento de jogadores, NPCs e monstros
+- Tamanho de grelha variável por passo (10x10, 20x20, etc.)
+- Filtros de visibilidade por tipo de entidade
+- Suporte para imagens de fundo
+- Cada quadrado = 1.5m (5 pés D&D)
+
 ### Ferramentas Auxiliares
 - Rolador de dados virtual (d4 a d20)
 - Página de ajuda completa
+- Glossário de termos D&D
 - Interface totalmente em português
 
 ---
@@ -114,10 +129,49 @@ http://localhost:5001
 
 ### Durante a Sessão
 
+**Navegação e Combate:**
 - **Navegação**: Usar botões "Anterior/Próximo" ou barra lateral
 - **Combate**: Abrir rastreador, adicionar participantes, ordenar por iniciativa
 - **HP**: Usar botões +/- para dano e cura
 - **Dados**: Clicar no botão "Dados" no menu para rolar dados virtuais
+
+**Gestão de Tempo** (Painel da Sessão):
+1. **Iniciar Cronómetro**: Clicar em "Iniciar" no painel de tempo
+   - O cronómetro corre automaticamente
+   - Pausar quando houver intervalo
+   - Tempo total acumula mesmo entre sessões
+
+2. **Avançar Tempo no Jogo**:
+   - Usar botões rápidos: +10min, +1h, +8h, +1 dia
+   - Tempo avança automaticamente durante exploração e combate
+
+3. **Registar Descansos**:
+   - Descanso Curto: 1 hora (restaurar alguns recursos)
+   - Descanso Longo: 8 horas (restaurar HP e recursos completos)
+
+**Mapas Tácticos** (Passos de Combate):
+1. **Ver Mapa**: Aparece automaticamente em passos com combate quando há sessão activa
+
+2. **Mover Entidades**:
+   - Arrastar tokens no mapa
+   - Posições sincronizam automaticamente com a base de dados
+   - Outros dispositivos veem mudanças após refresh
+
+3. **Filtros de Visibilidade**:
+   - **Jogadores** (verde): Mostrar/esconder party
+   - **NPCs** (azul): Mostrar/esconder aliados e neutrals
+   - **Monstros** (vermelho): Esconder até revelar aos jogadores
+
+4. **Informação de Distâncias**:
+   - Cada quadrado = 1.5m (5 pés D&D)
+   - Movimento normal = 6 quadrados (9 metros)
+   - Distância de alcance de magia típica = 10-20 quadrados
+
+5. **Dicas de Uso**:
+   - Esconder monstros no início (botão vermelho)
+   - Revelar quando jogadores os vêem
+   - Usar para calcular movimento e alcance de ataques
+   - Deixar posições para próxima sessão (persistem automaticamente)
 
 ---
 
@@ -250,6 +304,27 @@ As aventuras são ficheiros JSON na pasta `app/data/quests/`. Para criar uma nov
       "taticas": "Esqueletos são agressivos mas não estratégicos. Atacam o inimigo mais próximo."
     }
   },
+  "mapa_overview": {
+    "grid_largura": 30,
+    "grid_altura": 20,
+    "imagem_fundo": "/static/maps/cripta-overview.png",
+    "locais": [
+      {
+        "id": "entrada",
+        "nome": "Entrada da Cripta",
+        "x": 5,
+        "y": 10,
+        "passos_associados": [1]
+      },
+      {
+        "id": "corredor",
+        "nome": "Corredor Principal",
+        "x": 15,
+        "y": 10,
+        "passos_associados": [2, 3]
+      }
+    ]
+  },
   "mapas": [
     {
       "nome": "Mapa da Cripta",
@@ -268,6 +343,52 @@ As aventuras são ficheiros JSON na pasta `app/data/quests/`. Para criar uma nov
 | `puzzle` | Enigmas e armadilhas | Portas trancadas, charadas |
 | `social` | Interações com NPCs | Negociações, interrogatórios |
 
+### Mapas Tácticos em Passos
+
+Para adicionar um mapa táctico a um passo específico (especialmente combates), adiciona o campo `mapa_tatico`:
+
+```json
+{
+  "id": 2,
+  "titulo": "Encontro de Combate",
+  "tipo": "combate",
+  "mapa_tatico": {
+    "grid_largura": 15,
+    "grid_altura": 15,
+    "metros_por_quadrado": 1.5,
+    "imagem_fundo": "/static/maps/sala-combate.png",
+    "posicoes_iniciais": {
+      "jogadores": [
+        {"indice": 0, "x": 2, "y": 7},
+        {"indice": 1, "x": 3, "y": 7},
+        {"indice": 2, "x": 2, "y": 8},
+        {"indice": 3, "x": 3, "y": 8}
+      ],
+      "monstros": [
+        {"id": "esqueleto", "instancia": 0, "x": 12, "y": 7},
+        {"id": "esqueleto", "instancia": 1, "x": 12, "y": 8}
+      ],
+      "npcs": []
+    },
+    "terreno": [
+      {"tipo": "arvore", "x": 7, "y": 7, "bloqueante": true},
+      {"tipo": "pedra", "x": 8, "y": 9, "bloqueante": false}
+    ]
+  }
+}
+```
+
+**Campos do Mapa Táctico:**
+- `grid_largura`: Número de quadrados horizontal (recomendado: 10-20)
+- `grid_altura`: Número de quadrados vertical
+- `metros_por_quadrado`: Tamanho de cada quadrado em metros (padrão: 1.5m = 5 pés D&D)
+- `imagem_fundo`: Caminho para imagem de fundo (opcional)
+- `posicoes_iniciais`: Posições de partida para jogadores, monstros e NPCs
+  - `jogadores`: Array com índice (0=primeiro jogador) e coordenadas x,y
+  - `monstros`: Array com id do monstro, instancia (para múltiplos do mesmo tipo) e coordenadas
+  - `npcs`: Array com id do NPC e coordenadas
+- `terreno`: Elementos de terreno (árvores, pedras, móveis, etc.)
+
 ### Boas Práticas
 
 1. **Texto para Jogadores**: Escreve na segunda pessoa ("Vocês veem...") e usa linguagem evocativa
@@ -275,6 +396,8 @@ As aventuras são ficheiros JSON na pasta `app/data/quests/`. Para criar uma nov
 3. **Dicas de Improvisação**: Antecipa perguntas comuns dos jogadores
 4. **Múltiplos Caminhos**: Usa `proximos_passos` com várias opções quando apropriado
 5. **Monstros Equilibrados**: Para nível 1, usa CR 1/4 a 1/2 máximo
+6. **Mapas Tácticos**: Usa grelhas 10x10 para salas pequenas, 15x15 para médias, 20x20 para grandes
+7. **Posições Iniciais**: Coloca jogadores juntos (party) e monstros a distância interessante (não demasiado perto)
 
 ---
 

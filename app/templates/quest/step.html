@@ -226,6 +226,33 @@
             </div>
             {% endif %}
 
+            <!-- Mapa Tactico (se configurado no step) -->
+            {% if step.mapa_tatico and game_session %}
+            <div class="card bg-dark border-warning mb-4">
+                <div class="card-header border-warning d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-map me-2"></i>Mapa Tactico</h5>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-success" id="toggle-players" onclick="toggleEntityFilter('showPlayers')">
+                            <i class="bi bi-person-fill"></i> Jogadores
+                        </button>
+                        <button type="button" class="btn btn-outline-info" id="toggle-npcs" onclick="toggleEntityFilter('showNPCs')">
+                            <i class="bi bi-people"></i> NPCs
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" id="toggle-monsters" onclick="toggleEntityFilter('showMonsters')">
+                            <i class="bi bi-bug-fill"></i> Monstros
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body text-center">
+                    <canvas id="tacticalMap" style="max-width: 100%; border: 2px solid #666; border-radius: 4px;"></canvas>
+                    <small class="text-muted d-block mt-2">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Arrasta entidades para mover. Cada quadrado = {{ step.mapa_tatico.metros_por_quadrado }}m ({{ (step.mapa_tatico.metros_por_quadrado / 1.5 * 5)|int }} pes)
+                    </small>
+                </div>
+            </div>
+            {% endif %}
+
             <!-- Navegação entre Passos -->
             <div class="d-flex justify-content-between mt-4">
                 {% if step_id > 1 %}
@@ -252,6 +279,103 @@
 
         <!-- Painel Lateral - Contexto -->
         <div class="col-lg-3">
+            {% if game_session %}
+            <!-- Progresso da Quest -->
+            <div class="card bg-dark border-success mb-4">
+                <div class="card-header border-success">
+                    <h6 class="mb-0"><i class="bi bi-flag me-2"></i>Progresso da Aventura</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <small class="text-muted">Passo {{ step_id }} de {{ quest.passos|length }}</small>
+                        <small class="text-success">{{ ((step_id / quest.passos|length) * 100)|int }}%</small>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-success" style="width: {{ ((step_id / quest.passos|length) * 100)|int }}%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestão de Tempo -->
+            <div class="card bg-dark border-info mb-4 no-print">
+                <div class="card-header border-info">
+                    <h6 class="mb-0"><i class="bi bi-clock me-2"></i>Gestão de Tempo</h6>
+                </div>
+                <div class="card-body">
+                    <!-- Tempo de Sessão -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <small class="text-muted">
+                                <i class="bi bi-stopwatch me-1"></i>Duração
+                            </small>
+                            <div id="session-controls"></div>
+                        </div>
+                        <h5 class="mb-0" id="session-duration">0h 0m</h5>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <!-- Tempo de Combate -->
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">
+                            <i class="bi bi-shield-shaded me-1 text-danger"></i>Combate
+                        </small>
+                        <p class="mb-0 small" id="combat-time">-</p>
+                    </div>
+
+                    <!-- Turnos de Exploração -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="text-muted">
+                                <i class="bi bi-compass me-1 text-warning"></i>Exploração
+                            </small>
+                            <p class="mb-0 small" id="exploration-turns">0</p>
+                        </div>
+                        <div id="exploration-controls"></div>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <!-- Tempo no Jogo -->
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">
+                            <i class="bi bi-sun me-1 text-info"></i>Tempo no Jogo
+                        </small>
+                        <h6 class="mb-2" id="game-time">Dia 1, 08:00</h6>
+                        <div id="game-time-controls" class="mb-2"></div>
+                        <div id="rest-controls"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estado da Sessão -->
+            <div class="card bg-dark border-secondary mb-4 no-print">
+                <div class="card-header border-secondary">
+                    <h6 class="mb-0"><i class="bi bi-gear me-2"></i>Estado da Sessão</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('session.update_state', session_id=game_session.id) }}" method="post">
+                        <div class="d-grid gap-2">
+                            <button type="submit" name="estado" value="activa" class="btn btn-sm {% if game_session.estado == 'activa' %}btn-success{% else %}btn-outline-success{% endif %}">
+                                <i class="bi bi-play-circle me-1"></i>Activa
+                            </button>
+                            <button type="submit" name="estado" value="pausada" class="btn btn-sm {% if game_session.estado == 'pausada' %}btn-warning{% else %}btn-outline-warning{% endif %}">
+                                <i class="bi bi-pause-circle me-1"></i>Pausada
+                            </button>
+                            <button type="submit" name="estado" value="terminada" class="btn btn-sm {% if game_session.estado == 'terminada' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
+                                <i class="bi bi-stop-circle me-1"></i>Terminada
+                            </button>
+                        </div>
+                    </form>
+                    <div class="mt-2">
+                        <a href="{{ url_for('session.dashboard', session_id=game_session.id) }}" class="btn btn-sm btn-outline-info w-100">
+                            <i class="bi bi-speedometer2 me-1"></i>Painel da Sessão
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             <!-- NPCs Presentes -->
             {% set npcs_presentes = quest.get_npcs_for_step(step) %}
             {% if npcs_presentes %}
@@ -323,13 +447,6 @@
                         </button>
                     </form>
                     <small class="text-light opacity-75">Adiciona automaticamente todos os monstros e {{ players|length }} jogadores</small>
-                    {% else %}
-                    <a href="{{ url_for('combat.tracker') }}" class="btn btn-danger w-100" target="_blank">
-                        <i class="bi bi-box-arrow-up-right me-1"></i>Abrir Rastreador
-                    </a>
-                    <small class="text-light opacity-75 d-block mt-2">
-                        <i class="bi bi-info-circle me-1"></i>Inicia uma sessao para auto-popular
-                    </small>
                     {% endif %}
                 </div>
             </div>
@@ -339,12 +456,18 @@
 </div>
 
 {% block extra_js %}
+<script src="{{ url_for('static', filename='js/map-grid.js') }}"></script>
+{% if game_session %}
+<script src="{{ url_for('static', filename='js/time-tracker.js') }}"></script>
+{% endif %}
 <script>
+{% if game_session %}
 function adicionarAoCombate(nome, hp, ac) {
-    // Abrir rastreador de combate com dados pre-preenchidos
-    const url = '{{ url_for("combat.tracker") }}?add=' + encodeURIComponent(nome) + '&hp=' + hp + '&ac=' + ac;
+    // Abrir rastreador de combate da sessao
+    const url = '{{ url_for("combat.session_tracker", session_id=game_session.id) }}';
     window.open(url, '_blank');
 }
+{% endif %}
 
 {% if game_session %}
 function updateHp(playerId, action, amount) {
@@ -391,6 +514,162 @@ function updateHp(playerId, action, amount) {
         }
     });
 }
+{% endif %}
+
+// ===== Inicializar Mapa Tactico =====
+{% if step.mapa_tatico and game_session %}
+let mapGrid;
+
+// Inicializar mapa quando pagina carrega
+document.addEventListener('DOMContentLoaded', function() {
+    mapGrid = new MapGrid('tacticalMap', {
+        gridWidth: {{ step.mapa_tatico.grid_largura }},
+        gridHeight: {{ step.mapa_tatico.grid_altura }},
+        squareSizeMeters: {{ step.mapa_tatico.metros_por_quadrado }},
+        cellSize: 40,
+        backgroundImage: {% if step.mapa_tatico.imagem_fundo %}'{{ step.mapa_tatico.imagem_fundo }}'{% else %}null{% endif %}
+    });
+
+    // Carregar posicoes do servidor
+    fetch('/mapa/sessao/{{ game_session.id }}/passo/{{ step_id }}/posicoes')
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            if (data.positions && data.positions.length > 0) {
+                mapGrid.loadEntities(data.positions);
+            } else {
+                // Se nao houver posicoes, inicializar com posicoes padrao
+                inicializarMapaPadrao();
+            }
+        })
+        .catch(function(error) {
+            console.error('Erro ao carregar posicoes:', error);
+            inicializarMapaPadrao();
+        });
+
+    // Callback: Sincronizar movimento ao servidor
+    mapGrid.onEntityMoved = function(entity) {
+        fetch('/mapa/sessao/{{ game_session.id }}/passo/{{ step_id }}/mover', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                entity_id: entity.entity_id,
+                x: entity.grid_x,
+                y: entity.grid_y
+            })
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            console.log('Posicao actualizada:', data);
+        })
+        .catch(function(error) {
+            console.error('Erro ao actualizar posicao:', error);
+        });
+    };
+
+    // Callback: Mostrar info da entidade
+    mapGrid.onEntitySelected = function(entity) {
+        console.log('Entidade seleccionada:', entity);
+    };
+});
+
+// Funcao para inicializar mapa com posicoes padrao
+function inicializarMapaPadrao() {
+    {% if step.mapa_tatico.posicoes_iniciais %}
+    const initialPositions = {{ step.mapa_tatico.posicoes_iniciais|tojson }};
+
+    fetch('/mapa/sessao/{{ game_session.id }}/passo/{{ step_id }}/inicializar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            map_config: {
+                grid_largura: {{ step.mapa_tatico.grid_largura }},
+                grid_altura: {{ step.mapa_tatico.grid_altura }},
+                metros_por_quadrado: {{ step.mapa_tatico.metros_por_quadrado }},
+                imagem_fundo: {% if step.mapa_tatico.imagem_fundo %}'{{ step.mapa_tatico.imagem_fundo }}'{% else %}null{% endif %}
+            },
+            initial_positions: initialPositions
+        })
+    })
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+        console.log('Mapa inicializado:', data);
+        if (data.positions) {
+            mapGrid.loadEntities(data.positions);
+        }
+    })
+    .catch(function(error) {
+        console.error('Erro ao inicializar mapa:', error);
+    });
+    {% endif %}
+}
+
+// Toggle de filtros de entidades
+function toggleEntityFilter(filterName) {
+    if (mapGrid) {
+        const currentValue = mapGrid.filters[filterName];
+        mapGrid.setFilter(filterName, !currentValue);
+
+        // Atualizar estado visual dos botoes
+        const button = document.getElementById('toggle-' + filterName.replace('show', '').toLowerCase());
+        if (button) {
+            if (mapGrid.filters[filterName]) {
+                button.classList.remove('btn-outline-success', 'btn-outline-info', 'btn-outline-danger');
+                if (filterName === 'showPlayers') button.classList.add('btn-success');
+                else if (filterName === 'showNPCs') button.classList.add('btn-info');
+                else button.classList.add('btn-danger');
+            } else {
+                button.classList.remove('btn-success', 'btn-info', 'btn-danger');
+                if (filterName === 'showPlayers') button.classList.add('btn-outline-success');
+                else if (filterName === 'showNPCs') button.classList.add('btn-outline-info');
+                else button.classList.add('btn-outline-danger');
+            }
+        }
+    }
+}
+
+// Inicializar estado dos botoes de filtro
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[id^="toggle-"]').forEach(function(button) {
+        button.classList.remove('btn-outline-success', 'btn-outline-info', 'btn-outline-danger');
+        if (button.id === 'toggle-players') button.classList.add('btn-success');
+        else if (button.id === 'toggle-npcs') button.classList.add('btn-info');
+        else button.classList.add('btn-danger');
+    });
+});
+{% endif %}
+
+// ===== Inicializar TimeTracker =====
+{% if game_session %}
+// Inicializar TimeTracker
+const timeTracker = new TimeTracker({{ game_session.id }}, {
+    autoUpdate: true,
+    updateInterval: 1000,
+    onError: (error) => {
+        console.error('Erro no tracker de tempo:', error);
+    }
+});
+
+// Configurar elementos DOM
+timeTracker.setElements({
+    sessionDuration: 'session-duration',
+    combatTime: 'combat-time',
+    explorationTurns: 'exploration-turns',
+    gameTime: 'game-time'
+});
+
+// Criar controles
+const controls = new TimeControlsBuilder(timeTracker);
+controls.createStartPauseButton('session-controls');
+controls.createExplorationButton('exploration-controls');
+controls.createGameTimeButtons('game-time-controls');
+controls.createRestButtons('rest-controls');
+
+// Fazer update inicial
+timeTracker.update();
 {% endif %}
 </script>
 {% endblock %}

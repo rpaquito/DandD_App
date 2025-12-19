@@ -104,7 +104,28 @@
       "npcs": [],
       "monstros": ["esqueleto", "esqueleto", "esqueleto", "esqueleto"],
       "proximos_passos": [7],
-      "recompensas": ["100 peças de ouro antigas", "Poção de Cura"]
+      "recompensas": ["100 peças de ouro antigas", "Poção de Cura"],
+      "mapa_tatico": {
+        "grid_largura": 12,
+        "grid_altura": 12,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {"indice": 0, "x": 2, "y": 6},
+            {"indice": 1, "x": 3, "y": 6},
+            {"indice": 2, "x": 2, "y": 7},
+            {"indice": 3, "x": 3, "y": 7}
+          ],
+          "monstros": [
+            {"id": "esqueleto", "instancia": 0, "x": 9, "y": 3},
+            {"id": "esqueleto", "instancia": 1, "x": 9, "y": 9},
+            {"id": "esqueleto", "instancia": 2, "x": 6, "y": 2},
+            {"id": "esqueleto", "instancia": 3, "x": 6, "y": 10}
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 7,
@@ -172,7 +193,25 @@
       "npcs": [],
       "monstros": ["cavaleiro_fantasma"],
       "proximos_passos": [11],
-      "recompensas": []
+      "recompensas": [],
+      "mapa_tatico": {
+        "grid_largura": 16,
+        "grid_altura": 14,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {"indice": 0, "x": 2, "y": 6},
+            {"indice": 1, "x": 3, "y": 6},
+            {"indice": 2, "x": 2, "y": 7},
+            {"indice": 3, "x": 3, "y": 7}
+          ],
+          "monstros": [
+            {"id": "cavaleiro_fantasma", "instancia": 0, "x": 13, "y": 7}
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 11,

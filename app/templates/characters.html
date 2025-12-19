@@ -309,10 +309,8 @@
 
 {% block extra_js %}
 <script>
-function adicionarAoCombate(nome, hp, ac) {
-    const url = '{{ url_for("combat.tracker") }}?add=' + encodeURIComponent(nome) + '&hp=' + hp + '&ac=' + ac;
-    window.open(url, '_blank');
-}
+// Note: Combat tracker requires an active session
+// Use session-based quest viewing to add characters to combat
 
 function viewCharacterDetails(charId) {
     // TODO: Implement character details modal or redirect to detail page

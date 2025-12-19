@@ -3,10 +3,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
 from app.services.session_service import SessionService, load_character_templates, get_saved_characters
 from app.services.quest_loader import QuestLoader
+from app.services.time_service import TimeTrackingService
 
 session_bp = Blueprint('session', __name__, url_prefix='/sessao')
 session_service = SessionService()
 quest_loader = QuestLoader()
+time_service = TimeTrackingService()
 
 
 @session_bp.route('/')
@@ -301,3 +303,83 @@ def update_state(session_id):
         flash(f'Estado da sessao atualizado para: {estado}', 'success')
 
     return redirect(url_for('session.dashboard', session_id=session_id))
+
+
+# ===== RASTREAMENTO DE TEMPO (API) =====
+
+@session_bp.route('/<int:session_id>/tempo/iniciar', methods=['POST'])
+def start_timer(session_id):
+    """Iniciar cronometro da sessao."""
+    if time_service.start_session_timer(session_id):
+        return jsonify({'success': True})
+    return jsonify({'error': 'Sessao nao encontrada'}), 404
+
+
+@session_bp.route('/<int:session_id>/tempo/pausar', methods=['POST'])
+def pause_timer(session_id):
+    """Pausar cronometro da sessao."""
+    total = time_service.pause_session_timer(session_id)
+    if total >= 0:
+        return jsonify({'success': True, 'total_seconds': total})
+    return jsonify({'error': 'Sessao nao encontrada'}), 404
+
+
+@session_bp.route('/<int:session_id>/tempo/status')
+def get_time_status(session_id):
+    """Obter estado completo de todos os sistemas de tempo."""
+    status = time_service.get_all_time_status(session_id)
+    return jsonify(status)
+
+
+@session_bp.route('/<int:session_id>/tempo/avancar', methods=['POST'])
+def advance_time(session_id):
+    """Avancar tempo no jogo."""
+    data = request.get_json() or {}
+    minutes = data.get('minutes', 0)
+    hours = data.get('hours', 0)
+    days = data.get('days', 0)
+
+    result = time_service.advance_game_time(session_id, minutes=minutes, hours=hours, days=days)
+    if result:
+        return jsonify(result)
+
+    return jsonify({'error': 'Sessao nao encontrada'}), 404
+
+
+@session_bp.route('/<int:session_id>/tempo/definir', methods=['POST'])
+def set_time(session_id):
+    """Definir tempo no jogo manualmente."""
+    data = request.get_json() or {}
+    dia = data.get('dia', 1)
+    hora = data.get('hora', '08:00')
+
+    if time_service.set_game_time(session_id, dia, hora):
+        return jsonify(time_service.get_game_time(session_id))
+
+    return jsonify({'error': 'Formato de hora invalido ou sessao nao encontrada'}), 400
+
+
+@session_bp.route('/<int:session_id>/tempo/descanso', methods=['POST'])
+def register_rest(session_id):
+    """Registar descanso (curto ou longo)."""
+    data = request.get_json() or {}
+    rest_type = data.get('tipo', 'curto')  # 'curto' ou 'longo'
+
+    result = time_service.register_rest(session_id, rest_type)
+    if result:
+        return jsonify(result)
+
+    return jsonify({'error': 'Tipo de descanso invalido ou sessao nao encontrada'}), 400
+
+
+@session_bp.route('/<int:session_id>/tempo/exploracao/avancar', methods=['POST'])
+def advance_exploration(session_id):
+    """Avancar turnos de exploracao (10 minutos cada)."""
+    data = request.get_json() or {}
+    turns = data.get('turnos', 1)
+
+    total = time_service.advance_exploration_turn(session_id, turns)
+    return jsonify({
+        'turnos_total': total,
+        'tempo_jogo': time_service.get_game_time(session_id)
+    })

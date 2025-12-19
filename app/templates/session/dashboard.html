@@ -269,6 +269,65 @@
                 </div>
             </div>
 
+            <!-- Gestao de Tempo -->
+            <div class="card bg-dark border-info mb-4">
+                <div class="card-header border-info">
+                    <h5 class="mb-0"><i class="bi bi-clock me-2"></i>Gestao de Tempo</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Tempo de Sessao -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <small class="text-muted">
+                                <i class="bi bi-stopwatch me-1"></i>Duracao da Sessao
+                            </small>
+                            <div id="session-controls"></div>
+                        </div>
+                        <h4 class="mb-0" id="session-duration">0h 0m</h4>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <!-- Tempo de Combate -->
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">
+                            <i class="bi bi-shield-shaded me-1 text-danger"></i>Tempo de Combate
+                        </small>
+                        <p class="mb-0" id="combat-time">-</p>
+                    </div>
+
+                    <!-- Turnos de Exploracao -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="text-muted">
+                                <i class="bi bi-compass me-1 text-warning"></i>Turnos de Exploracao
+                            </small>
+                            <p class="mb-0" id="exploration-turns">0</p>
+                        </div>
+                        <div id="exploration-controls"></div>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <!-- Tempo no Jogo -->
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">
+                            <i class="bi bi-sun me-1 text-info"></i>Tempo no Jogo
+                        </small>
+                        <h5 class="mb-2" id="game-time">Dia 1, 08:00</h5>
+                        <div id="game-time-controls"></div>
+                    </div>
+
+                    <!-- Descansos -->
+                    <div>
+                        <small class="text-muted d-block mb-2">
+                            <i class="bi bi-moon-stars me-1"></i>Descansos
+                        </small>
+                        <div id="rest-controls"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Estado da Sessao -->
             <div class="card bg-dark border-secondary mb-4">
                 <div class="card-header border-secondary">
@@ -417,6 +476,7 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="{{ url_for('static', filename='js/time-tracker.js') }}"></script>
 <script>
 // Highlight selected template/quest cards
 document.querySelectorAll('.template-mini, #questModal .card').forEach(card => {
@@ -428,5 +488,35 @@ document.querySelectorAll('.template-mini, #questModal .card').forEach(card => {
         this.style.borderColor = '#28a745';
     });
 });
+
+// Inicializar TimeTracker
+const timeTracker = new TimeTracker({{ game_session.id }}, {
+    autoUpdate: true,
+    updateInterval: 1000,
+    onUpdate: (data) => {
+        console.log('Tempo actualizado:', data);
+    },
+    onError: (error) => {
+        console.error('Erro no tracker de tempo:', error);
+    }
+});
+
+// Configurar elementos DOM
+timeTracker.setElements({
+    sessionDuration: 'session-duration',
+    combatTime: 'combat-time',
+    explorationTurns: 'exploration-turns',
+    gameTime: 'game-time'
+});
+
+// Criar controles com TimeControlsBuilder
+const controls = new TimeControlsBuilder(timeTracker);
+controls.createStartPauseButton('session-controls');
+controls.createExplorationButton('exploration-controls');
+controls.createGameTimeButtons('game-time-controls');
+controls.createRestButtons('rest-controls');
+
+// Fazer update inicial
+timeTracker.update();
 </script>
 {% endblock %}

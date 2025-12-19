@@ -113,7 +113,8 @@ class QuestLoader:
                 monstros=step_data.get('monstros', []),
                 proximos_passos=step_data.get('proximos_passos', []),
                 tipo=step_data.get('tipo', 'narrativa'),
-                recompensas=step_data.get('recompensas', [])
+                recompensas=step_data.get('recompensas', []),
+                mapa_tatico=step_data.get('mapa_tatico')
             )
             passos.append(step)
 

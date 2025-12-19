@@ -29,6 +29,7 @@ class QuestStep:
     proximos_passos: list = field(default_factory=list)  # IDs dos passos seguintes
     tipo: str = "narrativa"  # narrativa, combate, puzzle, social
     recompensas: list = field(default_factory=list)
+    mapa_tatico: Optional[dict] = None  # Configuracao do mapa tatico (grid, posicoes iniciais)
 
 
 @dataclass

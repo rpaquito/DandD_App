@@ -26,11 +26,12 @@
                     <ul class="list-unstyled">
                         <li><a href="#combate" class="text-info">5. Rastreador de Combate</a></li>
                         <li><a href="#puzzles" class="text-info">6. Puzzles e Enigmas</a></li>
-                        <li><a href="#tempo-movimento" class="text-info">7. Tempo, Movimento e Posicionamento</a></li>
-                        <li><a href="#impressao" class="text-info">8. Impressão de Materiais</a></li>
-                        <li><a href="#aventuras" class="text-info">9. Criar Novas Aventuras</a></li>
-                        <li><a href="#dicas" class="text-info">10. Dicas para Novos Mestres</a></li>
-                        <li><a href="#glossario" class="text-info">11. Acronimos e Glossario</a></li>
+                        <li><a href="#social" class="text-info">7. Encontros Sociais</a></li>
+                        <li><a href="#tempo-movimento" class="text-info">8. Tempo, Movimento e Posicionamento</a></li>
+                        <li><a href="#impressao" class="text-info">9. Impressão de Materiais</a></li>
+                        <li><a href="#aventuras" class="text-info">10. Criar Novas Aventuras</a></li>
+                        <li><a href="#dicas" class="text-info">11. Dicas para Novos Mestres</a></li>
+                        <li><a href="#glossario" class="text-info">12. Acronimos e Glossario</a></li>
                     </ul>
                 </div>
             </div>
@@ -232,12 +233,16 @@
 
         <h5>Iniciar Combate</h5>
         <ol class="mb-4">
-            <li>Vai ao <a href="{{ url_for('combat.tracker') }}">Rastreador de Combate</a></li>
-            <li>Adiciona os monstros usando o formulário</li>
-            <li>Adiciona os jogadores (ou usa o botão na página de personagens)</li>
+            <li>Cria ou abre uma <strong>sessão activa</strong></li>
+            <li>Navega até um passo de combate na aventura</li>
+            <li>Clica em <strong>"Iniciar Combate"</strong> no painel lateral</li>
             <li>Define a iniciativa de cada participante</li>
-            <li>Clica em "Ordenar por Iniciativa"</li>
+            <li>O rastreador de combate abre automaticamente com todos os participantes</li>
         </ol>
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Nota:</strong> O rastreador de combate agora funciona apenas com sessões activas para melhor integração.
+        </div>
 
         <h5>Durante o Combate</h5>
         <div class="row mb-4">
@@ -671,10 +676,254 @@
         </div>
     </section>
 
-    <!-- 7. Tempo, Movimento e Posicionamento -->
+    <!-- 7. Encontros Sociais -->
+    <section id="social" class="mb-5">
+        <h2 class="border-bottom border-danger pb-2 mb-4">
+            <i class="bi bi-chat-dots me-2 text-info"></i>7. Encontros Sociais
+        </h2>
+
+        <p class="mb-4">
+            Encontros sociais sao interacoes com NPCs onde os jogadores usam palavras, personalidade e carisma em vez de espadas.
+            Sao momentos para roleplay brilhante, decisoes morais e avancar a historia sem violencia.
+        </p>
+
+        <h5>Tipos de Interacoes Sociais</h5>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-body">
+                        <h6 class="text-success"><i class="bi bi-heart me-2"></i>Persuasao</h6>
+                        <p class="small mb-0">Convencer alguem com logica, charme ou apelo emocional. "Por favor, ajuda-nos! Vidas dependem disto!"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-body">
+                        <h6 class="text-danger"><i class="bi bi-fire me-2"></i>Intimidacao</h6>
+                        <p class="small mb-0">Usar medo ou ameacas. "Conta-me o que sabes ou vais arrepender-te." Funciona mas cria inimigos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark border-warning h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning"><i class="bi bi-mask me-2"></i>Engano</h6>
+                        <p class="small mb-0">Mentir ou bluffar. "Claro que somos os guardas novos!" Arriscado se descoberto.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-info h-100">
+                    <div class="card-body">
+                        <h6 class="text-info"><i class="bi bi-eye me-2"></i>Intuicao (Insight)</h6>
+                        <p class="small mb-0">Ler emocoes, detectar mentiras, perceber intencoes. "Esse mercador esta a esconder algo?"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-primary h-100">
+                    <div class="card-body">
+                        <h6 class="text-primary"><i class="bi bi-people me-2"></i>Negociacao</h6>
+                        <p class="small mb-0">Fazer acordos, barganhar, compromissos. "E se eliminarmos os goblins em troca de informacao?"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mb-3">Como Resolver Interacoes Sociais</h5>
+
+        <div class="card bg-secondary mb-4">
+            <div class="card-body">
+                <h6 class="text-info mb-3"><i class="bi bi-list-ol me-2"></i>Processo Basico</h6>
+                <ol class="mb-0">
+                    <li class="mb-3">
+                        <strong>Roleplay primeiro:</strong> Deixa o jogador falar em personagem. O QUE dizem e COMO dizem importa!
+                    </li>
+                    <li class="mb-3">
+                        <strong>Decide a dificuldade (CD):</strong>
+                        <ul class="mt-2 small">
+                            <li>CD 5 (Muito Facil): Pedir ao taberneiro uma bebida</li>
+                            <li>CD 10 (Facil): Convencer o guarda a fechar os olhos</li>
+                            <li>CD 15 (Medio): Persuadir o mercador a baixar o preco 50%</li>
+                            <li>CD 20 (Dificil): Fazer um inimigo mudar de lado</li>
+                            <li>CD 25 (Muito Dificil): Convencer o dragao a nao atacar</li>
+                        </ul>
+                    </li>
+                    <li class="mb-3">
+                        <strong>Ajusta pela interpretacao:</strong> Bom roleplay = vantagem ou CD mais baixa. Argumento fraco = desvantagem.
+                    </li>
+                    <li class="mb-0">
+                        <strong>Pede o teste:</strong> "Faz um teste de Persuasao" → Jogador rola d20 + modificador de Carisma + bonus de pericia
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <h6 class="text-warning mb-3"><i class="bi bi-stars me-2"></i>Exemplo Pratico: Negociar com o Guarda</h6>
+        <div class="card bg-secondary mb-4">
+            <div class="card-body">
+                <p class="text-warning mb-3"><strong>Situacao:</strong> O grupo precisa de entrar no castelo, mas o guarda da porta nao os deixa passar sem autorizacao.</p>
+
+                <div class="mb-4">
+                    <h6 class="text-info"><i class="bi bi-1-circle me-1"></i>Fase 1: Estabelecer a Cena</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>DM:</strong> "A porta do castelo esta guardada por um soldado veterano de armadura pesada. Ele olha para voces com desconfianca. 'Alto ai! Ninguem entra sem ordem do capitao.' O que fazem?"</p>
+                        <p class="mb-0 text-info"><em>Deixa os jogadores pensarem e decidirem a abordagem.</em></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-success"><i class="bi bi-2-circle me-1"></i>Fase 2: Tentativa de Persuasao</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>Lyra (jogadora):</strong> "Boa tarde, senhor guarda! Somos aventureiros contratados pelo prefeito da aldeia vizinha. Ha relatos de actividade suspeita nas masmorras sob o castelo - monstros, barulhos estranhos. Viemos investigar antes que seja tarde demais!"</p>
+                        <p class="mb-2"><strong>DM (pensando):</strong> <em>"Bom argumento, menciona autoridade (prefeito) e perigo real. CD 15 de Persuasao - medio porque o guarda e rigoroso mas ela deu bom contexto."</em></p>
+                        <p class="mb-2"><strong>DM:</strong> "O guarda hesita um momento. Faz um teste de Persuasao."</p>
+                        <p class="mb-2"><strong>Lyra:</strong> Rola d20 (14) + Carisma +2 = <strong>16 - Sucesso!</strong></p>
+                        <p class="mb-0"><strong>DM:</strong> "O guarda franze o sobrolho mas acena com a cabeca. 'Masmorras, dizem? E... tenho ouvido barulhos estranhos a noite. Muito bem, podem entrar - MAS directo para as escadas das masmorras. Nada de perambular pelos saloes!' Ele abre a porta."</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-warning"><i class="bi bi-3-circle me-1"></i>Variante: Tentativa de Engano (Falha)</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>Thorin (jogador):</strong> "Eh... somos inspectores do reino! Viemos verificar as... eh... as condicoes das... portas?"</p>
+                        <p class="mb-2"><strong>DM (pensando):</strong> <em>"Mentira fraca, sem detalhes convincentes. CD 15 de Engano mas vou dar desvantagem porque a historia e vaga."</em></p>
+                        <p class="mb-2"><strong>DM:</strong> "Hm, inspectores? Faz um teste de Engano - com desvantagem porque a desculpa nao parece credivel."</p>
+                        <p class="mb-2"><strong>Thorin:</strong> Rola 2d20 (18 e 7), fica com o menor (7) + Carisma +0 = <strong>7 - Falha!</strong></p>
+                        <p class="mb-0"><strong>DM:</strong> "O guarda cruza os bracos e ri. 'Inspectores de portas? Achas que nasci ontem? Se quiserem entrar, ou trazem autorizacao oficial, ou dao meia-volta. AGORA.'"</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-danger"><i class="bi bi-4-circle me-1"></i>Variante: Intimidacao (Consequencias)</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>Grimbok (jogador, meio-orc):</strong> "Escuta bem, humano. Ou me deixas passar ou esta porta nao vai ser o unico problema que vais ter hoje." (mostra o machado)</p>
+                        <p class="mb-2"><strong>DM:</strong> "Faz um teste de Intimidacao."</p>
+                        <p class="mb-2"><strong>Grimbok:</strong> Rola d20 (16) + Carisma +1 = <strong>17 - Sucesso!</strong></p>
+                        <p class="mb-2"><strong>DM:</strong> "O guarda engole em seco e recua um passo. '...Esta bem, esta bem! Passem!' Deixa-vos entrar mas parece nervoso."</p>
+                        <p class="mb-0 text-danger"><em><strong>Consequencia:</strong> 10 minutos depois, o guarda alertou os colegas. Guardas extras estao a procura de "invasores perigosos". Intimidacao funciona mas cria problemas!</em></p>
+                    </div>
+                </div>
+
+                <div class="mb-0">
+                    <h6 class="text-primary"><i class="bi bi-5-circle me-1"></i>Fase 3: Informacao Extra (Insight)</h6>
+                    <div class="small">
+                        <p class="mb-2"><strong>Lyra:</strong> "DM, posso tentar perceber se o guarda sabe mais sobre os barulhos?"</p>
+                        <p class="mb-2"><strong>DM:</strong> "Otima ideia! Faz um teste de Intuicao (Insight)."</p>
+                        <p class="mb-2"><strong>Lyra:</strong> Rola d20 (12) + Sabedoria +3 = <strong>15</strong></p>
+                        <p class="mb-0"><strong>DM:</strong> "Percebes que o guarda parece genuinamente preocupado quando menciona os barulhos. Ele murmura: 'Ha tres noites que ninguem consegue dormir no quartel oeste... o capitao diz que nao e nada, mas eu ouvi gritos...'"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mb-3">Regras Importantes</h5>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-info h-100">
+                    <div class="card-body">
+                        <h6 class="text-info"><i class="bi bi-shield-check me-2"></i>Impossivel vs Muito Dificil</h6>
+                        <p class="small mb-0">Algumas coisas sao IMPOSSIVEIS sem roleplay. Nao podes convencer o dragao a dar-te o tesouro todo com um 20 natural. Podes convence-lo a deixar-te vivo... talvez.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-warning h-100">
+                    <div class="card-body">
+                        <h6 class="text-warning"><i class="bi bi-arrow-repeat me-2"></i>Nao Rolar 1000 Vezes</h6>
+                        <p class="small mb-0">Se falham a persuasao, nao podem tentar de novo com palavras diferentes. Precisam de mudar a abordagem ou oferecer algo novo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-dark border-success h-100">
+                    <div class="card-body">
+                        <h6 class="text-success"><i class="bi bi-clock me-2"></i>Roleplay = Recompensa</h6>
+                        <p class="small mb-0">Bom roleplay merece vantagem no teste ou CD mais baixa. Argumento fraco ou generico ("tento convencer") merece desvantagem ou CD mais alta.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark border-danger h-100">
+                    <div class="card-body">
+                        <h6 class="text-danger"><i class="bi bi-people me-2"></i>NPCs Tem Personalidades</h6>
+                        <p class="small mb-0">Um guarda honrado nao aceita suborno. Um mercador ganancioso aceita. A personalidade do NPC importa mais que os dados!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mb-3">O Que Fazer / Nao Fazer</h5>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-success bg-opacity-10 border-success h-100">
+                    <div class="card-header bg-success bg-opacity-25 border-success">
+                        <h6 class="mb-0 text-success"><i class="bi bi-check-circle me-2"></i>FAZER</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="small mb-0">
+                            <li class="mb-2">Pedir roleplay antes de pedir testes</li>
+                            <li class="mb-2">Recompensar bons argumentos com vantagem</li>
+                            <li class="mb-2">Deixar consequencias (intimidacao cria inimigos)</li>
+                            <li class="mb-2">Dar pistas de personalidade do NPC</li>
+                            <li class="mb-2">Permitir solucoes criativas sem dados</li>
+                            <li class="mb-0">Criar NPCs com motivacoes claras</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-danger bg-opacity-10 border-danger h-100">
+                    <div class="card-header bg-danger bg-opacity-25 border-danger">
+                        <h6 class="mb-0 text-danger"><i class="bi bi-x-circle me-2"></i>NAO FAZER</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="small mb-0">
+                            <li class="mb-2">Ignorar o roleplay e pedir logo testes</li>
+                            <li class="mb-2">Deixar 20 natural fazer o impossivel</li>
+                            <li class="mb-2">Permitir testes infinitos ate conseguirem</li>
+                            <li class="mb-2">Fazer todos NPCs reagirem igual</li>
+                            <li class="mb-2">Bloquear progresso com CD impossivel</li>
+                            <li class="mb-0">Punir jogadores timidos - deixa-os falar em 3ª pessoa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-dark border-info mb-4">
+            <div class="card-header border-info">
+                <h6 class="mb-0 text-info"><i class="bi bi-lightbulb me-2"></i>Dica: Jogadores Timidos</h6>
+            </div>
+            <div class="card-body">
+                <p class="small mb-0">
+                    Nem todos os jogadores gostam de falar "em personagem" com vozes e dramatizacao.
+                    Permite falar em 3ª pessoa: <em>"O meu personagem tenta convencer o guarda que estamos em missao oficial"</em>.
+                    O importante e a criatividade, nao a performance teatral!
+                </p>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <i class="bi bi-chat-heart me-2"></i>
+            <strong>Regra de Ouro dos Encontros Sociais:</strong> Dados sao ferramentas, nao ditadores.
+            Se os jogadores tiveram uma ideia brilhante e fizeram roleplay fantastico, podes deixa-los ter sucesso automaticamente - o momento epico vale mais que o numero no dado.
+        </div>
+    </section>
+
+    <!-- 8. Tempo, Movimento e Posicionamento -->
     <section id="tempo-movimento" class="mb-5">
         <h2 class="border-bottom border-danger pb-2 mb-4">
-            <i class="bi bi-clock-history me-2 text-success"></i>7. Tempo, Movimento e Posicionamento
+            <i class="bi bi-clock-history me-2 text-success"></i>8. Tempo, Movimento e Posicionamento
         </h2>
 
         <p class="mb-4">
@@ -1026,10 +1275,10 @@
         </div>
     </section>
 
-    <!-- 8. Impressão -->
+    <!-- 9. Impressão -->
     <section id="impressao" class="mb-5">
         <h2 class="border-bottom border-danger pb-2 mb-4">
-            <i class="bi bi-printer me-2 text-secondary"></i>8. Impressão de Materiais
+            <i class="bi bi-printer me-2 text-secondary"></i>9. Impressão de Materiais
         </h2>
 
         <div class="row g-3">
@@ -1063,10 +1312,10 @@
         </div>
     </section>
 
-    <!-- 9. Criar Aventuras -->
+    <!-- 10. Criar Aventuras -->
     <section id="aventuras" class="mb-5">
         <h2 class="border-bottom border-danger pb-2 mb-4">
-            <i class="bi bi-book me-2 text-warning"></i>9. Criar Novas Aventuras
+            <i class="bi bi-book me-2 text-warning"></i>10. Criar Novas Aventuras
         </h2>
 
         <p>As aventuras são ficheiros JSON na pasta <code>app/data/quests/</code>. Para criar uma nova:</p>
@@ -1096,10 +1345,10 @@
         </div>
     </section>
 
-    <!-- 10. Dicas -->
+    <!-- 11. Dicas -->
     <section id="dicas" class="mb-5">
         <h2 class="border-bottom border-danger pb-2 mb-4">
-            <i class="bi bi-stars me-2 text-info"></i>10. Dicas para Novos Mestres
+            <i class="bi bi-stars me-2 text-info"></i>11. Dicas para Novos Mestres
         </h2>
 
         <div class="row g-4">
@@ -1149,10 +1398,10 @@
         </div>
     </section>
 
-    <!-- 11. Acronimos e Glossario -->
+    <!-- 12. Acronimos e Glossario -->
     <section id="glossario" class="mb-5">
         <h2 class="border-bottom border-danger pb-2 mb-4">
-            <i class="bi bi-book me-2 text-primary"></i>11. Acronimos e Glossario
+            <i class="bi bi-book me-2 text-primary"></i>12. Acronimos e Glossario
         </h2>
 
         <p class="mb-4">

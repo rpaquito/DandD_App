@@ -164,20 +164,24 @@ def confirm_and_start(quest_id, session_id):
 
 @quest_bp.route('/<quest_id>')
 def overview(quest_id):
-    """Visão geral de uma aventura."""
+    """Visão geral de uma aventura - REQUER SESSAO ACTIVA."""
+    # Sessao e obrigatoria
+    session_id = request.args.get('session_id', type=int)
+    if not session_id:
+        flash('É necessário ter uma sessão activa para ver a aventura.', 'warning')
+        return redirect(url_for('quest.start_quest', quest_id=quest_id))
+
+    game_session = session_service.get_session(session_id)
+    if not game_session:
+        flash('Sessão não encontrada.', 'danger')
+        return redirect(url_for('quest.start_quest', quest_id=quest_id))
+
     loader = QuestLoader()
     quest = loader.get_quest(quest_id)
     if not quest:
         abort(404)
 
-    # Verificar se ha uma sessao activa
-    game_session = None
-    players = []
-    session_id = request.args.get('session_id', type=int)
-    if session_id:
-        game_session = session_service.get_session(session_id)
-        if game_session:
-            players = session_service.get_session_players(session_id)
+    players = session_service.get_session_players(session_id)
 
     return render_template('quest/overview.html',
                            quest=quest,
@@ -187,7 +191,18 @@ def overview(quest_id):
 
 @quest_bp.route('/<quest_id>/passo/<int:step_id>')
 def step(quest_id, step_id):
-    """Visualizar um passo específico da aventura."""
+    """Visualizar um passo específico da aventura - REQUER SESSAO ACTIVA."""
+    # Sessao e obrigatoria
+    session_id = request.args.get('session_id', type=int)
+    if not session_id:
+        flash('É necessário ter uma sessão activa para ver passos da aventura.', 'warning')
+        return redirect(url_for('quest.start_quest', quest_id=quest_id))
+
+    game_session = session_service.get_session(session_id)
+    if not game_session:
+        flash('Sessão não encontrada.', 'danger')
+        return redirect(url_for('quest.start_quest', quest_id=quest_id))
+
     loader = QuestLoader()
     quest = loader.get_quest(quest_id)
     if not quest:
@@ -197,20 +212,13 @@ def step(quest_id, step_id):
     if not current_step:
         abort(404)
 
-    # Verificar sessao activa
-    game_session = None
-    players = []
-    session_id = request.args.get('session_id', type=int)
+    players = session_service.get_session_players(session_id)
 
-    if session_id:
-        game_session = session_service.get_session(session_id)
-        if game_session:
-            players = session_service.get_session_players(session_id)
-            # Guardar progresso na base de dados
-            session_service.update_progress(session_id, step_id)
+    # Guardar progresso na base de dados
+    session_service.update_progress(session_id, step_id)
 
-    # Guardar progresso na sessao Flask (fallback)
-    session[f'quest_{quest_id}_step'] = step_id
+    # Guardar sessao activa na sessao Flask
+    session['active_session_id'] = session_id
 
     return render_template(
         'quest/step.html',
@@ -224,22 +232,52 @@ def step(quest_id, step_id):
 
 @quest_bp.route('/<quest_id>/npcs')
 def npcs(quest_id):
-    """Lista de NPCs da aventura."""
+    """Lista de NPCs da aventura - REQUER SESSAO ACTIVA."""
+    # Sessao e obrigatoria
+    session_id = request.args.get('session_id', type=int)
+    if not session_id:
+        flash('É necessário ter uma sessão activa.', 'warning')
+        return redirect(url_for('quest.start_quest', quest_id=quest_id))
+
+    game_session = session_service.get_session(session_id)
+    if not game_session:
+        flash('Sessão não encontrada.', 'danger')
+        return redirect(url_for('quest.start_quest', quest_id=quest_id))
+
     loader = QuestLoader()
     quest = loader.get_quest(quest_id)
     if not quest:
         abort(404)
-    return render_template('quest/npcs.html', quest=quest)
+
+    return render_template('quest/npcs.html',
+                          quest=quest,
+                          game_session=game_session,
+                          session_id=session_id)
 
 
 @quest_bp.route('/<quest_id>/monstros')
 def monsters(quest_id):
-    """Lista de monstros da aventura."""
+    """Lista de monstros da aventura - REQUER SESSAO ACTIVA."""
+    # Sessao e obrigatoria
+    session_id = request.args.get('session_id', type=int)
+    if not session_id:
+        flash('É necessário ter uma sessão activa.', 'warning')
+        return redirect(url_for('quest.start_quest', quest_id=quest_id))
+
+    game_session = session_service.get_session(session_id)
+    if not game_session:
+        flash('Sessão não encontrada.', 'danger')
+        return redirect(url_for('quest.start_quest', quest_id=quest_id))
+
     loader = QuestLoader()
     quest = loader.get_quest(quest_id)
     if not quest:
         abort(404)
-    return render_template('quest/monsters.html', quest=quest)
+
+    return render_template('quest/monsters.html',
+                          quest=quest,
+                          game_session=game_session,
+                          session_id=session_id)
 
 
 @quest_bp.route('/<quest_id>/passo/<int:step_id>/iniciar-combate', methods=['POST'])

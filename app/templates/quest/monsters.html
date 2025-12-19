@@ -135,10 +135,13 @@
 
 {% block extra_js %}
 <script>
+{% if game_session %}
 function adicionarAoCombate(nome, hp, ac) {
-    const url = '{{ url_for("combat.tracker") }}?add=' + encodeURIComponent(nome) + '&hp=' + hp + '&ac=' + ac;
+    // Abrir rastreador de combate da sessao
+    const url = '{{ url_for("combat.session_tracker", session_id=game_session.id) }}';
     window.open(url, '_blank');
 }
+{% endif %}
 </script>
 {% endblock %}
 {% endblock %}

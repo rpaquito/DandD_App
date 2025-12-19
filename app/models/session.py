@@ -18,6 +18,24 @@ class GameSession(db.Model):
     atualizado_em = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     notas = db.Column(db.Text, default='')
 
+    # Rastreamento de tempo (4 sistemas)
+    # 1. Tempo de sessao (real-world)
+    sessao_iniciada_em = db.Column(db.DateTime, nullable=True)
+    sessao_pausada_em = db.Column(db.DateTime, nullable=True)
+    tempo_total_segundos = db.Column(db.Integer, default=0)  # Tempo acumulado de jogo
+
+    # 2. Tempo no jogo (in-game)
+    tempo_jogo_inicio = db.Column(db.String(50), default="08:00")  # HH:MM formato
+    tempo_jogo_atual = db.Column(db.String(50), default="08:00")
+    dia_jogo_atual = db.Column(db.Integer, default=1)
+
+    # 3. Exploracao
+    turnos_exploracao_total = db.Column(db.Integer, default=0)  # Turnos de 10 minutos
+
+    # 4. Descansos
+    ultimo_descanso_curto = db.Column(db.DateTime, nullable=True)  # 1 hora
+    ultimo_descanso_longo = db.Column(db.DateTime, nullable=True)  # 8 horas
+
     # Relacoes
     jogadores = db.relationship(
         'SessionPlayer',
@@ -151,6 +169,11 @@ class SessionCombat(db.Model):
     turno_atual = db.Column(db.Integer, default=0)
     participantes_json = db.Column(db.Text, default='[]')  # Monstros + estado
     quest_step_id = db.Column(db.Integer, nullable=True)  # Passo da aventura de onde veio o combate
+
+    # Rastreamento de tempo de combate
+    tempo_inicio_combate = db.Column(db.DateTime, nullable=True)  # Quando o combate comecou
+    tempo_ronda_inicio = db.Column(db.DateTime, nullable=True)  # Quando a ronda atual comecou
+    duracao_total_segundos = db.Column(db.Integer, default=0)  # Duracao real-world do combate
 
     def __repr__(self):
         return f'<SessionCombat sessao={self.session_id} activo={self.activo}>'

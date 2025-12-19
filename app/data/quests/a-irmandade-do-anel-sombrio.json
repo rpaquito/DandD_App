@@ -16,9 +16,13 @@
         "Se perguntarem sobre a história da aldeia, é pacífica há gerações",
         "Se notarem algo estranho, Perceção CD 14 nota que Bertoldo parece mais velho do que deveria"
       ],
-      "npcs": ["bertoldo"],
+      "npcs": [
+        "bertoldo"
+      ],
       "monstros": [],
-      "proximos_passos": [2],
+      "proximos_passos": [
+        2
+      ],
       "recompensas": []
     },
     {
@@ -33,10 +37,17 @@
         "Se recusarem a missão, Aldric avisa que os Cavaleiros Negros chegarão em dias",
         "Se perguntarem sobre a Montanha do Perdição, fica nas Terras Negras de Morghul"
       ],
-      "npcs": ["aldric", "bertoldo"],
+      "npcs": [
+        "aldric",
+        "bertoldo"
+      ],
       "monstros": [],
-      "proximos_passos": [3],
-      "recompensas": ["Anel Sombrio (artefacto da missão)"]
+      "proximos_passos": [
+        3
+      ],
+      "recompensas": [
+        "Anel Sombrio (artefacto da missão)"
+      ]
     },
     {
       "id": 3,
@@ -50,9 +61,14 @@
         "Se perguntarem sobre perigos da estrada, há histórias de lobos e coisas piores",
         "Se tentarem usar o anel, sentem uma presença escura a observá-los (não reveles mais)"
       ],
-      "npcs": ["aldric", "bertoldo"],
+      "npcs": [
+        "aldric",
+        "bertoldo"
+      ],
       "monstros": [],
-      "proximos_passos": [4],
+      "proximos_passos": [
+        4
+      ],
       "recompensas": []
     },
     {
@@ -68,9 +84,59 @@
         "Se a fuga parecer impossível, uma raposa branca aparece para guiá-los por um atalho"
       ],
       "npcs": [],
-      "monstros": ["cavaleiro_negro", "cavaleiro_negro"],
-      "proximos_passos": [5],
-      "recompensas": []
+      "monstros": [
+        "cavaleiro_negro",
+        "cavaleiro_negro"
+      ],
+      "proximos_passos": [
+        5
+      ],
+      "recompensas": [],
+      "mapa_tatico": {
+        "grid_largura": 14,
+        "grid_altura": 12,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {
+              "indice": 0,
+              "x": 2,
+              "y": 5
+            },
+            {
+              "indice": 1,
+              "x": 3,
+              "y": 5
+            },
+            {
+              "indice": 2,
+              "x": 2,
+              "y": 6
+            },
+            {
+              "indice": 3,
+              "x": 3,
+              "y": 6
+            }
+          ],
+          "monstros": [
+            {
+              "id": "cavaleiro_negro",
+              "instancia": 0,
+              "x": 10,
+              "y": 6
+            },
+            {
+              "id": "cavaleiro_negro",
+              "instancia": 1,
+              "x": 12,
+              "y": 7
+            }
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 5,
@@ -84,10 +150,18 @@
         "Se falarem com outros viajantes, cada um tem razões para odiar o Senhor das Sombras",
         "Se tentarem deixar o anel em Silvária, Elarion explica que a proteção acabará por falhar"
       ],
-      "npcs": ["elarion", "aldric"],
+      "npcs": [
+        "elarion",
+        "aldric"
+      ],
       "monstros": [],
-      "proximos_passos": [6],
-      "recompensas": ["Descanso completo", "Poções de Cura (2)"]
+      "proximos_passos": [
+        6
+      ],
+      "recompensas": [
+        "Descanso completo",
+        "Poções de Cura (2)"
+      ]
     },
     {
       "id": 6,
@@ -101,10 +175,20 @@
         "Se quiserem usar águias gigantes, Aldric explica que seriam vistas imediatamente",
         "Se discutirem táticas, Arathorn sugere viajar em segredo, evitando exércitos"
       ],
-      "npcs": ["elarion", "aldric", "thorin", "arathorn", "lindir"],
+      "npcs": [
+        "elarion",
+        "aldric",
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
       "monstros": [],
-      "proximos_passos": [7],
-      "recompensas": ["Aliados: Thorin, Arathorn, Lindir"]
+      "proximos_passos": [
+        7
+      ],
+      "recompensas": [
+        "Aliados: Thorin, Arathorn, Lindir"
+      ]
     },
     {
       "id": 7,
@@ -118,9 +202,16 @@
         "Se tentarem o Passo Alto, uma tempestade mágica força-os a recuar",
         "Se perguntarem sobre Moria, Thorin diz que o seu povo perdeu contacto há décadas"
       ],
-      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "npcs": [
+        "aldric",
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
       "monstros": [],
-      "proximos_passos": [8],
+      "proximos_passos": [
+        8
+      ],
       "recompensas": []
     },
     {
@@ -135,10 +226,96 @@
         "Se matarem os goblins primeiro, os wargs perdem coordenação",
         "Se a luta correr mal, Aldric usa um clarão de luz para permitir recuo"
       ],
-      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
-      "monstros": ["warg", "warg", "warg", "warg", "goblin_montado", "goblin_montado"],
-      "proximos_passos": [9],
-      "recompensas": ["15 peças de ouro", "Poção de Cura (num goblin)"]
+      "npcs": [
+        "aldric",
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
+      "monstros": [
+        "warg",
+        "warg",
+        "warg",
+        "warg",
+        "goblin_montado",
+        "goblin_montado"
+      ],
+      "proximos_passos": [
+        9
+      ],
+      "recompensas": [
+        "15 peças de ouro",
+        "Poção de Cura (num goblin)"
+      ],
+      "mapa_tatico": {
+        "grid_largura": 18,
+        "grid_altura": 15,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {
+              "indice": 0,
+              "x": 2,
+              "y": 7
+            },
+            {
+              "indice": 1,
+              "x": 3,
+              "y": 7
+            },
+            {
+              "indice": 2,
+              "x": 2,
+              "y": 8
+            },
+            {
+              "indice": 3,
+              "x": 3,
+              "y": 8
+            }
+          ],
+          "monstros": [
+            {
+              "id": "warg",
+              "instancia": 0,
+              "x": 13,
+              "y": 5
+            },
+            {
+              "id": "warg",
+              "instancia": 1,
+              "x": 15,
+              "y": 6
+            },
+            {
+              "id": "warg",
+              "instancia": 2,
+              "x": 13,
+              "y": 7
+            },
+            {
+              "id": "warg",
+              "instancia": 3,
+              "x": 15,
+              "y": 8
+            },
+            {
+              "id": "goblin_montado",
+              "instancia": 0,
+              "x": 13,
+              "y": 9
+            },
+            {
+              "id": "goblin_montado",
+              "instancia": 1,
+              "x": 15,
+              "y": 10
+            }
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 9,
@@ -152,9 +329,16 @@
         "Se atacarem os portões, algo no lago desperta",
         "Se disserem 'Mellon', os portões abrem-se silenciosamente"
       ],
-      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "npcs": [
+        "aldric",
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
       "monstros": [],
-      "proximos_passos": [10],
+      "proximos_passos": [
+        10
+      ],
       "recompensas": []
     },
     {
@@ -169,10 +353,96 @@
         "Se capturarem um goblin, ele fala do 'Rei nas Profundezas' com terror",
         "Se explorarem os restos, encontram escudos anãos e runas de proteção"
       ],
-      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
-      "monstros": ["goblin", "goblin", "goblin", "goblin", "goblin", "goblin"],
-      "proximos_passos": [11],
-      "recompensas": ["30 peças de ouro", "Diário do Guardião"]
+      "npcs": [
+        "aldric",
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
+      "monstros": [
+        "goblin",
+        "goblin",
+        "goblin",
+        "goblin",
+        "goblin",
+        "goblin"
+      ],
+      "proximos_passos": [
+        11
+      ],
+      "recompensas": [
+        "30 peças de ouro",
+        "Diário do Guardião"
+      ],
+      "mapa_tatico": {
+        "grid_largura": 18,
+        "grid_altura": 15,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {
+              "indice": 0,
+              "x": 2,
+              "y": 7
+            },
+            {
+              "indice": 1,
+              "x": 3,
+              "y": 7
+            },
+            {
+              "indice": 2,
+              "x": 2,
+              "y": 8
+            },
+            {
+              "indice": 3,
+              "x": 3,
+              "y": 8
+            }
+          ],
+          "monstros": [
+            {
+              "id": "goblin",
+              "instancia": 0,
+              "x": 13,
+              "y": 5
+            },
+            {
+              "id": "goblin",
+              "instancia": 1,
+              "x": 15,
+              "y": 6
+            },
+            {
+              "id": "goblin",
+              "instancia": 2,
+              "x": 13,
+              "y": 7
+            },
+            {
+              "id": "goblin",
+              "instancia": 3,
+              "x": 15,
+              "y": 8
+            },
+            {
+              "id": "goblin",
+              "instancia": 4,
+              "x": 13,
+              "y": 9
+            },
+            {
+              "id": "goblin",
+              "instancia": 5,
+              "x": 15,
+              "y": 10
+            }
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 11,
@@ -186,10 +456,19 @@
         "Se o portador do anel olhar para o abismo, sente o anel a puxá-lo",
         "Se fizerem barulho excessivo, os tambores ficam mais altos"
       ],
-      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
+      "npcs": [
+        "aldric",
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
       "monstros": [],
-      "proximos_passos": [12],
-      "recompensas": ["50 peças de ouro em joias anãs (opcional)"]
+      "proximos_passos": [
+        12
+      ],
+      "recompensas": [
+        "50 peças de ouro em joias anãs (opcional)"
+      ]
     },
     {
       "id": 12,
@@ -203,10 +482,88 @@
         "Se alguém cair da ponte, corda pode salvá-lo",
         "Se o combate demorar muito, mais goblins chegam - urgência para terminar"
       ],
-      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
-      "monstros": ["troll_cavernas", "goblin", "goblin", "goblin", "goblin"],
-      "proximos_passos": [13],
-      "recompensas": ["Martelo do Troll (2d6 contundente, pesado)"]
+      "npcs": [
+        "aldric",
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
+      "monstros": [
+        "troll_cavernas",
+        "goblin",
+        "goblin",
+        "goblin",
+        "goblin"
+      ],
+      "proximos_passos": [
+        13
+      ],
+      "recompensas": [
+        "Martelo do Troll (2d6 contundente, pesado)"
+      ],
+      "mapa_tatico": {
+        "grid_largura": 18,
+        "grid_altura": 15,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {
+              "indice": 0,
+              "x": 2,
+              "y": 7
+            },
+            {
+              "indice": 1,
+              "x": 3,
+              "y": 7
+            },
+            {
+              "indice": 2,
+              "x": 2,
+              "y": 8
+            },
+            {
+              "indice": 3,
+              "x": 3,
+              "y": 8
+            }
+          ],
+          "monstros": [
+            {
+              "id": "troll_cavernas",
+              "instancia": 0,
+              "x": 13,
+              "y": 5
+            },
+            {
+              "id": "goblin",
+              "instancia": 0,
+              "x": 15,
+              "y": 6
+            },
+            {
+              "id": "goblin",
+              "instancia": 1,
+              "x": 13,
+              "y": 7
+            },
+            {
+              "id": "goblin",
+              "instancia": 2,
+              "x": 15,
+              "y": 8
+            },
+            {
+              "id": "goblin",
+              "instancia": 3,
+              "x": 13,
+              "y": 9
+            }
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 13,
@@ -220,10 +577,58 @@
         "Se olharem para trás, veem Aldric brilhar como uma estrela contra a escuridão",
         "Se chorarem a perda, Lindir canta uma lamentação élfica"
       ],
-      "npcs": ["aldric", "thorin", "arathorn", "lindir"],
-      "monstros": ["balrog"],
-      "proximos_passos": [14],
-      "recompensas": []
+      "npcs": [
+        "aldric",
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
+      "monstros": [
+        "balrog"
+      ],
+      "proximos_passos": [
+        14
+      ],
+      "recompensas": [],
+      "mapa_tatico": {
+        "grid_largura": 16,
+        "grid_altura": 14,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {
+              "indice": 0,
+              "x": 2,
+              "y": 6
+            },
+            {
+              "indice": 1,
+              "x": 3,
+              "y": 6
+            },
+            {
+              "indice": 2,
+              "x": 2,
+              "y": 7
+            },
+            {
+              "indice": 3,
+              "x": 3,
+              "y": 7
+            }
+          ],
+          "monstros": [
+            {
+              "id": "balrog",
+              "instancia": 0,
+              "x": 13,
+              "y": 7
+            }
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 14,
@@ -237,10 +642,17 @@
         "Se perguntarem sobre Aldric, Galadriel diz que o seu destino ainda não está selado",
         "Se explorarem a floresta, encontram maravilhas - fontes de água prateada, árvores milenares"
       ],
-      "npcs": ["galadriel", "lindir"],
+      "npcs": [
+        "galadriel",
+        "lindir"
+      ],
       "monstros": [],
-      "proximos_passos": [15],
-      "recompensas": ["Descanso completo"]
+      "proximos_passos": [
+        15
+      ],
+      "recompensas": [
+        "Descanso completo"
+      ]
     },
     {
       "id": 15,
@@ -254,10 +666,18 @@
         "Se perguntarem sobre Aldric, Galadriel diz 'A esperança permanece enquanto a Irmandade for fiel'",
         "Se pedirem ajuda militar, ela explica que os elfos não podem marchar abertamente"
       ],
-      "npcs": ["galadriel"],
+      "npcs": [
+        "galadriel"
+      ],
       "monstros": [],
-      "proximos_passos": [16],
-      "recompensas": ["Capa Élfica (vantagem em Stealth)", "Lembas (ração élfica, 1 alimenta por 1 dia)", "Luz de Eärendil (frasco de luz estelar)"]
+      "proximos_passos": [
+        16
+      ],
+      "recompensas": [
+        "Capa Élfica (vantagem em Stealth)",
+        "Lembas (ração élfica, 1 alimenta por 1 dia)",
+        "Luz de Eärendil (frasco de luz estelar)"
+      ]
     },
     {
       "id": 16,
@@ -271,9 +691,15 @@
         "Se acamparem na margem, ouvem tambores de orc ao longe",
         "Se perguntarem sobre o destino, estão a 5 dias da Montanha do Perdição"
       ],
-      "npcs": ["thorin", "arathorn", "lindir"],
+      "npcs": [
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
       "monstros": [],
-      "proximos_passos": [17],
+      "proximos_passos": [
+        17
+      ],
       "recompensas": []
     },
     {
@@ -288,10 +714,99 @@
         "Se alguém cair, outros arrastam-no enquanto recuam",
         "Se o portador hesitar, Arathorn ordena 'VAI! A missão está acima de nós!'"
       ],
-      "npcs": ["thorin", "arathorn", "lindir"],
-      "monstros": ["uruk_capitao", "orc", "orc", "orc", "orc", "orc", "orc"],
-      "proximos_passos": [18],
-      "recompensas": []
+      "npcs": [
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
+      "monstros": [
+        "uruk_capitao",
+        "orc",
+        "orc",
+        "orc",
+        "orc",
+        "orc",
+        "orc"
+      ],
+      "proximos_passos": [
+        18
+      ],
+      "recompensas": [],
+      "mapa_tatico": {
+        "grid_largura": 18,
+        "grid_altura": 15,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {
+              "indice": 0,
+              "x": 2,
+              "y": 7
+            },
+            {
+              "indice": 1,
+              "x": 3,
+              "y": 7
+            },
+            {
+              "indice": 2,
+              "x": 2,
+              "y": 8
+            },
+            {
+              "indice": 3,
+              "x": 3,
+              "y": 8
+            }
+          ],
+          "monstros": [
+            {
+              "id": "uruk_capitao",
+              "instancia": 0,
+              "x": 13,
+              "y": 4
+            },
+            {
+              "id": "orc",
+              "instancia": 0,
+              "x": 15,
+              "y": 5
+            },
+            {
+              "id": "orc",
+              "instancia": 1,
+              "x": 13,
+              "y": 6
+            },
+            {
+              "id": "orc",
+              "instancia": 2,
+              "x": 15,
+              "y": 7
+            },
+            {
+              "id": "orc",
+              "instancia": 3,
+              "x": 13,
+              "y": 8
+            },
+            {
+              "id": "orc",
+              "instancia": 4,
+              "x": 15,
+              "y": 9
+            },
+            {
+              "id": "orc",
+              "instancia": 5,
+              "x": 13,
+              "y": 10
+            }
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 18,
@@ -305,10 +820,18 @@
         "Se perguntarem sobre os Pântanos, são terríveis mas é o caminho mais curto",
         "Se se despedirem, Thorin dá ao portador a sua pedra rúnica da sorte"
       ],
-      "npcs": ["thorin", "arathorn", "lindir"],
+      "npcs": [
+        "thorin",
+        "arathorn",
+        "lindir"
+      ],
       "monstros": [],
-      "proximos_passos": [19],
-      "recompensas": ["Pedra Rúnica de Thorin (+1 salvaguarda, 1x)"]
+      "proximos_passos": [
+        19
+      ],
+      "recompensas": [
+        "Pedra Rúnica de Thorin (+1 salvaguarda, 1x)"
+      ]
     },
     {
       "id": 19,
@@ -322,9 +845,13 @@
         "Se olharem para os rostos na água, sentem-se puxados - Sabedoria CD 13",
         "Se perguntarem sobre o passado de Gollum, ele era como eles, há muito tempo"
       ],
-      "npcs": ["gollum"],
+      "npcs": [
+        "gollum"
+      ],
       "monstros": [],
-      "proximos_passos": [20],
+      "proximos_passos": [
+        20
+      ],
       "recompensas": []
     },
     {
@@ -339,10 +866,85 @@
         "Se Gollum parecer trair, ele hesita - o anel fascina-o",
         "Se derrotarem todos, ouvem milhares de vozes nos pântanos - não podem ficar"
       ],
-      "npcs": ["gollum"],
-      "monstros": ["espectro_pantano", "espectro_pantano", "espectro_pantano", "espectro_pantano", "espectro_pantano"],
-      "proximos_passos": [21],
-      "recompensas": ["Espada Fantasma (+1d4 necrótico, desaparece após 3 dias)"]
+      "npcs": [
+        "gollum"
+      ],
+      "monstros": [
+        "espectro_pantano",
+        "espectro_pantano",
+        "espectro_pantano",
+        "espectro_pantano",
+        "espectro_pantano"
+      ],
+      "proximos_passos": [
+        21
+      ],
+      "recompensas": [
+        "Espada Fantasma (+1d4 necrótico, desaparece após 3 dias)"
+      ],
+      "mapa_tatico": {
+        "grid_largura": 18,
+        "grid_altura": 15,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {
+              "indice": 0,
+              "x": 2,
+              "y": 7
+            },
+            {
+              "indice": 1,
+              "x": 3,
+              "y": 7
+            },
+            {
+              "indice": 2,
+              "x": 2,
+              "y": 8
+            },
+            {
+              "indice": 3,
+              "x": 3,
+              "y": 8
+            }
+          ],
+          "monstros": [
+            {
+              "id": "espectro_pantano",
+              "instancia": 0,
+              "x": 13,
+              "y": 5
+            },
+            {
+              "id": "espectro_pantano",
+              "instancia": 1,
+              "x": 15,
+              "y": 6
+            },
+            {
+              "id": "espectro_pantano",
+              "instancia": 2,
+              "x": 13,
+              "y": 7
+            },
+            {
+              "id": "espectro_pantano",
+              "instancia": 3,
+              "x": 15,
+              "y": 8
+            },
+            {
+              "id": "espectro_pantano",
+              "instancia": 4,
+              "x": 13,
+              "y": 9
+            }
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 21,
@@ -356,9 +958,13 @@
         "Se o portador colapsar de exaustão, sonha com o Olho a observá-lo",
         "Se perguntarem sobre a Montanha, está do outro lado - mais 2 dias"
       ],
-      "npcs": ["gollum"],
+      "npcs": [
+        "gollum"
+      ],
       "monstros": [],
-      "proximos_passos": [22],
+      "proximos_passos": [
+        22
+      ],
       "recompensas": []
     },
     {
@@ -374,9 +980,52 @@
         "Se Shelob fugir, deixa o caminho livre mas pode retornar"
       ],
       "npcs": [],
-      "monstros": ["shelob"],
-      "proximos_passos": [23],
-      "recompensas": []
+      "monstros": [
+        "shelob"
+      ],
+      "proximos_passos": [
+        23
+      ],
+      "recompensas": [],
+      "mapa_tatico": {
+        "grid_largura": 16,
+        "grid_altura": 14,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {
+              "indice": 0,
+              "x": 2,
+              "y": 6
+            },
+            {
+              "indice": 1,
+              "x": 3,
+              "y": 6
+            },
+            {
+              "indice": 2,
+              "x": 2,
+              "y": 7
+            },
+            {
+              "indice": 3,
+              "x": 3,
+              "y": 7
+            }
+          ],
+          "monstros": [
+            {
+              "id": "shelob",
+              "instancia": 0,
+              "x": 13,
+              "y": 7
+            }
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 23,
@@ -390,10 +1039,86 @@
         "Se matarem o capitão primeiro, orcs restantes fogem",
         "Se forem capturados, acordam nas masmorras - precisam escapar"
       ],
-      "npcs": ["prisioneiro_gondor"],
-      "monstros": ["orc_capitao", "orc", "orc", "orc", "orc"],
-      "proximos_passos": [24],
-      "recompensas": ["Armadura de Mithril (CA 14, conta como leve)", "50 peças de ouro"]
+      "npcs": [
+        "prisioneiro_gondor"
+      ],
+      "monstros": [
+        "orc_capitao",
+        "orc",
+        "orc",
+        "orc",
+        "orc"
+      ],
+      "proximos_passos": [
+        24
+      ],
+      "recompensas": [
+        "Armadura de Mithril (CA 14, conta como leve)",
+        "50 peças de ouro"
+      ],
+      "mapa_tatico": {
+        "grid_largura": 18,
+        "grid_altura": 15,
+        "metros_por_quadrado": 1.5,
+        "imagem_fundo": null,
+        "posicoes_iniciais": {
+          "jogadores": [
+            {
+              "indice": 0,
+              "x": 2,
+              "y": 7
+            },
+            {
+              "indice": 1,
+              "x": 3,
+              "y": 7
+            },
+            {
+              "indice": 2,
+              "x": 2,
+              "y": 8
+            },
+            {
+              "indice": 3,
+              "x": 3,
+              "y": 8
+            }
+          ],
+          "monstros": [
+            {
+              "id": "orc_capitao",
+              "instancia": 0,
+              "x": 13,
+              "y": 5
+            },
+            {
+              "id": "orc",
+              "instancia": 0,
+              "x": 15,
+              "y": 6
+            },
+            {
+              "id": "orc",
+              "instancia": 1,
+              "x": 13,
+              "y": 7
+            },
+            {
+              "id": "orc",
+              "instancia": 2,
+              "x": 15,
+              "y": 8
+            },
+            {
+              "id": "orc",
+              "instancia": 3,
+              "x": 13,
+              "y": 9
+            }
+          ],
+          "npcs": []
+        }
+      }
     },
     {
       "id": 24,
@@ -407,10 +1132,15 @@
         "Se o anel for destruído, descreve a onda de libertação que percorre a terra",
         "Se Gollum cair com o anel, grita 'Precioso!' com alegria mesmo enquanto morre"
       ],
-      "npcs": ["gollum"],
+      "npcs": [
+        "gollum"
+      ],
       "monstros": [],
       "proximos_passos": [],
-      "recompensas": ["Libertação das Terras Médias", "Título: Heróis da Era"]
+      "recompensas": [
+        "Libertação das Terras Médias",
+        "Título: Heróis da Era"
+      ]
     }
   ],
   "npcs": [
@@ -551,12 +1281,27 @@
       "carisma": 16,
       "cr": "4",
       "xp": 1100,
-      "resistencias": ["necrótico", "contundente/perfurante/cortante de armas não-mágicas"],
-      "imunidades": ["veneno"],
-      "vulnerabilidades": ["fogo", "radiante"],
-      "imunidades_condicao": ["exausto", "envenenado", "amedrontado"],
+      "resistencias": [
+        "necrótico",
+        "contundente/perfurante/cortante de armas não-mágicas"
+      ],
+      "imunidades": [
+        "veneno"
+      ],
+      "vulnerabilidades": [
+        "fogo",
+        "radiante"
+      ],
+      "imunidades_condicao": [
+        "exausto",
+        "envenenado",
+        "amedrontado"
+      ],
       "sentidos": "visão no escuro 36m, pode sentir o anel até 1km, Perceção passiva 14",
-      "idiomas": ["Comum", "Língua Negra"],
+      "idiomas": [
+        "Comum",
+        "Língua Negra"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Aura de Terror",
@@ -601,7 +1346,9 @@
       "vulnerabilidades": [],
       "imunidades_condicao": [],
       "sentidos": "Perceção passiva 13",
-      "idiomas": ["Warg, Goblin"],
+      "idiomas": [
+        "Warg, Goblin"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Faro Aguçado",
@@ -638,7 +1385,10 @@
       "vulnerabilidades": [],
       "imunidades_condicao": [],
       "sentidos": "visão no escuro 18m, Perceção passiva 9",
-      "idiomas": ["Comum", "Goblin"],
+      "idiomas": [
+        "Comum",
+        "Goblin"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Fuga Ágil",
@@ -679,7 +1429,10 @@
       "vulnerabilidades": [],
       "imunidades_condicao": [],
       "sentidos": "visão no escuro 18m, Perceção passiva 9",
-      "idiomas": ["Comum", "Goblin"],
+      "idiomas": [
+        "Comum",
+        "Goblin"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Fuga Ágil",
@@ -720,7 +1473,9 @@
       "vulnerabilidades": [],
       "imunidades_condicao": [],
       "sentidos": "visão no escuro 18m, Perceção passiva 9",
-      "idiomas": ["Gigante"],
+      "idiomas": [
+        "Gigante"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Regeneração",
@@ -764,12 +1519,24 @@
       "carisma": 22,
       "cr": "19",
       "xp": 22000,
-      "resistencias": ["frio", "relâmpago", "contundente/perfurante/cortante de armas não-mágicas"],
-      "imunidades": ["fogo", "veneno"],
+      "resistencias": [
+        "frio",
+        "relâmpago",
+        "contundente/perfurante/cortante de armas não-mágicas"
+      ],
+      "imunidades": [
+        "fogo",
+        "veneno"
+      ],
       "vulnerabilidades": [],
-      "imunidades_condicao": ["envenenado"],
+      "imunidades_condicao": [
+        "envenenado"
+      ],
       "sentidos": "visão verdadeira 36m, Perceção passiva 13",
-      "idiomas": ["Abissal", "Telepatia 36m"],
+      "idiomas": [
+        "Abissal",
+        "Telepatia 36m"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Aura de Fogo",
@@ -810,7 +1577,10 @@
       "vulnerabilidades": [],
       "imunidades_condicao": [],
       "sentidos": "visão no escuro 18m, Perceção passiva 10",
-      "idiomas": ["Comum", "Orc"],
+      "idiomas": [
+        "Comum",
+        "Orc"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Agressivo",
@@ -849,9 +1619,14 @@
       "resistencias": [],
       "imunidades": [],
       "vulnerabilidades": [],
-      "imunidades_condicao": ["amedrontado"],
+      "imunidades_condicao": [
+        "amedrontado"
+      ],
       "sentidos": "visão no escuro 18m, Perceção passiva 10",
-      "idiomas": ["Comum", "Orc"],
+      "idiomas": [
+        "Comum",
+        "Orc"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Agressivo",
@@ -895,12 +1670,34 @@
       "carisma": 8,
       "cr": "1/2",
       "xp": 100,
-      "resistencias": ["ácido", "frio", "fogo", "relâmpago", "trovão", "contundente/perfurante/cortante de armas não-mágicas"],
-      "imunidades": ["necrótico", "veneno"],
-      "vulnerabilidades": ["radiante"],
-      "imunidades_condicao": ["exausto", "agarrado", "paralisado", "petrificado", "envenenado", "caído", "restringido"],
+      "resistencias": [
+        "ácido",
+        "frio",
+        "fogo",
+        "relâmpago",
+        "trovão",
+        "contundente/perfurante/cortante de armas não-mágicas"
+      ],
+      "imunidades": [
+        "necrótico",
+        "veneno"
+      ],
+      "vulnerabilidades": [
+        "radiante"
+      ],
+      "imunidades_condicao": [
+        "exausto",
+        "agarrado",
+        "paralisado",
+        "petrificado",
+        "envenenado",
+        "caído",
+        "restringido"
+      ],
       "sentidos": "visão no escuro 18m, Perceção passiva 10",
-      "idiomas": ["as línguas que conhecia em vida"],
+      "idiomas": [
+        "as línguas que conhecia em vida"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Amorfo",
@@ -937,9 +1734,15 @@
       "cr": "5",
       "xp": 1800,
       "resistencias": [],
-      "imunidades": ["veneno"],
-      "vulnerabilidades": ["radiante"],
-      "imunidades_condicao": ["envenenado"],
+      "imunidades": [
+        "veneno"
+      ],
+      "vulnerabilidades": [
+        "radiante"
+      ],
+      "imunidades_condicao": [
+        "envenenado"
+      ],
       "sentidos": "visão às cegas 9m, visão no escuro 18m, Perceção passiva 13",
       "idiomas": [],
       "habilidades_especiais": [
@@ -990,7 +1793,10 @@
       "vulnerabilidades": [],
       "imunidades_condicao": [],
       "sentidos": "visão no escuro 18m, Perceção passiva 10",
-      "idiomas": ["Comum", "Orc"],
+      "idiomas": [
+        "Comum",
+        "Orc"
+      ],
       "habilidades_especiais": [
         {
           "nome": "Agressivo",

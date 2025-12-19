@@ -139,6 +139,209 @@ DandD_App/
 }
 ```
 
+## Sistema de Rastreamento de Tempo
+
+A aplicação implementa um sistema de 4 níveis de rastreamento de tempo:
+
+### 1. Tempo de Sessão (Real-world)
+- Duração da sessão de jogo em tempo real
+- Start/pause com acumulação de tempo
+- Campos: `sessao_iniciada_em`, `sessao_pausada_em`, `tempo_total_segundos`
+
+### 2. Rondas de Combate (6 segundos por ronda)
+- Rastreamento preciso de combate D&D 5e
+- Cada ronda = 6 segundos no mundo do jogo
+- Campos: `tempo_inicio_combate`, `tempo_ronda_inicio`, `duracao_total_segundos`
+
+### 3. Turnos de Exploração (10 minutos por turno)
+- Exploração de masmorras e wilderness
+- Cada turno = 10 minutos
+- Campo: `turnos_exploracao_total`
+
+### 4. Tempo no Jogo (In-game time)
+- Hora do dia e dia da aventura
+- Rastreamento de descansos (curto = 1h, longo = 8h)
+- Campos: `tempo_jogo_atual` (HH:MM), `dia_jogo_atual`, `ultimo_descanso_curto`, `ultimo_descanso_longo`
+
+### Serviço: TimeTrackingService
+
+Localização: `/app/services/time_service.py`
+
+**Métodos principais:**
+```python
+start_session_timer(session_id)           # Iniciar cronómetro
+pause_session_timer(session_id)           # Pausar e acumular tempo
+get_session_duration(session_id)          # Obter duração total
+start_combat_round_timer(session_id)      # Timer de ronda de combate
+get_combat_time(session_id)               # Tempo de combate (rounds e real)
+advance_exploration_turn(session_id, turns=1)  # Avançar turnos (10min cada)
+advance_game_time(session_id, minutes=0, hours=0, days=0)  # Avançar tempo no jogo
+register_rest(session_id, rest_type)      # Registar descanso ('curto' ou 'longo')
+```
+
+## Sistema de Mapas e Posicionamento
+
+Sistema híbrido de mapas tácticos com grelha:
+
+### Tipos de Mapas
+
+1. **Mapa Overview (Quest-level)**
+   - Mapa global da aventura mostrando locais principais
+   - Navegação entre áreas da quest
+   - Configurável no JSON da quest: `mapa_overview`
+
+2. **Mapas Tácticos (Step-level)**
+   - Mapas detalhados por passo (especialmente combates)
+   - Grelha variável por passo (10x10, 20x20, etc.)
+   - Configurável em cada passo: `mapa_tatico`
+
+### Modelos de Dados
+
+**EntityPosition** (`/app/models/position.py`):
+- Rastreia posição de jogadores, NPCs e monstros na grelha
+- Campos: `entity_type`, `entity_id`, `grid_x`, `grid_y`, `visivel`, `token_cor`
+- Unique constraint: uma posição por entidade por passo
+
+**MapConfiguration** (`/app/models/position.py`):
+- Configuração da grelha por passo
+- Campos: `grid_width`, `grid_height`, `square_size_meters`, `background_image_url`
+- Tamanho de quadrado padrão: 1.5m (5 pés D&D)
+
+### Serviço: PositionService
+
+Localização: `/app/services/position_service.py`
+
+**Métodos principais:**
+```python
+initialize_step_map(session_id, step_id, map_config)  # Criar configuração de mapa
+place_entities_initial(...)                           # Posicionar entidades nas posições iniciais
+move_entity(session_id, step_id, entity_id, x, y)    # Mover entidade
+get_all_positions(session_id, step_id)                # Obter todas as posições
+toggle_entity_visibility(session_id, step_id, entity_id)  # Toggle visibilidade
+```
+
+### Componente Frontend: MapGrid
+
+Localização: `/app/static/js/map-grid.js`
+
+**Canvas HTML5** interactivo com:
+- Grelha desenhada dinamicamente
+- Drag-and-drop de entidades (snap-to-grid)
+- Filtros de visibilidade (jogadores/NPCs/monstros)
+- Tokens coloridos com nomes
+- Suporte para imagens de fundo
+- Touch events para mobile
+
+### Extensões ao JSON de Quest
+
+**Mapa Overview (raiz da quest):**
+```json
+{
+  "mapa_overview": {
+    "grid_largura": 30,
+    "grid_altura": 20,
+    "imagem_fundo": "/static/maps/quest-overview.png",
+    "locais": [
+      {
+        "id": "valdouro",
+        "nome": "Valdouro",
+        "x": 5,
+        "y": 5,
+        "passos_associados": [1, 2, 3]
+      }
+    ]
+  }
+}
+```
+
+**Mapa Táctico (em cada passo):**
+```json
+{
+  "id": 4,
+  "mapa_tatico": {
+    "grid_largura": 15,
+    "grid_altura": 15,
+    "metros_por_quadrado": 1.5,
+    "imagem_fundo": "/static/maps/step-4-floresta.png",
+    "posicoes_iniciais": {
+      "jogadores": [
+        {"indice": 0, "x": 2, "y": 7},
+        {"indice": 1, "x": 3, "y": 7}
+      ],
+      "monstros": [
+        {"id": "cavaleiro_negro", "instancia": 0, "x": 12, "y": 7}
+      ],
+      "npcs": []
+    },
+    "terreno": [
+      {"tipo": "arvore", "x": 7, "y": 7, "bloqueante": true}
+    ]
+  }
+}
+```
+
+### Exemplos Práticos: Mapas nas Quests Existentes
+
+Todas as 3 quests incluídas têm mapas tácticos nos encontros de combate:
+
+**A Cripta dos Reis Esquecidos (2 mapas):**
+- Step 6: Câmara dos Guardiões - 4 esqueletos em câmara octogonal (12x12)
+- Step 10: Sala do Trono - Boss fight com Cavaleiro Fantasma (16x14)
+
+**Sombras do Império Estelar (5 mapas):**
+- Step 3: Emboscada Imperial - 4 soldados (15x13)
+- Step 4: Perseguição nas Docas - 3 caçadores (14x12)
+- Step 6: Entrada do Templo - 2 guardiões de pedra (14x12)
+- Step 9: Acólitos das Sombras - 4 acólitos (15x13)
+- Step 10: Senhor das Sombras - Boss fight (16x14)
+
+**A Irmandade do Anel Sombrio (9 mapas):**
+- Inclui encontros variados desde emboscadas (7 inimigos, grid 18x15) até boss fights (16x14)
+
+### Como Usar Mapas Tácticos
+
+**1. Criar Sessão:**
+```python
+# Mapas só aparecem quando há sessão activa
+session = session_service.create_session(nome="Minha Campanha", quest_id="cripta-reis-esquecidos")
+```
+
+**2. Navegar para Step com Combate:**
+- Acessar `/aventura/cripta-reis-esquecidos/passo/6?session_id=1`
+- O mapa aparece automaticamente se o step tem `mapa_tatico` definido
+
+**3. Interagir com Mapa:**
+- Arrastar entidades para mover (sincroniza automaticamente)
+- Usar botões de filtro para mostrar/esconder tipos de entidades
+- Posições persistem na base de dados
+- Outros DMs/dispositivos veem mudanças após refresh
+
+**4. Reinicializar Posições:**
+```python
+# API endpoint para recomeçar passo com posições iniciais
+POST /mapa/sessao/{id}/passo/{step_id}/limpar
+POST /mapa/sessao/{id}/passo/{step_id}/inicializar
+```
+
+### Diretrizes para Criar Novos Mapas
+
+**Tamanhos de Grelha Recomendados:**
+- Pequena (8x8 a 10x10): Combates em espaços apertados (corredores, quartos)
+- Média (12x12 a 15x15): Combates standard (4-6 criaturas)
+- Grande (16x16 a 20x20): Boss fights, batalhas épicas, áreas abertas
+- Muito Grande (20x20+): Mapas de exploração, múltiplos grupos
+
+**Posicionamento Inicial:**
+- Jogadores: Entrada/lado oeste (x baixo)
+- Monstros: Interior/lado este (x alto)
+- Espaçamento: 2-4 quadrados entre grupos para movimento táctico
+- Boss: Posição central ou ao fundo da sala
+
+**Performance:**
+- Grids até 30x30 funcionam bem
+- Canvas renderiza a 60fps mesmo com 20+ entidades
+- Mobile: Touch events funcionam igual a mouse
+
 ## Rotas Principais
 
 | Rota | Blueprint | Descrição |
@@ -151,6 +354,13 @@ DandD_App/
 | `/aventura/<id>/passo/<n>` | quest | Passo específico |
 | `/combate/` | combat | Rastreador de combate |
 | `/imprimir/...` | print | Versões imprimíveis |
+| `/sessao/<id>/tempo/iniciar` | session | Iniciar cronómetro de sessão |
+| `/sessao/<id>/tempo/pausar` | session | Pausar cronómetro |
+| `/sessao/<id>/tempo/status` | session | Estado de todos os tempos |
+| `/sessao/<id>/tempo/avancar` | session | Avançar tempo no jogo |
+| `/mapa/sessao/<id>/passo/<step>/posicoes` | map | Obter posições de entidades |
+| `/mapa/sessao/<id>/passo/<step>/mover` | map | Mover entidade no mapa |
+| `/mapa/sessao/<id>/passo/<step>/visibilidade` | map | Toggle visibilidade entidade |
 
 ## Padrões de Desenvolvimento
 
