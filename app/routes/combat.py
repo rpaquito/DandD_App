@@ -12,6 +12,8 @@ session_service = SessionService()
 @combat_bp.route('/sessao/<int:session_id>')
 def session_tracker(session_id):
     """Rastreador de combate para uma sessao especifica."""
+    from app.services.quest_loader import QuestLoader
+
     game_session = session_service.get_session(session_id)
     if not game_session:
         return redirect(url_for('combat.tracker'))
@@ -19,12 +21,23 @@ def session_tracker(session_id):
     combat = session_service.get_session_combat(session_id)
     participants = combat.get_participantes() if combat and combat.activo else []
 
+    # Carregar quest e step atual para o mapa tatico
+    quest = None
+    current_step = None
+    if game_session.quest_id:
+        quest_loader = QuestLoader()
+        quest = quest_loader.get_quest(game_session.quest_id)
+        if quest and combat and combat.quest_step_id:
+            current_step = quest.get_step(combat.quest_step_id)
+
     return render_template(
         'combat/tracker.html',
         conditions=CONDICOES_5E,
         game_session=game_session,
         session_combat=combat,
-        initial_participants=participants
+        initial_participants=participants,
+        quest=quest,
+        current_step=current_step
     )
 
 

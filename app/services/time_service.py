@@ -219,11 +219,12 @@ class TimeTrackingService:
 
     # ===== 4. TEMPO NO JOGO (IN-GAME TIME) =====
 
-    def advance_game_time(self, session_id: int, minutes: int = 0, hours: int = 0, days: int = 0):
+    def advance_game_time(self, session_id: int, seconds: int = 0, minutes: int = 0, hours: int = 0, days: int = 0):
         """Avancar tempo no jogo.
 
         Args:
             session_id: ID da sessao de jogo
+            seconds: Segundos a avancar
             minutes: Minutos a avancar
             hours: Horas a avancar
             days: Dias a avancar
@@ -235,23 +236,26 @@ class TimeTrackingService:
         if not session:
             return None
 
-        # Parse tempo actual
+        # Parse tempo actual (tentar com segundos primeiro, depois sem)
         try:
-            current_time = datetime.strptime(session.tempo_jogo_atual, "%H:%M")
+            current_time = datetime.strptime(session.tempo_jogo_atual, "%H:%M:%S")
         except (ValueError, TypeError):
-            # Se falhar, usar tempo padrao
-            current_time = datetime.strptime("08:00", "%H:%M")
-            session.tempo_jogo_atual = "08:00"
+            try:
+                current_time = datetime.strptime(session.tempo_jogo_atual, "%H:%M")
+            except (ValueError, TypeError):
+                # Se falhar, usar tempo padrao
+                current_time = datetime.strptime("08:00:00", "%H:%M:%S")
+                session.tempo_jogo_atual = "08:00:00"
 
         # Adicionar tempo
-        new_time = current_time + timedelta(minutes=minutes, hours=hours, days=days)
+        new_time = current_time + timedelta(seconds=seconds, minutes=minutes, hours=hours, days=days)
 
         # Calcular dias adicionais (rollover de 24h)
         days_passed = (new_time - current_time).days
         session.dia_jogo_atual += days_passed
 
-        # Actualizar hora (manter apenas HH:MM, ignorar dias)
-        session.tempo_jogo_atual = new_time.strftime("%H:%M")
+        # Actualizar hora (manter apenas HH:MM:SS, ignorar dias)
+        session.tempo_jogo_atual = new_time.strftime("%H:%M:%S")
 
         db.session.commit()
 
@@ -272,12 +276,18 @@ class TimeTrackingService:
         """
         session = GameSession.query.get(session_id)
         if not session:
-            return {"dia": 1, "hora": "08:00", "formatted": "Dia 1, 08:00"}
+            return {"dia": 1, "hora": "08:00:00", "formatted": "Dia 1, 08:00:00"}
+
+        # Garantir que tem formato com segundos
+        hora = session.tempo_jogo_atual
+        if hora and hora.count(':') == 1:
+            # Se só tem HH:MM, adicionar :00
+            hora = hora + ":00"
 
         return {
             "dia": session.dia_jogo_atual,
-            "hora": session.tempo_jogo_atual,
-            "formatted": f"Dia {session.dia_jogo_atual}, {session.tempo_jogo_atual}"
+            "hora": hora,
+            "formatted": f"Dia {session.dia_jogo_atual}, {hora}"
         }
 
     def set_game_time(self, session_id: int, dia: int, hora: str):
@@ -286,7 +296,7 @@ class TimeTrackingService:
         Args:
             session_id: ID da sessao de jogo
             dia: Dia a definir
-            hora: Hora a definir (formato "HH:MM")
+            hora: Hora a definir (formato "HH:MM" ou "HH:MM:SS")
 
         Returns:
             True se sucesso, False caso contrario
@@ -295,11 +305,16 @@ class TimeTrackingService:
         if not session:
             return False
 
-        # Validar formato de hora
+        # Validar formato de hora (aceitar HH:MM ou HH:MM:SS)
         try:
-            datetime.strptime(hora, "%H:%M")
+            datetime.strptime(hora, "%H:%M:%S")
         except ValueError:
-            return False
+            try:
+                # Se falhar com segundos, tentar sem segundos e adicionar :00
+                datetime.strptime(hora, "%H:%M")
+                hora = hora + ":00"
+            except ValueError:
+                return False
 
         session.dia_jogo_atual = dia
         session.tempo_jogo_atual = hora

@@ -488,6 +488,9 @@ function renderInitiativeList() {
     combatState.participants.forEach((p, index) => {
         container.appendChild(createParticipantCard(p, index));
     });
+
+    // Atualizar highlight das condições
+    updateConditionHighlights();
 }
 
 // ============================================
@@ -533,6 +536,49 @@ function showNotification(message, type) {
     } else {
         console.log('[' + type + '] ' + message);
     }
+}
+
+// ============================================
+// Highlight de Condições Ativas
+// ============================================
+
+/**
+ * Atualiza o highlight dos botões de condições 5e baseado nas condições ativas dos participantes
+ */
+function updateConditionHighlights() {
+    // Recolher todas as condições ativas de todos os participantes
+    const activeConditions = new Set();
+
+    combatState.participants.forEach(participant => {
+        if (participant.condicoes && participant.condicoes.length > 0) {
+            participant.condicoes.forEach(cond => {
+                // Normalizar nome da condição para lowercase e sem acentos
+                const normalizedCond = cond.toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .trim();
+                activeConditions.add(normalizedCond);
+            });
+        }
+    });
+
+    // Atualizar todos os botões de condições
+    document.querySelectorAll('.condition-ref').forEach(button => {
+        const buttonText = button.textContent.toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim();
+
+        if (activeConditions.has(buttonText)) {
+            // Condição ativa - highlight
+            button.classList.remove('btn-outline-secondary');
+            button.classList.add('btn-warning', 'text-dark');
+        } else {
+            // Condição não ativa - normal
+            button.classList.remove('btn-warning', 'text-dark');
+            button.classList.add('btn-outline-secondary');
+        }
+    });
 }
 
 // Event listeners

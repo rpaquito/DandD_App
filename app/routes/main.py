@@ -45,7 +45,10 @@ def characters():
 @main_bp.route('/ajuda')
 def help_page():
     """Pagina de ajuda - como usar o DM Companion."""
-    return render_template('help.html')
+    from app.services.quest_loader import QuestLoader
+    loader = QuestLoader()
+    quests = loader.get_all_quests()
+    return render_template('help.html', quests=quests)
 
 
 @main_bp.route('/definicoes')

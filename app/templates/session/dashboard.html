@@ -49,8 +49,71 @@
 {% block content %}
 <div class="container-fluid py-4">
     <div class="row">
+        <!-- Sidebar Esquerda - Ações Rápidas e Resumo -->
+        <div class="col-lg-2 mb-4">
+            <!-- Acoes Rapidas -->
+            <div class="card bg-dark border-danger mb-4 sticky-top" style="top: 20px;">
+                <div class="card-header border-danger">
+                    <h6 class="mb-0"><i class="bi bi-lightning me-2"></i>Ações Rápidas</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        {% if quest %}
+                        <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=game_session.passo_atual, session_id=game_session.id) }}" class="btn btn-sm btn-success">
+                            <i class="bi bi-play-fill me-1"></i>Continuar
+                        </a>
+                        <a href="{{ url_for('quest.overview', quest_id=quest.id, session_id=game_session.id) }}" class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-map me-1"></i>Aventura
+                        </a>
+                        <a href="{{ url_for('quest.npcs', quest_id=quest.id) }}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-person-circle me-1"></i>NPCs
+                        </a>
+                        <a href="{{ url_for('quest.monsters', quest_id=quest.id) }}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-bug me-1"></i>Monstros
+                        </a>
+                        {% endif %}
+                        <a href="{{ url_for('combat.session_tracker', session_id=game_session.id) }}" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-shield-shaded me-1"></i>Combate
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumo do Grupo -->
+            {% if players %}
+            <div class="card bg-dark border-info">
+                <div class="card-header border-info">
+                    <h6 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Resumo</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center g-2">
+                        <div class="col-6">
+                            <h5 class="mb-0">{{ players|length }}</h5>
+                            <small class="text-muted" style="font-size: 0.7rem;">Jogadores</small>
+                        </div>
+                        <div class="col-6">
+                            {% set total_hp_atual = players|sum(attribute='hp_atual') %}
+                            {% set total_hp_max = players|sum(attribute='hp_max') %}
+                            <h5 class="mb-0">{{ total_hp_atual }}/{{ total_hp_max }}</h5>
+                            <small class="text-muted" style="font-size: 0.7rem;">HP Total</small>
+                        </div>
+                        <div class="col-6">
+                            {% set avg_ac = (players|map(attribute='hp_max')|list|sum / players|length)|round(0)|int if players else 0 %}
+                            <h5 class="mb-0">{{ avg_ac }}</h5>
+                            <small class="text-muted" style="font-size: 0.7rem;">HP Médio</small>
+                        </div>
+                        <div class="col-6">
+                            <h5 class="mb-0">{{ players|selectattr('hp_atual', 'eq', 0)|list|length }}</h5>
+                            <small class="text-muted" style="font-size: 0.7rem;">KO</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
         <!-- Coluna Principal -->
-        <div class="col-lg-8">
+        <div class="col-lg-7">
             <!-- Cabecalho da Sessao -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
@@ -118,8 +181,8 @@
                         </div>
 
                         {% if current_step %}
-                        <div class="alert alert-secondary mb-0">
-                            <strong>Passo Atual:</strong> {{ current_step.titulo }}
+                        <div class="alert alert-info bg-opacity-10 border-info mb-0">
+                            <strong class="text-white">Passo Atual:</strong> <span class="text-white">{{ current_step.titulo }}</span>
                             <span class="badge bg-{{ 'danger' if current_step.tipo == 'combate' else 'info' if current_step.tipo == 'social' else 'warning' if current_step.tipo == 'puzzle' else 'secondary' }} ms-2">
                                 {{ current_step.tipo|capitalize }}
                             </span>
@@ -222,6 +285,89 @@
                 </div>
             </div>
 
+            <!-- NPCs Presentes (se houver step atual) -->
+            {% if quest and current_step and current_step.npcs and current_step.npcs|length > 0 %}
+            <div class="card bg-dark border-info mb-4">
+                <div class="card-header border-info">
+                    <h5 class="mb-0"><i class="bi bi-people me-2"></i>NPCs Presentes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        {% for npc_id in current_step.npcs %}
+                        {% if quest.npcs and quest.npcs[npc_id] %}
+                        {% set npc = quest.npcs[npc_id] %}
+                        <div class="col-md-6">
+                            <div class="card bg-secondary h-100">
+                                <div class="card-body py-2">
+                                    <h6 class="mb-1">{{ npc.nome }}</h6>
+                                    <small class="text-light opacity-75 d-block text-wrap" style="word-break: break-word;">{{ npc.descricao[:100] }}{% if npc.descricao|length > 100 %}...{% endif %}</small>
+                                    {% if npc.personalidade %}
+                                    <div class="mt-2">
+                                        <span class="badge bg-info"><i class="bi bi-star me-1"></i>{{ npc.personalidade }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Monstros (se houver step atual de combate) -->
+            {% if quest and current_step and current_step.monstros and current_step.monstros|length > 0 %}
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header border-danger">
+                    <h5 class="mb-0"><i class="bi bi-bug me-2"></i>Monstros</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        {% for monster_id in current_step.monstros %}
+                        {% if quest.monstros and quest.monstros[monster_id] %}
+                        {% set monster = quest.monstros[monster_id] %}
+                        <div class="col-md-6">
+                            <div class="card bg-secondary h-100">
+                                <div class="card-body py-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <h6 class="mb-0">{{ monster.nome }}</h6>
+                                        <span class="badge bg-danger">CR {{ monster.cr }}</span>
+                                    </div>
+                                    <div class="small">
+                                        <span class="me-2"><i class="bi bi-shield me-1"></i>AC {{ monster.ac }}</span>
+                                        <span><i class="bi bi-heart me-1"></i>{{ monster.hp_max }} HP</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Cena de Combate (se step atual for combate) -->
+            {% if current_step and current_step.tipo == 'combate' %}
+            <div class="card bg-danger bg-opacity-25 border-danger mb-4 combat-bg">
+                <div class="card-header border-danger">
+                    <h5 class="mb-0"><i class="bi bi-shield-shaded me-2"></i>Cena de Combate</h5>
+                </div>
+                <div class="card-body text-center">
+                    <p class="mb-3"><strong>{{ current_step.titulo }}</strong></p>
+                    {% if quest and current_step.monstros %}
+                    <p class="small text-light opacity-75 mb-3">
+                        {{ current_step.monstros|length }} monstros vs {{ players|length }} jogadores
+                    </p>
+                    {% endif %}
+                    <a href="{{ url_for('combat.session_tracker', session_id=game_session.id) }}" class="btn btn-danger w-100">
+                        <i class="bi bi-play-circle me-1"></i>Abrir Rastreador de Combate
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
             <!-- Notas da Sessao -->
             <div class="card bg-dark border-secondary">
                 <div class="card-header border-secondary">
@@ -239,38 +385,10 @@
             </div>
         </div>
 
-        <!-- Coluna Lateral -->
-        <div class="col-lg-4">
-            <!-- Acoes Rapidas -->
-            <div class="card bg-dark border-danger mb-4">
-                <div class="card-header border-danger">
-                    <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Acoes Rapidas</h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        {% if quest %}
-                        <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=game_session.passo_atual, session_id=game_session.id) }}" class="btn btn-success">
-                            <i class="bi bi-play-fill me-1"></i>Continuar Aventura
-                        </a>
-                        <a href="{{ url_for('quest.overview', quest_id=quest.id, session_id=game_session.id) }}" class="btn btn-outline-info">
-                            <i class="bi bi-map me-1"></i>Ver Aventura Completa
-                        </a>
-                        <a href="{{ url_for('quest.npcs', quest_id=quest.id) }}" class="btn btn-outline-secondary">
-                            <i class="bi bi-person-circle me-1"></i>Ver NPCs
-                        </a>
-                        <a href="{{ url_for('quest.monsters', quest_id=quest.id) }}" class="btn btn-outline-secondary">
-                            <i class="bi bi-bug me-1"></i>Ver Monstros
-                        </a>
-                        {% endif %}
-                        <a href="{{ url_for('combat.session_tracker', session_id=game_session.id) }}" class="btn btn-outline-danger">
-                            <i class="bi bi-shield-shaded me-1"></i>Rastreador de Combate
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gestao de Tempo -->
-            <div class="card bg-dark border-info mb-4">
+        <!-- Sidebar Direita - Tempo e Navegação -->
+        <div class="col-lg-3 mb-4">
+            <!-- Gestao de Tempo e Estado da Sessão -->
+            <div class="card bg-dark border-info mb-4 sticky-top time-panel-bg" style="top: 20px;">
                 <div class="card-header border-info">
                     <h5 class="mb-0"><i class="bi bi-clock me-2"></i>Gestao de Tempo</h5>
                 </div>
@@ -290,9 +408,12 @@
 
                     <!-- Tempo de Combate -->
                     <div class="mb-3">
-                        <small class="text-muted d-block mb-1">
-                            <i class="bi bi-shield-shaded me-1 text-danger"></i>Tempo de Combate
-                        </small>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="text-muted">
+                                <i class="bi bi-shield-shaded me-1 text-danger"></i>Tempo de Combate
+                            </small>
+                            <div id="combat-controls"></div>
+                        </div>
                         <p class="mb-0" id="combat-time">-</p>
                     </div>
 
@@ -328,56 +449,45 @@
                 </div>
             </div>
 
-            <!-- Estado da Sessao -->
-            <div class="card bg-dark border-secondary mb-4">
+            <!-- Mapa da Aventura (Navegação) -->
+            {% if quest %}
+            <div class="card bg-dark border-secondary quest-bg">
                 <div class="card-header border-secondary">
-                    <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Estado da Sessao</h5>
+                    <h6 class="mb-0"><i class="bi bi-map me-2"></i>Mapa da Aventura</h6>
                 </div>
-                <div class="card-body">
-                    <form action="{{ url_for('session.update_state', session_id=game_session.id) }}" method="post">
-                        <div class="d-grid gap-2">
-                            <button type="submit" name="estado" value="activa" class="btn {% if game_session.estado == 'activa' %}btn-success{% else %}btn-outline-success{% endif %}">
-                                <i class="bi bi-play-circle me-1"></i>Activa
-                            </button>
-                            <button type="submit" name="estado" value="pausada" class="btn {% if game_session.estado == 'pausada' %}btn-warning{% else %}btn-outline-warning{% endif %}">
-                                <i class="bi bi-pause-circle me-1"></i>Pausada
-                            </button>
-                            <button type="submit" name="estado" value="terminada" class="btn {% if game_session.estado == 'terminada' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
-                                <i class="bi bi-stop-circle me-1"></i>Terminada
-                            </button>
+                <div class="list-group list-group-flush" style="max-height: 50vh; overflow-y: auto;">
+                    {% for s in quest.passos %}
+                    {% set is_current = s.id == game_session.passo_atual %}
+                    {% set is_completed = s.id < game_session.passo_atual %}
+                    <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=s.id, session_id=game_session.id) }}"
+                       class="list-group-item list-group-item-action bg-dark text-light border-secondary py-2 {% if is_current %}active border-danger{% endif %}">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">
+                                {% if s.tipo == 'combate' %}
+                                <i class="bi bi-shield-shaded text-danger"></i>
+                                {% elif s.tipo == 'puzzle' %}
+                                <i class="bi bi-puzzle text-warning"></i>
+                                {% elif s.tipo == 'social' %}
+                                <i class="bi bi-chat-dots text-info"></i>
+                                {% else %}
+                                <i class="bi bi-book text-secondary"></i>
+                                {% endif %}
+                            </span>
+                            <div class="flex-grow-1">
+                                <small {% if is_completed %}class="text-muted text-decoration-line-through"{% endif %}>
+                                    {{ s.titulo[:25] }}{% if s.titulo|length > 25 %}...{% endif %}
+                                </small>
+                            </div>
+                            {% if is_current %}
+                            <span class="badge bg-danger"><i class="bi bi-geo-alt-fill"></i></span>
+                            {% elif is_completed %}
+                            <span class="badge bg-success"><i class="bi bi-check"></i></span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ s.id }}</span>
+                            {% endif %}
                         </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Resumo -->
-            {% if players %}
-            <div class="card bg-dark border-info">
-                <div class="card-header border-info">
-                    <h5 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Resumo do Grupo</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row text-center g-2">
-                        <div class="col-6">
-                            <h4>{{ players|length }}</h4>
-                            <small class="text-muted">Jogadores</small>
-                        </div>
-                        <div class="col-6">
-                            {% set total_hp_atual = players|sum(attribute='hp_atual') %}
-                            {% set total_hp_max = players|sum(attribute='hp_max') %}
-                            <h4>{{ total_hp_atual }}/{{ total_hp_max }}</h4>
-                            <small class="text-muted">HP Total</small>
-                        </div>
-                        <div class="col-6">
-                            {% set avg_ac = (players|map(attribute='hp_max')|list|sum / players|length)|round(0)|int if players else 0 %}
-                            <h4>{{ avg_ac }}</h4>
-                            <small class="text-muted">HP Medio</small>
-                        </div>
-                        <div class="col-6">
-                            <h4>{{ players|selectattr('hp_atual', 'eq', 0)|list|length }}</h4>
-                            <small class="text-muted">Inconscientes</small>
-                        </div>
-                    </div>
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
             {% endif %}
@@ -512,6 +622,7 @@ timeTracker.setElements({
 // Criar controles com TimeControlsBuilder
 const controls = new TimeControlsBuilder(timeTracker);
 controls.createStartPauseButton('session-controls');
+controls.createCombatRoundButton('combat-controls');
 controls.createExplorationButton('exploration-controls');
 controls.createGameTimeButtons('game-time-controls');
 controls.createRestButtons('rest-controls');

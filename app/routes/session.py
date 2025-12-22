@@ -1,6 +1,7 @@
 """Rotas para gestao de sessoes de jogo."""
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
+from app import db
 from app.services.session_service import SessionService, load_character_templates, get_saved_characters
 from app.services.quest_loader import QuestLoader
 from app.services.time_service import TimeTrackingService
@@ -381,5 +382,25 @@ def advance_exploration(session_id):
     total = time_service.advance_exploration_turn(session_id, turns)
     return jsonify({
         'turnos_total': total,
+        'tempo_jogo': time_service.get_game_time(session_id)
+    })
+
+
+@session_bp.route('/<int:session_id>/tempo/combate/avancar', methods=['POST'])
+def advance_combat_round(session_id):
+    """Avancar tempo de combate (6 segundos no jogo)."""
+    from app.models.session import SessionCombat
+
+    combat = SessionCombat.query.filter_by(session_id=session_id).first()
+    if not combat or not combat.activo:
+        return jsonify({'error': 'Nao ha combate activo'}), 400
+
+    # Avancar tempo no jogo (6 segundos = 1 ronda D&D)
+    time_service.advance_game_time(session_id, seconds=6)
+
+    # Retornar estado atualizado
+    return jsonify({
+        'ronda_atual': combat.ronda_atual,
+        'combat_time': time_service.get_combat_time(session_id),
         'tempo_jogo': time_service.get_game_time(session_id)
     })

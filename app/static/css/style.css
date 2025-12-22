@@ -399,3 +399,214 @@ hr {
 .card .card-text {
     color: #d0d0d0;
 }
+
+/* ========================================
+   BACKGROUNDS TEMÁTICOS - PURE CSS
+   ======================================== */
+
+/* Fundo de Sessão - Pergaminho Envelhecido */
+.session-bg {
+    background:
+        linear-gradient(90deg, rgba(40, 30, 20, 0.05) 1px, transparent 1px),
+        linear-gradient(rgba(40, 30, 20, 0.05) 1px, transparent 1px),
+        linear-gradient(135deg, #2a2520 0%, #1f1b18 50%, #2a2520 100%);
+    background-size: 20px 20px, 20px 20px, 100% 100%;
+    position: relative;
+}
+
+.session-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(139, 90, 43, 0.03), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(101, 67, 33, 0.03), transparent 40%);
+    pointer-events: none;
+}
+
+/* Fundo de Combate - Mapa de Batalha */
+.combat-bg {
+    background:
+        linear-gradient(90deg, rgba(100, 20, 20, 0.1) 1px, transparent 1px),
+        linear-gradient(rgba(100, 20, 20, 0.1) 1px, transparent 1px),
+        linear-gradient(135deg, #2a1a1a 0%, #1a0f0f 50%, #2a1a1a 100%);
+    background-size: 15px 15px, 15px 15px, 100% 100%;
+    position: relative;
+    box-shadow: inset 0 0 50px rgba(139, 0, 0, 0.1);
+}
+
+.combat-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 50% 50%, transparent 30%, rgba(80, 0, 0, 0.05) 70%);
+    pointer-events: none;
+}
+
+/* Fundo de Quest - Mapa do Tesouro */
+.quest-bg {
+    background:
+        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(101, 67, 33, 0.03) 10px, rgba(101, 67, 33, 0.03) 20px),
+        linear-gradient(to bottom, #2a2318 0%, #1f1b13 100%);
+    position: relative;
+}
+
+.quest-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(139, 90, 43, 0.05), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(101, 67, 33, 0.05), transparent 30%);
+    pointer-events: none;
+}
+
+/* Painel de Gestão de Tempo - Relógio Místico */
+.time-panel-bg {
+    background:
+        radial-gradient(circle at center, rgba(13, 202, 240, 0.05) 0%, transparent 70%),
+        linear-gradient(135deg, #1a2a3a 0%, #0f1820 100%);
+    position: relative;
+    box-shadow: inset 0 0 30px rgba(13, 202, 240, 0.1);
+}
+
+.time-panel-bg::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 80%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid rgba(13, 202, 240, 0.1);
+    pointer-events: none;
+}
+
+/* Mapa Tático - Grade de Combate */
+.tactical-map-bg {
+    background:
+        linear-gradient(90deg, rgba(255, 193, 7, 0.15) 1px, transparent 1px),
+        linear-gradient(rgba(255, 193, 7, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, #1a1a1a 0%, #252525 100%);
+    background-size: 40px 40px, 40px 40px, 100% 100%;
+}
+
+/* Painel de Aventura - Borda Decorativa */
+.adventure-panel {
+    position: relative;
+    border: 2px solid transparent;
+    background: linear-gradient(#2a2a2a, #2a2a2a) padding-box,
+                linear-gradient(135deg, #8b5a2b 0%, #654321 50%, #8b5a2b 100%) border-box;
+}
+
+/* Efeito de Brilho Sutil para Cards Importantes */
+.glow-subtle {
+    box-shadow: 0 0 20px rgba(220, 53, 69, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.glow-subtle:hover {
+    box-shadow: 0 0 30px rgba(220, 53, 69, 0.2);
+}
+
+/* Padrão de Pergaminho para Texto de Jogadores (melhorado) */
+.player-text-enhanced {
+    background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
+        linear-gradient(135deg, #fdf1dc 0%, #f5e6c8 100%);
+    color: #2c1810;
+    padding: 25px;
+    border-radius: 5px;
+    border: 3px solid #8b5a2b;
+    border-left: 8px solid var(--dnd-red);
+    font-family: 'Georgia', serif;
+    box-shadow:
+        inset 0 0 30px rgba(139, 90, 43, 0.1),
+        0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.player-text-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, rgba(220, 53, 69, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+/* Divisor Decorativo - Ornamental */
+.ornamental-divider {
+    height: 2px;
+    background: linear-gradient(to right,
+        transparent 0%,
+        #8b5a2b 20%,
+        var(--dnd-red) 50%,
+        #8b5a2b 80%,
+        transparent 100%);
+    position: relative;
+    margin: 20px 0;
+}
+
+.ornamental-divider::before,
+.ornamental-divider::after {
+    content: '◆';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dnd-red);
+    font-size: 12px;
+}
+
+.ornamental-divider::before {
+    left: 0;
+}
+
+.ornamental-divider::after {
+    right: 0;
+}
+
+/* Card com Borda Iluminada (para destaques) */
+.illuminated-card {
+    position: relative;
+    background: #2a2a2a;
+    border: 1px solid transparent;
+}
+
+.illuminated-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg,
+        var(--dnd-red),
+        #8b5a2b,
+        var(--dnd-gold),
+        #8b5a2b,
+        var(--dnd-red));
+    background-size: 400% 400%;
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.3;
+    animation: borderGlow 4s ease infinite;
+}
+
+@keyframes borderGlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}

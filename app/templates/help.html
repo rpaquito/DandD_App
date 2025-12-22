@@ -1303,9 +1303,19 @@
             <div class="col-md-4">
                 <div class="card bg-dark border-secondary h-100">
                     <div class="card-body">
-                        <h6><i class="bi bi-map me-2"></i>Mapa da Aventura</h6>
-                        <p class="small">Mapa visual para ajudar na navegação da dungeon.</p>
-                        <span class="text-light opacity-75 small">Disponível na página da aventura</span>
+                        <h6><i class="bi bi-map me-2"></i>Mapas das Aventuras</h6>
+                        <p class="small mb-3">Mapas visuais para ajudar na navegação das dungeons.</p>
+                        {% if quests %}
+                        <div class="d-flex flex-column gap-2">
+                            {% for quest in quests %}
+                            <a href="{{ url_for('print.map_view', quest_id=quest.id) }}" class="btn btn-sm btn-outline-light" target="_blank">
+                                <i class="bi bi-map me-1"></i>{{ quest.titulo }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <span class="text-light opacity-75 small">Nenhuma aventura disponível</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>

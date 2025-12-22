@@ -394,7 +394,10 @@ class TimeControlsBuilder {
      */
     createStartPauseButton(containerId) {
         const container = document.getElementById(containerId);
-        if (!container) return;
+        if (!container) {
+            console.warn(`Container "${containerId}" nao encontrado`);
+            return;
+        }
 
         const button = document.createElement('button');
         button.className = 'btn btn-success btn-sm me-2';
@@ -445,7 +448,10 @@ class TimeControlsBuilder {
      */
     createGameTimeButtons(containerId) {
         const container = document.getElementById(containerId);
-        if (!container) return;
+        if (!container) {
+            console.warn(`Container "${containerId}" nao encontrado`);
+            return;
+        }
 
         const buttonGroup = document.createElement('div');
         buttonGroup.className = 'btn-group btn-group-sm';
@@ -480,7 +486,10 @@ class TimeControlsBuilder {
      */
     createRestButtons(containerId) {
         const container = document.getElementById(containerId);
-        if (!container) return;
+        if (!container) {
+            console.warn(`Container "${containerId}" nao encontrado`);
+            return;
+        }
 
         const buttonGroup = document.createElement('div');
         buttonGroup.className = 'btn-group btn-group-sm';
@@ -523,7 +532,10 @@ class TimeControlsBuilder {
      */
     createExplorationButton(containerId) {
         const container = document.getElementById(containerId);
-        if (!container) return;
+        if (!container) {
+            console.warn(`Container "${containerId}" nao encontrado`);
+            return;
+        }
 
         const button = document.createElement('button');
         button.className = 'btn btn-outline-warning btn-sm';
@@ -539,6 +551,72 @@ class TimeControlsBuilder {
         });
 
         container.appendChild(button);
+        return button;
+    }
+
+    /**
+     * Criar botao de avanco de ronda de combate
+     */
+    createCombatRoundButton(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.warn(`Container "${containerId}" nao encontrado`);
+            return;
+        }
+
+        const button = document.createElement('button');
+        button.className = 'btn btn-outline-danger btn-sm';
+
+        const icon = document.createElement('i');
+        icon.className = 'bi bi-skip-forward';
+        button.appendChild(icon);
+
+        button.appendChild(document.createTextNode(' +1'));
+
+        button.title = 'Avançar Ronda';
+
+        button.addEventListener('click', async () => {
+            console.log('Botao de avancar ronda clicado');
+
+            try {
+                const response = await fetch(`/sessao/${this.tracker.sessionId}/tempo/combate/avancar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    console.error('Erro ao avancar ronda:', error);
+
+                    // Mostrar alerta ao utilizador
+                    if (error.error && error.error.includes('combate activo')) {
+                        alert('Não há combate ativo. Inicie um combate primeiro.');
+                    } else {
+                        alert('Erro ao avançar ronda: ' + (error.error || 'Erro desconhecido'));
+                    }
+                    return;
+                }
+
+                const data = await response.json();
+                console.log('Ronda avancada:', data);
+
+                // Actualizar tracker
+                await this.tracker.update();
+
+                // Se houver callback global de atualizacao de combate, chamar
+                if (window.combatState && typeof window.combatState.updateRound === 'function') {
+                    window.combatState.updateRound(data.ronda_atual);
+                }
+            } catch (error) {
+                console.error('Erro ao avancar ronda de combate:', error);
+                alert('Erro de conexão ao avançar ronda');
+            }
+        });
+
+        container.appendChild(button);
+        console.log(`Botao de combate criado em "${containerId}"`);
         return button;
     }
 }

@@ -6,30 +6,36 @@
 <div class="container-fluid py-4">
     <!-- Barra de Sessao (se activa) -->
     {% if game_session %}
-    <div class="alert alert-dark border-success mb-4">
+    <div class="alert alert-success bg-opacity-25 border-success mb-4">
         <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <i class="bi bi-controller me-2 text-success"></i>
+            <div class="text-light">
+                <i class="bi bi-controller me-2"></i>
                 <strong>Sessao:</strong> {{ game_session.nome }}
                 <span class="badge bg-success ms-2">{{ players|length }} jogadores</span>
             </div>
-            <a href="{{ url_for('session.dashboard', session_id=game_session.id) }}" class="btn btn-sm btn-outline-success">
-                <i class="bi bi-speedometer2 me-1"></i>Painel da Sessao
-            </a>
+            <div>
+                <a href="{{ url_for('session.dashboard', session_id=game_session.id) }}" class="btn btn-sm btn-success me-2">
+                    <i class="bi bi-speedometer2 me-1"></i>Painel da Sessao
+                </a>
+                <a href="{{ url_for('print.map_view', quest_id=quest.id) }}" class="btn btn-sm btn-info" target="_blank">
+                    <i class="bi bi-map me-1"></i>Mapa da Aventura
+                </a>
+            </div>
         </div>
     </div>
     {% endif %}
 
     <div class="row">
-        <!-- Sidebar - Jogadores (se sessao activa) -->
+        <!-- Sidebar Esquerda - Jogadores, NPCs e Monstros -->
         {% if game_session and players %}
         <div class="col-lg-2 mb-4">
-            <div class="card bg-dark border-success sticky-top" style="top: 20px;">
+            <!-- Party Panel -->
+            <div class="card bg-dark border-success sticky-top mb-4" style="top: 20px;">
                 <div class="card-header border-success d-flex justify-content-between align-items-center">
                     <small class="text-success"><i class="bi bi-people me-1"></i>Party</small>
                     <small class="badge bg-success">{{ players|length }}</small>
                 </div>
-                <div class="list-group list-group-flush" style="max-height: 50vh; overflow-y: auto;">
+                <div class="list-group list-group-flush" style="max-height: 40vh; overflow-y: auto;">
                     {% for player in players %}
                     {% set char = player.get_character_data() %}
                     <div class="list-group-item bg-dark text-light border-secondary py-2" id="player-{{ player.id }}">
@@ -82,16 +88,244 @@
                 </div>
                 {% endif %}
             </div>
+
+            <!-- NPCs Presentes -->
+            {% set npcs_presentes = quest.get_npcs_for_step(step) %}
+            {% if npcs_presentes %}
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h6 class="mb-0"><i class="bi bi-people me-2"></i>NPCs</h6>
+                </div>
+                <div class="list-group list-group-flush" style="max-height: 30vh; overflow-y: auto;">
+                    {% for npc in npcs_presentes %}
+                    <div class="list-group-item bg-dark text-light border-secondary">
+                        <h6 class="mb-1 small">{{ npc.nome }}</h6>
+                        <small class="text-light opacity-75" style="font-size: 0.7rem;">{{ npc.descricao[:60] }}{% if npc.descricao|length > 60 %}...{% endif %}</small>
+                        {% if npc.dialogos %}
+                        <button class="btn btn-sm btn-outline-info mt-2 w-100" style="font-size: 0.7rem;" data-bs-toggle="collapse" data-bs-target="#dialogos-{{ npc.id }}">
+                            <i class="bi bi-chat-quote me-1"></i>Diálogos
+                        </button>
+                        <div class="collapse mt-2" id="dialogos-{{ npc.id }}">
+                            <ul class="list-unstyled" style="font-size: 0.7rem;">
+                                {% for dialogo in npc.dialogos %}
+                                <li class="mb-1 fst-italic">"{{ dialogo[:50] }}{% if dialogo|length > 50 %}...{% endif %}"</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Monstros no Passo -->
+            {% set monstros_presentes = quest.get_monsters_for_step(step) %}
+            {% if monstros_presentes %}
+            <div class="card bg-dark border-danger mb-4">
+                <div class="card-header border-danger">
+                    <h6 class="mb-0"><i class="bi bi-bug me-2"></i>Monstros</h6>
+                </div>
+                <div class="list-group list-group-flush" style="max-height: 30vh; overflow-y: auto;">
+                    {% for monster in monstros_presentes %}
+                    <div class="list-group-item bg-dark text-light border-secondary">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mb-1 small">{{ monster.nome }}</h6>
+                            <span class="badge bg-danger" style="font-size: 0.6rem;">CR {{ monster.cr }}</span>
+                        </div>
+                        <div style="font-size: 0.7rem;">
+                            <span class="me-2"><i class="bi bi-shield me-1"></i>AC {{ monster.ac }}</span>
+                            <span><i class="bi bi-heart me-1"></i>{{ monster.hp_max }} HP</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger mt-2 w-100" style="font-size: 0.7rem;" onclick="adicionarAoCombate('{{ monster.nome }}', {{ monster.hp_max }}, {{ monster.ac }})">
+                            <i class="bi bi-plus-circle me-1"></i>Adicionar
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
         </div>
         {% endif %}
 
-        <!-- Sidebar - Navegacao Visual -->
-        <div class="col-lg-2 mb-4">
-            <div class="card bg-dark border-secondary sticky-top" style="top: 20px;">
+        <!-- Conteúdo Principal -->
+        <div class="col-lg-{% if game_session and players %}7{% else %}9{% endif %}">
+            <!-- Navegação de Passo -->
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Início</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('quest.overview', quest_id=quest.id) }}">{{ quest.titulo }}</a></li>
+                    <li class="breadcrumb-item active">Passo {{ step_id }}</li>
+                </ol>
+            </nav>
+
+            <!-- Cabeçalho do Passo -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <span class="badge bg-danger me-2">{{ step_id }}</span>
+                        {{ step.titulo }}
+                    </h4>
+                    <span class="badge bg-{% if step.tipo == 'combate' %}danger{% elif step.tipo == 'puzzle' %}warning{% elif step.tipo == 'social' %}info{% else %}secondary{% endif %}">
+                        {% if step.tipo == 'combate' %}<i class="bi bi-shield-shaded me-1"></i>Combate
+                        {% elif step.tipo == 'puzzle' %}<i class="bi bi-puzzle me-1"></i>Puzzle
+                        {% elif step.tipo == 'social' %}<i class="bi bi-chat-dots me-1"></i>Social
+                        {% else %}<i class="bi bi-book me-1"></i>Narrativa{% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Texto para Ler aos Jogadores -->
+            <div class="card bg-dark border-warning mb-4">
+                <div class="card-header border-warning bg-warning bg-opacity-10">
+                    <h5 class="mb-0 text-warning">
+                        <i class="bi bi-megaphone me-2"></i>Ler aos Jogadores
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="player-text-enhanced fs-5" style="line-height: 1.8;">
+                        {{ step.texto_jogadores|safe }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divisor Ornamental -->
+            <div class="ornamental-divider"></div>
+
+            <!-- Notas do Mestre -->
+            {% if step.notas_mestre %}
+            <div class="card bg-dark border-info mb-4">
+                <div class="card-header border-info bg-info bg-opacity-10">
+                    <h5 class="mb-0 text-info">
+                        <i class="bi bi-journal-text me-2"></i>Notas do Mestre
+                        <small class="text-light opacity-75">(Só para ti)</small>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{ step.notas_mestre|safe }}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Dicas de Improvisação -->
+            {% if step.dicas_improvisacao %}
+            <div class="card bg-dark border-success mb-4">
+                <div class="card-header border-success bg-success bg-opacity-10">
+                    <h5 class="mb-0 text-success">
+                        <i class="bi bi-lightbulb me-2"></i>Dicas de Improvisação
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        {% for dica in step.dicas_improvisacao %}
+                        <li class="mb-2">{{ dica }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Link para Mapa Tactico (agora no Rastreador de Combate) -->
+            {% if step.mapa_tatico and game_session %}
+            <div class="alert alert-info mb-4">
+                <i class="bi bi-map me-2"></i>
+                <strong>Mapa Táctico disponível</strong>
+                <p class="mb-2 small">Este passo tem um mapa tático configurado. Abre o Rastreador de Combate para ver o mapa.</p>
+                <a href="{{ url_for('combat.session_tracker', session_id=game_session.id) }}" class="btn btn-sm btn-info" target="_blank">
+                    <i class="bi bi-shield-shaded me-1"></i>Abrir Rastreador com Mapa
+                </a>
+            </div>
+            {% endif %}
+
+            <!-- Navegação entre Passos -->
+            <div class="d-flex justify-content-between mt-4">
+                {% if step_id > 1 %}
+                <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=step_id - 1, session_id=game_session.id if game_session else None) }}" class="btn btn-outline-light">
+                    <i class="bi bi-arrow-left me-1"></i>Passo Anterior
+                </a>
+                {% else %}
+                <span></span>
+                {% endif %}
+
+                {% if step.proximos_passos %}
+                <div class="btn-group">
+                    {% for next_id in step.proximos_passos %}
+                    {% set next_step = quest.get_step(next_id) %}
+                    <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=next_id, session_id=game_session.id if game_session else None) }}" class="btn btn-danger">
+                        {{ next_step.titulo if next_step else 'Passo ' + next_id|string }}
+                        <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sidebar Direita - Tempo e Navegação -->
+        <div class="col-lg-3 mb-4">
+            <!-- Gestão de Tempo e Estado da Sessão -->
+            {% if game_session %}
+            <div class="card bg-dark border-info no-print time-panel-bg mb-4 sticky-top" style="top: 20px;">
+                <div class="card-header border-info">
+                    <h6 class="mb-0"><i class="bi bi-clock me-2"></i>Gestão de Tempo</h6>
+                </div>
+                <div class="card-body">
+                    <!-- Tempo de Sessão -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <small class="text-muted">
+                                <i class="bi bi-stopwatch me-1"></i>Duração
+                            </small>
+                            <div id="session-controls"></div>
+                        </div>
+                        <h6 class="mb-0" id="session-duration">0h 0m</h6>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <!-- Tempo de Combate -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="text-muted">
+                                <i class="bi bi-shield-shaded me-1 text-danger"></i>Combate
+                            </small>
+                            <div id="combat-controls"></div>
+                        </div>
+                        <p class="mb-0 small" id="combat-time">-</p>
+                    </div>
+
+                    <!-- Turnos de Exploração -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="text-muted">
+                                <i class="bi bi-compass me-1 text-warning"></i>Exploração
+                            </small>
+                            <p class="mb-0 small" id="exploration-turns">0</p>
+                        </div>
+                        <div id="exploration-controls"></div>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <!-- Tempo no Jogo -->
+                    <div>
+                        <small class="text-muted d-block mb-1">
+                            <i class="bi bi-sun me-1 text-info"></i>Tempo no Jogo
+                        </small>
+                        <h6 class="mb-2" id="game-time">Dia 1, 08:00</h6>
+                        <div id="game-time-controls" class="mb-2"></div>
+                        <div id="rest-controls"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Mapa da Aventura -->
+            <div class="card bg-dark border-secondary quest-bg">
                 <div class="card-header border-secondary">
                     <small><i class="bi bi-signpost-split me-1"></i>Mapa da Aventura</small>
                 </div>
-                <div class="list-group list-group-flush" style="max-height: 60vh; overflow-y: auto;">
+                <div class="list-group list-group-flush" style="max-height: 50vh; overflow-y: auto;">
                     {% for s in quest.passos %}
                     {% set is_current = s.id == step_id %}
                     {% set is_completed = s.id < step_id %}
@@ -150,307 +384,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Conteúdo Principal -->
-        <div class="col-lg-7">
-            <!-- Navegação de Passo -->
-            <nav aria-label="breadcrumb" class="mb-3">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Início</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url_for('quest.overview', quest_id=quest.id) }}">{{ quest.titulo }}</a></li>
-                    <li class="breadcrumb-item active">Passo {{ step_id }}</li>
-                </ol>
-            </nav>
-
-            <!-- Cabeçalho do Passo -->
-            <div class="card bg-dark border-secondary mb-4">
-                <div class="card-header border-secondary d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">
-                        <span class="badge bg-danger me-2">{{ step_id }}</span>
-                        {{ step.titulo }}
-                    </h4>
-                    <span class="badge bg-{% if step.tipo == 'combate' %}danger{% elif step.tipo == 'puzzle' %}warning{% elif step.tipo == 'social' %}info{% else %}secondary{% endif %}">
-                        {% if step.tipo == 'combate' %}<i class="bi bi-shield-shaded me-1"></i>Combate
-                        {% elif step.tipo == 'puzzle' %}<i class="bi bi-puzzle me-1"></i>Puzzle
-                        {% elif step.tipo == 'social' %}<i class="bi bi-chat-dots me-1"></i>Social
-                        {% else %}<i class="bi bi-book me-1"></i>Narrativa{% endif %}
-                    </span>
-                </div>
-            </div>
-
-            <!-- Texto para Ler aos Jogadores -->
-            <div class="card bg-dark border-warning mb-4">
-                <div class="card-header border-warning bg-warning bg-opacity-10">
-                    <h5 class="mb-0 text-warning">
-                        <i class="bi bi-megaphone me-2"></i>Ler aos Jogadores
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="player-text fs-5" style="line-height: 1.8;">
-                        {{ step.texto_jogadores|safe }}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Notas do Mestre -->
-            {% if step.notas_mestre %}
-            <div class="card bg-dark border-info mb-4">
-                <div class="card-header border-info bg-info bg-opacity-10">
-                    <h5 class="mb-0 text-info">
-                        <i class="bi bi-journal-text me-2"></i>Notas do Mestre
-                        <small class="text-light opacity-75">(Só para ti)</small>
-                    </h5>
-                </div>
-                <div class="card-body">
-                    {{ step.notas_mestre|safe }}
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Dicas de Improvisação -->
-            {% if step.dicas_improvisacao %}
-            <div class="card bg-dark border-success mb-4">
-                <div class="card-header border-success bg-success bg-opacity-10">
-                    <h5 class="mb-0 text-success">
-                        <i class="bi bi-lightbulb me-2"></i>Dicas de Improvisação
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <ul class="mb-0">
-                        {% for dica in step.dicas_improvisacao %}
-                        <li class="mb-2">{{ dica }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Mapa Tactico (se configurado no step) -->
-            {% if step.mapa_tatico and game_session %}
-            <div class="card bg-dark border-warning mb-4">
-                <div class="card-header border-warning d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="bi bi-map me-2"></i>Mapa Tactico</h5>
-                    <div class="btn-group btn-group-sm" role="group">
-                        <button type="button" class="btn btn-outline-success" id="toggle-players" onclick="toggleEntityFilter('showPlayers')">
-                            <i class="bi bi-person-fill"></i> Jogadores
-                        </button>
-                        <button type="button" class="btn btn-outline-info" id="toggle-npcs" onclick="toggleEntityFilter('showNPCs')">
-                            <i class="bi bi-people"></i> NPCs
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" id="toggle-monsters" onclick="toggleEntityFilter('showMonsters')">
-                            <i class="bi bi-bug-fill"></i> Monstros
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body text-center">
-                    <canvas id="tacticalMap" style="max-width: 100%; border: 2px solid #666; border-radius: 4px;"></canvas>
-                    <small class="text-muted d-block mt-2">
-                        <i class="bi bi-info-circle me-1"></i>
-                        Arrasta entidades para mover. Cada quadrado = {{ step.mapa_tatico.metros_por_quadrado }}m ({{ (step.mapa_tatico.metros_por_quadrado / 1.5 * 5)|int }} pes)
-                    </small>
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Navegação entre Passos -->
-            <div class="d-flex justify-content-between mt-4">
-                {% if step_id > 1 %}
-                <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=step_id - 1, session_id=game_session.id if game_session else None) }}" class="btn btn-outline-light">
-                    <i class="bi bi-arrow-left me-1"></i>Passo Anterior
-                </a>
-                {% else %}
-                <span></span>
-                {% endif %}
-
-                {% if step.proximos_passos %}
-                <div class="btn-group">
-                    {% for next_id in step.proximos_passos %}
-                    {% set next_step = quest.get_step(next_id) %}
-                    <a href="{{ url_for('quest.step', quest_id=quest.id, step_id=next_id, session_id=game_session.id if game_session else None) }}" class="btn btn-danger">
-                        {{ next_step.titulo if next_step else 'Passo ' + next_id|string }}
-                        <i class="bi bi-arrow-right ms-1"></i>
-                    </a>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- Painel Lateral - Contexto -->
-        <div class="col-lg-3">
-            {% if game_session %}
-            <!-- Progresso da Quest -->
-            <div class="card bg-dark border-success mb-4">
-                <div class="card-header border-success">
-                    <h6 class="mb-0"><i class="bi bi-flag me-2"></i>Progresso da Aventura</h6>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2">
-                        <small class="text-muted">Passo {{ step_id }} de {{ quest.passos|length }}</small>
-                        <small class="text-success">{{ ((step_id / quest.passos|length) * 100)|int }}%</small>
-                    </div>
-                    <div class="progress" style="height: 8px;">
-                        <div class="progress-bar bg-success" style="width: {{ ((step_id / quest.passos|length) * 100)|int }}%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gestão de Tempo -->
-            <div class="card bg-dark border-info mb-4 no-print">
-                <div class="card-header border-info">
-                    <h6 class="mb-0"><i class="bi bi-clock me-2"></i>Gestão de Tempo</h6>
-                </div>
-                <div class="card-body">
-                    <!-- Tempo de Sessão -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <small class="text-muted">
-                                <i class="bi bi-stopwatch me-1"></i>Duração
-                            </small>
-                            <div id="session-controls"></div>
-                        </div>
-                        <h5 class="mb-0" id="session-duration">0h 0m</h5>
-                    </div>
-
-                    <hr class="border-secondary">
-
-                    <!-- Tempo de Combate -->
-                    <div class="mb-3">
-                        <small class="text-muted d-block mb-1">
-                            <i class="bi bi-shield-shaded me-1 text-danger"></i>Combate
-                        </small>
-                        <p class="mb-0 small" id="combat-time">-</p>
-                    </div>
-
-                    <!-- Turnos de Exploração -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <small class="text-muted">
-                                <i class="bi bi-compass me-1 text-warning"></i>Exploração
-                            </small>
-                            <p class="mb-0 small" id="exploration-turns">0</p>
-                        </div>
-                        <div id="exploration-controls"></div>
-                    </div>
-
-                    <hr class="border-secondary">
-
-                    <!-- Tempo no Jogo -->
-                    <div class="mb-3">
-                        <small class="text-muted d-block mb-1">
-                            <i class="bi bi-sun me-1 text-info"></i>Tempo no Jogo
-                        </small>
-                        <h6 class="mb-2" id="game-time">Dia 1, 08:00</h6>
-                        <div id="game-time-controls" class="mb-2"></div>
-                        <div id="rest-controls"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Estado da Sessão -->
-            <div class="card bg-dark border-secondary mb-4 no-print">
-                <div class="card-header border-secondary">
-                    <h6 class="mb-0"><i class="bi bi-gear me-2"></i>Estado da Sessão</h6>
-                </div>
-                <div class="card-body">
-                    <form action="{{ url_for('session.update_state', session_id=game_session.id) }}" method="post">
-                        <div class="d-grid gap-2">
-                            <button type="submit" name="estado" value="activa" class="btn btn-sm {% if game_session.estado == 'activa' %}btn-success{% else %}btn-outline-success{% endif %}">
-                                <i class="bi bi-play-circle me-1"></i>Activa
-                            </button>
-                            <button type="submit" name="estado" value="pausada" class="btn btn-sm {% if game_session.estado == 'pausada' %}btn-warning{% else %}btn-outline-warning{% endif %}">
-                                <i class="bi bi-pause-circle me-1"></i>Pausada
-                            </button>
-                            <button type="submit" name="estado" value="terminada" class="btn btn-sm {% if game_session.estado == 'terminada' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
-                                <i class="bi bi-stop-circle me-1"></i>Terminada
-                            </button>
-                        </div>
-                    </form>
-                    <div class="mt-2">
-                        <a href="{{ url_for('session.dashboard', session_id=game_session.id) }}" class="btn btn-sm btn-outline-info w-100">
-                            <i class="bi bi-speedometer2 me-1"></i>Painel da Sessão
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- NPCs Presentes -->
-            {% set npcs_presentes = quest.get_npcs_for_step(step) %}
-            {% if npcs_presentes %}
-            <div class="card bg-dark border-secondary mb-4">
-                <div class="card-header border-secondary">
-                    <h6 class="mb-0"><i class="bi bi-people me-2"></i>NPCs Presentes</h6>
-                </div>
-                <div class="list-group list-group-flush">
-                    {% for npc in npcs_presentes %}
-                    <div class="list-group-item bg-dark text-light border-secondary">
-                        <h6 class="mb-1">{{ npc.nome }}</h6>
-                        <small class="text-light opacity-75">{{ npc.descricao[:80] }}{% if npc.descricao|length > 80 %}...{% endif %}</small>
-                        {% if npc.dialogos %}
-                        <button class="btn btn-sm btn-outline-info mt-2 w-100" data-bs-toggle="collapse" data-bs-target="#dialogos-{{ npc.id }}">
-                            <i class="bi bi-chat-quote me-1"></i>Ver Diálogos
-                        </button>
-                        <div class="collapse mt-2" id="dialogos-{{ npc.id }}">
-                            <ul class="list-unstyled small">
-                                {% for dialogo in npc.dialogos %}
-                                <li class="mb-1 fst-italic">"{{ dialogo }}"</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Monstros no Passo -->
-            {% set monstros_presentes = quest.get_monsters_for_step(step) %}
-            {% if monstros_presentes %}
-            <div class="card bg-dark border-danger mb-4">
-                <div class="card-header border-danger">
-                    <h6 class="mb-0"><i class="bi bi-bug me-2"></i>Monstros</h6>
-                </div>
-                <div class="list-group list-group-flush">
-                    {% for monster in monstros_presentes %}
-                    <div class="list-group-item bg-dark text-light border-secondary">
-                        <div class="d-flex justify-content-between">
-                            <h6 class="mb-1">{{ monster.nome }}</h6>
-                            <span class="badge bg-danger">CR {{ monster.cr }}</span>
-                        </div>
-                        <div class="small">
-                            <span class="me-2"><i class="bi bi-shield me-1"></i>AC {{ monster.ac }}</span>
-                            <span><i class="bi bi-heart me-1"></i>{{ monster.hp_max }} HP</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-danger mt-2 w-100" onclick="adicionarAoCombate('{{ monster.nome }}', {{ monster.hp_max }}, {{ monster.ac }})">
-                            <i class="bi bi-plus-circle me-1"></i>Adicionar ao Combate
-                        </button>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Atalho para Combate -->
-            {% if step.tipo == 'combate' %}
-            <div class="card bg-danger bg-opacity-25 border-danger">
-                <div class="card-body text-center">
-                    <i class="bi bi-shield-shaded display-4 mb-2"></i>
-                    <h5>Cena de Combate</h5>
-                    {% if game_session %}
-                    <form action="{{ url_for('quest.start_step_combat', quest_id=quest.id, step_id=step_id) }}" method="POST">
-                        <input type="hidden" name="session_id" value="{{ game_session.id }}">
-                        <button type="submit" class="btn btn-danger w-100 mb-2">
-                            <i class="bi bi-play-circle me-1"></i>Iniciar Combate
-                        </button>
-                    </form>
-                    <small class="text-light opacity-75">Adiciona automaticamente todos os monstros e {{ players|length }} jogadores</small>
-                    {% endif %}
-                </div>
-            </div>
-            {% endif %}
         </div>
     </div>
 </div>
@@ -664,6 +597,7 @@ timeTracker.setElements({
 // Criar controles
 const controls = new TimeControlsBuilder(timeTracker);
 controls.createStartPauseButton('session-controls');
+controls.createCombatRoundButton('combat-controls');
 controls.createExplorationButton('exploration-controls');
 controls.createGameTimeButtons('game-time-controls');
 controls.createRestButtons('rest-controls');

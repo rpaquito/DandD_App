@@ -29,8 +29,24 @@ class MapGrid {
         };
 
         // Calcular dimensoes do canvas
-        this.canvas.width = this.config.gridWidth * this.config.cellSize;
-        this.canvas.height = this.config.gridHeight * this.config.cellSize;
+        const width = this.config.gridWidth * this.config.cellSize;
+        const height = this.config.gridHeight * this.config.cellSize;
+
+        // Configurar dimensoes do canvas (previne esticamento por CSS)
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.canvas.style.width = width + 'px';
+        this.canvas.style.height = height + 'px';
+
+        // Ajustar para displays de alta resolucao (Retina)
+        const dpr = window.devicePixelRatio || 1;
+        if (dpr > 1) {
+            this.canvas.width = width * dpr;
+            this.canvas.height = height * dpr;
+            this.canvas.style.width = width + 'px';
+            this.canvas.style.height = height + 'px';
+            this.ctx.scale(dpr, dpr);
+        }
 
         // Entidades no mapa
         this.entities = [];
@@ -200,12 +216,13 @@ class MapGrid {
     drawGrid() {
         const cellSize = this.config.cellSize;
 
-        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
         this.ctx.lineWidth = 1;
 
         // Linhas verticais
+        // Adicionar 0.5 para alinhar perfeitamente com pixels (evita blur)
         for (let x = 0; x <= this.config.gridWidth; x++) {
-            const posX = x * cellSize;
+            const posX = Math.floor(x * cellSize) + 0.5;
             this.ctx.beginPath();
             this.ctx.moveTo(posX, 0);
             this.ctx.lineTo(posX, this.canvas.height);
@@ -214,7 +231,7 @@ class MapGrid {
 
         // Linhas horizontais
         for (let y = 0; y <= this.config.gridHeight; y++) {
-            const posY = y * cellSize;
+            const posY = Math.floor(y * cellSize) + 0.5;
             this.ctx.beginPath();
             this.ctx.moveTo(0, posY);
             this.ctx.lineTo(this.canvas.width, posY);

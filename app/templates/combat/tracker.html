@@ -35,17 +35,17 @@
 <div class="container-fluid py-4">
     <!-- Barra de Sessao (se activa) -->
     {% if game_session %}
-    <div class="alert alert-dark border-success mb-4">
+    <div class="alert alert-success bg-opacity-25 border-success mb-4">
         <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <i class="bi bi-controller me-2 text-success"></i>
+            <div class="text-light">
+                <i class="bi bi-controller me-2"></i>
                 <strong>Sessao:</strong> {{ game_session.nome }}
                 {% if session_combat and session_combat.quest_step_id %}
                 <span class="badge bg-info ms-2">Passo {{ session_combat.quest_step_id }}</span>
                 {% endif %}
             </div>
             <div>
-                <a href="{{ url_for('session.dashboard', session_id=game_session.id) }}" class="btn btn-sm btn-outline-secondary me-2">
+                <a href="{{ url_for('session.dashboard', session_id=game_session.id) }}" class="btn btn-sm btn-outline-light me-2">
                     <i class="bi bi-speedometer2 me-1"></i>Painel
                 </a>
                 <form action="{{ url_for('combat.end_session_combat', session_id=game_session.id) }}" method="POST" class="d-inline">
@@ -59,9 +59,90 @@
     {% endif %}
 
     <div class="row">
-        <!-- Painel Principal de Combate -->
-        <div class="col-lg-8">
-            <div class="card bg-dark border-danger mb-4">
+        <!-- Sidebar Esquerda - Ferramentas Rápidas -->
+        <div class="col-lg-2 mb-4">
+            <!-- Condições Rápidas -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h6 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Condições 5e</h6>
+                </div>
+                <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                    <div class="d-grid gap-1">
+                        {% for cond_id, cond in conditions.items() %}
+                        <button class="btn btn-sm btn-outline-secondary text-start condition-ref"
+                                data-bs-toggle="tooltip" title="{{ cond.descricao }}" style="font-size: 0.7rem;">
+                            <i class="{{ cond.icone }} me-1"></i>{{ cond.nome }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculadora de Dano Rápida -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h6 class="mb-0"><i class="bi bi-calculator me-2"></i>Calculadora</h6>
+                </div>
+                <div class="card-body">
+                    <div class="input-group input-group-sm mb-2">
+                        <input type="text" class="form-control bg-dark text-light border-secondary"
+                               id="diceExpression" placeholder="2d6+3" style="font-size: 0.75rem;">
+                        <button class="btn btn-danger btn-sm" onclick="rollDice()">
+                            <i class="bi bi-dice-5"></i>
+                        </button>
+                    </div>
+                    <div id="diceCalcResult" class="text-center fs-5 text-warning"></div>
+                </div>
+            </div>
+
+            <!-- Referência Rápida -->
+            <div class="card bg-dark border-secondary mb-4">
+                <div class="card-header border-secondary">
+                    <h6 class="mb-0"><i class="bi bi-book me-2"></i>Referência</h6>
+                </div>
+                <div class="card-body" style="font-size: 0.7rem; max-height: 300px; overflow-y: auto;">
+                    <p class="mb-1"><strong>Ações:</strong></p>
+                    <ul class="mb-2" style="font-size: 0.65rem;">
+                        <li>Atacar</li>
+                        <li>Lançar Magia</li>
+                        <li>Desengajar</li>
+                        <li>Esquivar</li>
+                        <li>Ajudar</li>
+                        <li>Esconder</li>
+                        <li>Preparar</li>
+                    </ul>
+                    <p class="mb-1"><strong>Cobertura:</strong></p>
+                    <ul class="mb-0" style="font-size: 0.65rem;">
+                        <li>Meia: +2 AC/DES</li>
+                        <li>3/4: +5 AC/DES</li>
+                        <li>Total: imune</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CDs Comuns -->
+            <div class="card bg-dark border-info">
+                <div class="card-header border-info">
+                    <h6 class="mb-0"><i class="bi bi-bullseye me-2"></i>CDs</h6>
+                </div>
+                <div class="card-body" style="font-size: 0.7rem;">
+                    <table class="table table-sm table-dark mb-0" style="font-size: 0.7rem;">
+                        <tbody>
+                            <tr><td>Muito Fácil</td><td class="text-end"><strong>5</strong></td></tr>
+                            <tr><td>Fácil</td><td class="text-end"><strong>10</strong></td></tr>
+                            <tr><td>Médio</td><td class="text-end"><strong>15</strong></td></tr>
+                            <tr><td>Difícil</td><td class="text-end"><strong>20</strong></td></tr>
+                            <tr><td>Muito Difícil</td><td class="text-end"><strong>25</strong></td></tr>
+                            <tr><td>Impossível</td><td class="text-end"><strong>30</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel Central - Combate e Mapa -->
+        <div class="col-lg-7">
+            <div class="card bg-dark border-danger mb-4 combat-bg">
                 <div class="card-header border-danger d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">
                         <i class="bi bi-shield-shaded me-2"></i>Rastreador de Combate
@@ -96,70 +177,95 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Painel Lateral - Condições e Referência -->
-        <div class="col-lg-4">
-            <!-- Condições Rápidas -->
-            <div class="card bg-dark border-secondary mb-4">
-                <div class="card-header border-secondary">
-                    <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Condições 5e</h5>
-                </div>
-                <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                    <div class="row g-2">
-                        {% for cond_id, cond in conditions.items() %}
-                        <div class="col-6">
-                            <button class="btn btn-sm btn-outline-secondary w-100 text-start condition-ref"
-                                    data-bs-toggle="tooltip" title="{{ cond.descricao }}">
-                                <i class="{{ cond.icone }} me-1"></i>{{ cond.nome }}
-                            </button>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Calculadora de Dano Rápida -->
-            <div class="card bg-dark border-secondary mb-4">
-                <div class="card-header border-secondary">
-                    <h5 class="mb-0"><i class="bi bi-calculator me-2"></i>Calculadora</h5>
-                </div>
-                <div class="card-body">
-                    <div class="input-group mb-2">
-                        <input type="text" class="form-control bg-dark text-light border-secondary"
-                               id="diceExpression" placeholder="2d6+3">
-                        <button class="btn btn-danger" onclick="rollDice()">
-                            <i class="bi bi-dice-5"></i>
+            <!-- Mapa Tactico (se configurado no step da sessao) -->
+            {% if session_combat and session_combat.quest_step_id and current_step and current_step.mapa_tatico %}
+            <div class="card bg-dark border-warning mb-4 tactical-map-bg">
+                <div class="card-header border-warning d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-map me-2"></i>Mapa Tactico</h5>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-success active" id="toggle-players" onclick="toggleEntityFilter('showPlayers')">
+                            <i class="bi bi-person-fill"></i> Jogadores
+                        </button>
+                        <button type="button" class="btn btn-outline-info active" id="toggle-npcs" onclick="toggleEntityFilter('showNPCs')">
+                            <i class="bi bi-people"></i> NPCs
+                        </button>
+                        <button type="button" class="btn btn-outline-danger active" id="toggle-monsters" onclick="toggleEntityFilter('showMonsters')">
+                            <i class="bi bi-bug-fill"></i> Monstros
                         </button>
                     </div>
-                    <div id="diceCalcResult" class="text-center fs-4 text-warning"></div>
+                </div>
+                <div class="card-body">
+                    <div style="overflow-x: auto; text-align: center;">
+                        <canvas id="tacticalMap" style="border: 2px solid #666; border-radius: 4px;"></canvas>
+                    </div>
+                    <small class="text-muted d-block mt-2 text-center">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Arrasta entidades para mover. Cada quadrado = {{ current_step.mapa_tatico.metros_por_quadrado }}m ({{ (current_step.mapa_tatico.metros_por_quadrado / 1.5 * 5)|int }} pes)
+                    </small>
                 </div>
             </div>
+            {% endif %}
+        </div>
 
-            <!-- Referência Rápida -->
-            <div class="card bg-dark border-secondary mb-4">
-                <div class="card-header border-secondary">
-                    <h5 class="mb-0"><i class="bi bi-book me-2"></i>Referência Rápida</h5>
+        <!-- Sidebar Direita - Tempo e Dicas -->
+        <div class="col-lg-3 mb-4">
+            <!-- Gestão de Tempo e Estado da Sessão -->
+            {% if game_session %}
+            <div class="card bg-dark border-info no-print time-panel-bg mb-4 sticky-top" style="top: 20px;">
+                <div class="card-header border-info">
+                    <h6 class="mb-0"><i class="bi bi-clock me-2"></i>Gestão de Tempo</h6>
                 </div>
-                <div class="card-body small">
-                    <p><strong>Ações em Combate:</strong></p>
-                    <ul class="mb-2">
-                        <li><strong>Atacar</strong> - Uma ou mais armas</li>
-                        <li><strong>Lançar Magia</strong> - Uma magia com tempo de 1 ação</li>
-                        <li><strong>Desengajar</strong> - Evita ataques de oportunidade</li>
-                        <li><strong>Esquivar</strong> - Ataques têm desvantagem</li>
-                        <li><strong>Ajudar</strong> - Dá vantagem a aliado</li>
-                        <li><strong>Esconder</strong> - Teste de Furtividade</li>
-                        <li><strong>Preparar</strong> - Ação condicional</li>
-                    </ul>
-                    <p class="mb-1"><strong>Cobertura:</strong></p>
-                    <ul class="mb-0">
-                        <li>Meia cobertura: +2 AC e saves de DES</li>
-                        <li>3/4 cobertura: +5 AC e saves de DES</li>
-                        <li>Cobertura total: Não pode ser alvejado</li>
-                    </ul>
+                <div class="card-body">
+                    <!-- Tempo de Sessão -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <small class="text-muted">
+                                <i class="bi bi-stopwatch me-1"></i>Duração
+                            </small>
+                            <div id="session-controls"></div>
+                        </div>
+                        <h6 class="mb-0" id="session-duration">0h 0m</h6>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <!-- Tempo de Combate -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="text-muted">
+                                <i class="bi bi-shield-shaded me-1 text-danger"></i>Combate
+                            </small>
+                            <div id="combat-controls"></div>
+                        </div>
+                        <p class="mb-0 small" id="combat-time">-</p>
+                    </div>
+
+                    <!-- Turnos de Exploração -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="text-muted">
+                                <i class="bi bi-compass me-1 text-warning"></i>Exploração
+                            </small>
+                            <p class="mb-0 small" id="exploration-turns">0</p>
+                        </div>
+                        <div id="exploration-controls"></div>
+                    </div>
+
+                    <hr class="border-secondary">
+
+                    <!-- Tempo no Jogo -->
+                    <div>
+                        <small class="text-muted d-block mb-1">
+                            <i class="bi bi-sun me-1 text-info"></i>Tempo no Jogo
+                        </small>
+                        <h6 class="mb-2" id="game-time">Dia 1, 08:00</h6>
+                        <div id="game-time-controls" class="mb-2"></div>
+                        <div id="rest-controls"></div>
+                    </div>
                 </div>
             </div>
+            {% endif %}
 
             <!-- Dicas do Mestre para Combate -->
             <div class="card bg-dark border-warning mb-4">
@@ -260,25 +366,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- CDs Comuns -->
-            <div class="card bg-dark border-info">
-                <div class="card-header border-info">
-                    <h5 class="mb-0"><i class="bi bi-bullseye me-2"></i>CDs Comuns</h5>
-                </div>
-                <div class="card-body small">
-                    <table class="table table-sm table-dark mb-0">
-                        <tbody>
-                            <tr><td>Muito Fácil</td><td class="text-end"><strong>5</strong></td></tr>
-                            <tr><td>Fácil</td><td class="text-end"><strong>10</strong></td></tr>
-                            <tr><td>Médio</td><td class="text-end"><strong>15</strong></td></tr>
-                            <tr><td>Difícil</td><td class="text-end"><strong>20</strong></td></tr>
-                            <tr><td>Muito Difícil</td><td class="text-end"><strong>25</strong></td></tr>
-                            <tr><td>Quase Impossível</td><td class="text-end"><strong>30</strong></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -366,6 +453,10 @@
 
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/combat.js') }}"></script>
+<script src="{{ url_for('static', filename='js/map-grid.js') }}"></script>
+{% if game_session %}
+<script src="{{ url_for('static', filename='js/time-tracker.js') }}"></script>
+{% endif %}
 <script>
     // Contexto de sessao
     {% if game_session %}
@@ -404,5 +495,147 @@
     } else {
         loadCombat();
     }
+
+    // ===== Inicializar Mapa Tactico (se disponivel) =====
+    {% if session_combat and session_combat.quest_step_id and current_step and current_step.mapa_tatico %}
+    let mapGrid;
+
+    // Inicializar mapa quando pagina carrega
+    document.addEventListener('DOMContentLoaded', function() {
+        mapGrid = new MapGrid('tacticalMap', {
+            gridWidth: {{ current_step.mapa_tatico.grid_largura }},
+            gridHeight: {{ current_step.mapa_tatico.grid_altura }},
+            squareSizeMeters: {{ current_step.mapa_tatico.metros_por_quadrado }},
+            cellSize: 40,
+            backgroundImage: {% if current_step.mapa_tatico.imagem_fundo %}'{{ current_step.mapa_tatico.imagem_fundo }}'{% else %}null{% endif %}
+        });
+
+        // Carregar posicoes do servidor
+        fetch('/mapa/sessao/{{ game_session.id }}/passo/{{ session_combat.quest_step_id }}/posicoes')
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.positions && data.positions.length > 0) {
+                    mapGrid.loadEntities(data.positions);
+                } else {
+                    // Se nao houver posicoes, inicializar com posicoes padrao
+                    inicializarMapaPadrao();
+                }
+            })
+            .catch(function(error) {
+                console.error('Erro ao carregar posicoes:', error);
+                inicializarMapaPadrao();
+            });
+
+        // Callback: Sincronizar movimento ao servidor
+        mapGrid.onEntityMoved = function(entity) {
+            fetch('/mapa/sessao/{{ game_session.id }}/passo/{{ session_combat.quest_step_id }}/mover', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    entity_id: entity.entity_id,
+                    x: entity.grid_x,
+                    y: entity.grid_y
+                })
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                console.log('Posicao actualizada:', data);
+            })
+            .catch(function(error) {
+                console.error('Erro ao actualizar posicao:', error);
+            });
+        };
+
+        // Callback: Mostrar info da entidade
+        mapGrid.onEntitySelected = function(entity) {
+            console.log('Entidade seleccionada:', entity);
+        };
+    });
+
+    // Funcao para inicializar mapa com posicoes padrao
+    function inicializarMapaPadrao() {
+        {% if current_step.mapa_tatico.posicoes_iniciais %}
+        const initialPositions = {{ current_step.mapa_tatico.posicoes_iniciais|tojson }};
+
+        fetch('/mapa/sessao/{{ game_session.id }}/passo/{{ session_combat.quest_step_id }}/inicializar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                map_config: {
+                    grid_largura: {{ current_step.mapa_tatico.grid_largura }},
+                    grid_altura: {{ current_step.mapa_tatico.grid_altura }},
+                    metros_por_quadrado: {{ current_step.mapa_tatico.metros_por_quadrado }},
+                    imagem_fundo: {% if current_step.mapa_tatico.imagem_fundo %}'{{ current_step.mapa_tatico.imagem_fundo }}'{% else %}null{% endif %}
+                },
+                initial_positions: initialPositions
+            })
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            console.log('Mapa inicializado:', data);
+            if (data.positions) {
+                mapGrid.loadEntities(data.positions);
+            }
+        })
+        .catch(function(error) {
+            console.error('Erro ao inicializar mapa:', error);
+        });
+        {% endif %}
+    }
+
+    // Toggle de filtros de entidades
+    function toggleEntityFilter(filterName) {
+        if (mapGrid) {
+            const currentValue = mapGrid.filters[filterName];
+            mapGrid.setFilter(filterName, !currentValue);
+
+            // Atualizar estado visual dos botoes
+            const buttonId = 'toggle-' + filterName.replace('show', '').toLowerCase();
+            const button = document.getElementById(buttonId);
+            if (button) {
+                if (mapGrid.filters[filterName]) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            }
+        }
+    }
+    {% endif %}
+
+    // ===== Inicializar TimeTracker =====
+    {% if game_session %}
+    // Inicializar TimeTracker
+    const timeTracker = new TimeTracker({{ game_session.id }}, {
+        autoUpdate: true,
+        updateInterval: 1000,
+        onError: (error) => {
+            console.error('Erro no tracker de tempo:', error);
+        }
+    });
+
+    // Configurar elementos DOM
+    timeTracker.setElements({
+        sessionDuration: 'session-duration',
+        combatTime: 'combat-time',
+        explorationTurns: 'exploration-turns',
+        gameTime: 'game-time'
+    });
+
+    // Criar controles
+    const controls = new TimeControlsBuilder(timeTracker);
+    controls.createStartPauseButton('session-controls');
+    controls.createCombatRoundButton('combat-controls');
+    controls.createExplorationButton('exploration-controls');
+    controls.createGameTimeButtons('game-time-controls');
+    controls.createRestButtons('rest-controls');
+
+    // Fazer update inicial
+    timeTracker.update();
+    {% endif %}
 </script>
 {% endblock %}
