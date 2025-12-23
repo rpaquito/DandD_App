@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Mapas Gerados - DM Companion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #f5f5f5;
+        }
+        .map-preview {
+            background: #2a2a2a;
+            border: 2px solid #555;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+        .map-preview img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .map-preview h3 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+        .badge-complete {
+            background: #198754;
+        }
+        .badge-pending {
+            background: #ffc107;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">
+            <i class="bi bi-map"></i> Mapas Gerados para DM Companion
+        </h1>
+
+        <div class="alert alert-info">
+            <strong>Estado:</strong> 5/19 mapas gerados (26% completo)
+            <br>
+            <strong>Quota GPU:</strong> Limite atingido. Reset em ~23 horas.
+        </div>
+
+        <h2 class="mt-5 mb-4">📍 Mapas Overview (3/3)</h2>
+
+        <div class="map-preview">
+            <h3>
+                A Cripta dos Reis Esquecidos
+                <span class="badge badge-complete">✓ Completo</span>
+            </h3>
+            <p class="text-muted">Mapa de jornada desde a taverna até à cripta real assombrada</p>
+            <img src="app/static/img/maps/overview/cripta-reis-esquecidos.webp" alt="Cripta Overview">
+            <p class="mt-2"><small>Ficheiro: cripta-reis-esquecidos.webp (196KB)</small></p>
+        </div>
+
+        <div class="map-preview">
+            <h3>
+                Sombras do Império Estelar
+                <span class="badge badge-complete">✓ Completo</span>
+            </h3>
+            <p class="text-muted">Mapa sci-fi fantasy desde o porto estelar até ao templo místico</p>
+            <img src="app/static/img/maps/overview/sombras-imperio-estelar.webp" alt="Sombras Overview">
+            <p class="mt-2"><small>Ficheiro: sombras-imperio-estelar.webp (169KB)</small></p>
+        </div>
+
+        <div class="map-preview">
+            <h3>
+                A Irmandade do Anel Sombrio
+                <span class="badge badge-complete">✓ Completo</span>
+            </h3>
+            <p class="text-muted">Mapa épico inspirado em Lord of the Rings, jornada através da Terra-Média</p>
+            <img src="app/static/img/maps/overview/irmandade-anel-sombrio.webp" alt="Irmandade Overview">
+            <p class="mt-2"><small>Ficheiro: irmandade-anel-sombrio.webp (222KB)</small></p>
+        </div>
+
+        <h2 class="mt-5 mb-4">⚔️ Mapas Tácticos - A Cripta dos Reis Esquecidos (2/2)</h2>
+
+        <div class="map-preview">
+            <h3>
+                Step 6: As Câmaras dos Guardiões
+                <span class="badge badge-complete">✓ Completo</span>
+            </h3>
+            <p class="text-muted">Câmara octogonal com 4 esqueletos guardiões | Grid: 12x12</p>
+            <img src="app/static/img/maps/tactical/cripta-step6-camara-guardioes.webp" alt="Câmara dos Guardiões">
+            <p class="mt-2"><small>Ficheiro: cripta-step6-camara-guardioes.webp (125KB)</small></p>
+        </div>
+
+        <div class="map-preview">
+            <h3>
+                Step 10: A Sala do Trono - Boss Fight
+                <span class="badge badge-complete">✓ Completo</span>
+            </h3>
+            <p class="text-muted">Sala do trono gótica com Cavaleiro Fantasma | Grid: 14x11 (estimado)</p>
+            <img src="app/static/img/maps/tactical/cripta-step10-sala-trono.webp" alt="Sala do Trono">
+            <p class="mt-2"><small>Ficheiro: cripta-step10-sala-trono.webp (115KB)</small></p>
+        </div>
+
+        <h2 class="mt-5 mb-4">⏳ Mapas Tácticos Pendentes</h2>
+
+        <div class="alert alert-warning">
+            <strong>Sombras do Império Estelar:</strong> 5 mapas pendentes (Steps 3, 4, 6, 9, 10)
+            <br>
+            <strong>A Irmandade do Anel Sombrio:</strong> 9 mapas pendentes (ou 3-4 prioritários)
+            <br>
+            <br>
+            <small>Consulta <code>QUEST_MAPS_GUIDE.md</code> para detalhes sobre geração dos mapas restantes.</small>
+        </div>
+
+        <h2 class="mt-5 mb-4">📖 Como Usar</h2>
+
+        <div class="card bg-dark text-light">
+            <div class="card-body">
+                <h5>Para testar os mapas no browser:</h5>
+                <ol>
+                    <li>Abrir <code>test_maps.html</code> diretamente no browser</li>
+                    <li>Ou executar <code>python run.py</code> e navegar para as quests</li>
+                    <li>Os mapas overview podem ser adicionados às páginas de quest</li>
+                    <li>Os mapas tácticos integram-se automaticamente no sistema de combate</li>
+                </ol>
+
+                <h5 class="mt-4">Próximos passos:</h5>
+                <ul>
+                    <li>Aguardar reset da quota GPU (23 Dez ~10:45)</li>
+                    <li>Gerar mapas tácticos restantes (14 mapas)</li>
+                    <li>Atualizar ficheiros JSON com referências aos mapas</li>
+                    <li>Testar sistema de combate com mapas integrados</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center mt-5 mb-3">
+            <p class="text-muted">
+                Mapas gerados usando Z-Image-Turbo via Hugging Face MCP Server
+                <br>
+                <small>Total: 5 mapas | ~600KB | WebP format</small>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -4,6 +4,7 @@ import json
 import os
 from flask import Blueprint, render_template
 from app.services.session_service import get_saved_characters
+from app.models.combat import CONDICOES_5E
 
 main_bp = Blueprint('main', __name__)
 
@@ -55,3 +56,9 @@ def help_page():
 def settings():
     """Pagina de definicoes da aplicacao."""
     return render_template('settings.html')
+
+
+@main_bp.route('/showcase')
+def showcase():
+    """Página showcase de assets gerados por IA."""
+    return render_template('showcase.html', CONDICOES_5E=CONDICOES_5E)

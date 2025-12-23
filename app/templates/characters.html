@@ -35,6 +35,13 @@
         font-size: 0.8rem;
         color: #ffc107;
     }
+    .character-portrait {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .character-portrait:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(220, 53, 69, 0.5) !important;
+    }
 
     @media print {
         .no-print { display: none !important; }
@@ -131,6 +138,16 @@
                 </div>
 
                 <div class="card-body">
+                    <!-- Retrato do Personagem -->
+                    {% if char.portrait %}
+                    <div class="text-center mb-3">
+                        <img src="{{ url_for('static', filename=char.portrait.replace('/static/', '')) }}"
+                             alt="{{ char.nome }}"
+                             class="img-fluid rounded border border-secondary character-portrait"
+                             style="max-width: 250px; height: auto; box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);">
+                    </div>
+                    {% endif %}
+
                     <!-- Descrição -->
                     <p class="fst-italic text-muted mb-3">{{ char.descricao }}</p>
 
@@ -253,16 +270,9 @@
                 <!-- Rodapé com ações rápidas -->
                 <div class="card-footer border-secondary no-print">
                     <div class="d-flex gap-2 flex-wrap">
-                        <a href="{{ url_for('players.choose_template', template_id=char.id) }}" class="btn btn-sm btn-success">
-                            <i class="bi bi-person-plus me-1"></i>Adicionar Jogador
-                        </a>
                         <a href="{{ url_for('print.premade_sheet', char_id=char.id) }}" class="btn btn-sm btn-outline-info">
                             <i class="bi bi-printer me-1"></i>Imprimir
                         </a>
-                        <button class="btn btn-sm btn-outline-danger"
-                                onclick="adicionarAoCombate('{{ char.nome }}', {{ char.hp_max }}, {{ char.ac }})">
-                            <i class="bi bi-shield-shaded me-1"></i>Combate
-                        </button>
                     </div>
                 </div>
             </div>

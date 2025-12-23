@@ -119,7 +119,7 @@ class QuestLoader:
             passos.append(step)
 
         return Quest(
-            id=quest_id,
+            id=data.get('id', quest_id),  # Usar ID do JSON, ou fallback para filename
             titulo=data.get('titulo', 'Aventura sem nome'),
             descricao=data.get('descricao', ''),
             nivel_min=data.get('nivel_min', 1),

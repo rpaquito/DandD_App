@@ -3,6 +3,7 @@
 from flask import Blueprint, render_template, abort, session, redirect, url_for, request, jsonify, flash
 from app.services.quest_loader import QuestLoader
 from app.services.session_service import SessionService, load_character_templates, get_saved_characters
+from app.models.combat import CONDICOES_5E
 
 quest_bp = Blueprint('quest', __name__)
 session_service = SessionService()
@@ -226,7 +227,8 @@ def step(quest_id, step_id):
         step=current_step,
         step_id=step_id,
         game_session=game_session,
-        players=players
+        players=players,
+        CONDICOES_5E=CONDICOES_5E
     )
 
 

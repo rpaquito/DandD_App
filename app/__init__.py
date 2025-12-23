@@ -26,7 +26,6 @@ def create_app():
     from app.routes.quest import quest_bp
     from app.routes.combat import combat_bp
     from app.routes.print import print_bp
-    from app.routes.players import players_bp
     from app.routes.session import session_bp
     from app.routes.character_builder import builder_bp
     from app.routes.glossary import glossary_bp
@@ -36,7 +35,6 @@ def create_app():
     app.register_blueprint(quest_bp, url_prefix='/aventura')
     app.register_blueprint(combat_bp, url_prefix='/combate')
     app.register_blueprint(print_bp, url_prefix='/imprimir')
-    app.register_blueprint(players_bp)
     app.register_blueprint(session_bp)
     app.register_blueprint(builder_bp)
     app.register_blueprint(glossary_bp, url_prefix='/glossario')

@@ -48,13 +48,13 @@
                 <p>Para começar a jogar em menos de 5 minutos:</p>
                 <ol class="mb-4">
                     <li class="mb-2">
-                        <strong>Adiciona os jogadores:</strong> Vai a <a href="{{ url_for('players.list_players') }}">Jogadores</a> e escolhe personagens pré-criados para cada pessoa.
+                        <strong>Escolhe uma aventura:</strong> Na <a href="{{ url_for('quest.list_quests') }}">página de aventuras</a>, clica em "Iniciar Aventura".
                     </li>
                     <li class="mb-2">
-                        <strong>Imprime as fichas:</strong> Clica em "Imprimir Todos" para dar uma ficha a cada jogador.
+                        <strong>Seleciona personagens:</strong> Escolhe personagens pré-criados para cada jogador da tua mesa.
                     </li>
                     <li class="mb-2">
-                        <strong>Escolhe uma aventura:</strong> Na <a href="{{ url_for('main.index') }}">página inicial</a>, clica em "Iniciar Aventura".
+                        <strong>Imprime as fichas:</strong> Usa a opção de impressão para dar uma ficha a cada jogador.
                     </li>
                     <li class="mb-2">
                         <strong>Segue o guia:</strong> A aventura guia-te passo a passo com texto para ler aos jogadores e notas privadas.
@@ -178,10 +178,10 @@
 
         <h5>Adicionar Jogadores</h5>
         <ol class="mb-4">
-            <li>Vai a <a href="{{ url_for('players.list_players') }}">Jogadores</a></li>
-            <li>Escolhe um dos 6 personagens pré-criados</li>
-            <li>Dá o nome da pessoa real que vai jogar (ex: "João", "Maria")</li>
-            <li>Repete para cada jogador do grupo</li>
+            <li>Vai a <a href="{{ url_for('main.characters') }}">Personagens</a> para ver os 6 personagens pré-criados</li>
+            <li>Ao iniciar uma aventura, seleciona quais personagens os teus jogadores vão usar</li>
+            <li>Cada personagem é automaticamente adicionado à sessão</li>
+            <li>Usa o <a href="{{ url_for('builder.start') }}">Criador de Personagens</a> para criar personagens personalizados</li>
         </ol>
 
         <h5>Durante o Jogo</h5>

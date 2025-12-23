@@ -1,0 +1,580 @@
+{% extends "base.html" %}
+
+{% block title %}Showcase de Assets Gerados{% endblock %}
+
+{% block extra_css %}
+<style>
+    .showcase-section {
+        margin-bottom: 4rem;
+    }
+    .showcase-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    .asset-card {
+        background: #2a2a2a;
+        border: 1px solid #555;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .asset-card:hover {
+        transform: scale(1.05);
+        border-color: #dc3545;
+    }
+    .asset-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 0.5rem;
+    }
+    .map-preview {
+        max-width: 100%;
+        border: 3px solid #8b5a2b;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4">
+            <i class="bi bi-images text-danger me-2"></i>
+            Showcase de Assets Gerados
+        </h1>
+        <p class="lead text-muted">
+            Demonstração visual de todos os 39 assets integrados no DM Companion
+        </p>
+        <div class="alert alert-dark border-secondary mt-3">
+            <strong>Status:</strong> 39/67 assets gerados (58%)
+            <br>
+            <small>20 UI Elements | 3 Overview Maps | 10 Tactical Maps | 6 Character Portraits</small>
+        </div>
+    </div>
+
+    <!-- UI Elements Section -->
+    <section class="showcase-section">
+        <div class="divider-ornate mb-4"></div>
+        <h2><i class="bi bi-palette me-2 text-danger"></i>UI Elements (20 assets)</h2>
+
+        <h3 class="mt-4">Hero Banner</h3>
+        <div class="hero-banner text-center mb-4">
+            <h2>Companheiro de Mestre</h2>
+            <p class="lead">Banner heróico da página inicial</p>
+        </div>
+
+        <div class="divider-simple"></div>
+
+        <h3 class="mt-4">App Logo</h3>
+        <div class="text-center mb-4">
+            <img src="{{ url_for('static', filename='img/logos/app-logo.webp') }}"
+                 alt="App Logo" class="app-logo" style="width: 120px;">
+            <p class="text-muted mt-2">Usado na navbar</p>
+        </div>
+
+        <div class="divider-arcane"></div>
+
+        <h3 class="mt-4">Decorative Dividers (3 variantes)</h3>
+        <div class="mb-4">
+            <p class="text-muted mb-2">Ornate (ornamentado):</p>
+            <div class="divider-ornate"></div>
+
+            <p class="text-muted mb-2 mt-4">Simple (simples):</p>
+            <div class="divider-simple"></div>
+
+            <p class="text-muted mb-2 mt-4">Arcane (místico):</p>
+            <div class="divider-arcane"></div>
+        </div>
+
+        <h3 class="mt-5">Condition Icons (13 ícones D&D 5e)</h3>
+        <div class="showcase-grid">
+            {% set conditions = [
+                ('agarrado', 'Agarrado'),
+                ('amedrontado', 'Assustado'),
+                ('atordoado', 'Atordoado'),
+                ('cego', 'Cego'),
+                ('enfeiticado', 'Encantado'),
+                ('envenenado', 'Envenenado'),
+                ('incapacitado', 'Incapacitado'),
+                ('inconsciente', 'Inconsciente'),
+                ('invisivel', 'Invisível'),
+                ('paralisado', 'Paralisado'),
+                ('petrificado', 'Petrificado'),
+                ('propenso', 'Caído'),
+                ('restringido', 'Impedido'),
+                ('surdo', 'Surdo')
+            ] %}
+            {% for cond_key, cond_name in conditions %}
+                {% set cond = CONDICOES_5E.get(cond_key, {}) %}
+                <div class="asset-card">
+                    {% if cond.get('imagem') %}
+                    <img src="{{ cond.imagem }}" alt="{{ cond_name }}" class="condition-icon-lg">
+                    {% else %}
+                    <i class="{{ cond.get('icone', 'bi-question-circle') }}" style="font-size: 3rem;"></i>
+                    {% endif %}
+                    <p class="small mb-0 mt-2">{{ cond_name }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h3 class="mt-5">Background Texture</h3>
+        <div class="card bg-dark mb-4">
+            <div class="card-body">
+                <p class="text-muted">
+                    A textura escura está aplicada automaticamente ao fundo de todo o site.
+                    <br>
+                    <small>Ficheiro: <code>texture-dark.webp</code> (48KB, tileable)</small>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider-ornate my-5"></div>
+
+    <!-- Quest Overview Maps Section -->
+    <section class="showcase-section">
+        <h2><i class="bi bi-map me-2 text-success"></i>Quest Overview Maps (3 mapas)</h2>
+        <p class="text-muted">Mapas de jornada para contexto visual das aventuras</p>
+
+        <div class="row mt-4">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <h5>A Cripta dos Reis Esquecidos</h5>
+                        <img src="{{ url_for('static', filename='img/maps/overview/cripta-reis-esquecidos.webp') }}"
+                             alt="Cripta Overview" class="map-preview">
+                        <p class="small text-muted">196KB | 1536x864px</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <h5>Sombras do Império Estelar</h5>
+                        <img src="{{ url_for('static', filename='img/maps/overview/sombras-imperio-estelar.webp') }}"
+                             alt="Sombras Overview" class="map-preview">
+                        <p class="small text-muted">169KB | 1536x864px</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <h5>A Irmandade do Anel Sombrio</h5>
+                        <img src="{{ url_for('static', filename='img/maps/overview/irmandade-anel-sombrio.webp') }}"
+                             alt="Irmandade Overview" class="map-preview">
+                        <p class="small text-muted">222KB | 1536x864px</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-success border-success mt-3">
+            <i class="bi bi-check-circle me-2"></i>
+            <strong>Integração:</strong> Mapas overview estão visíveis nas cards de aventuras em <code>/aventuras</code>
+        </div>
+    </section>
+
+    <div class="divider-arcane my-5"></div>
+
+    <!-- Character Portraits Section -->
+    <section class="showcase-section">
+        <h2><i class="bi bi-people me-2 text-primary"></i>Character Portraits (6 retratos)</h2>
+        <p class="text-muted">Retratos de personagens pré-criados para seleção rápida</p>
+
+        <div class="row mt-4">
+            <div class="col-md-2 mb-4">
+                <div class="card bg-dark">
+                    <div class="card-body text-center">
+                        <h6>Guerreiro</h6>
+                        <img src="{{ url_for('static', filename='img/characters/guerreiro-rodrigo.webp') }}"
+                             alt="Rodrigo" class="img-fluid rounded">
+                        <p class="small text-muted mt-2">88KB</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 mb-4">
+                <div class="card bg-dark">
+                    <div class="card-body text-center">
+                        <h6>Mago</h6>
+                        <img src="{{ url_for('static', filename='img/characters/mago-beatriz.webp') }}"
+                             alt="Beatriz" class="img-fluid rounded">
+                        <p class="small text-muted mt-2">76KB</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 mb-4">
+                <div class="card bg-dark">
+                    <div class="card-body text-center">
+                        <h6>Clérigo</h6>
+                        <img src="{{ url_for('static', filename='img/characters/clerigo-martim.webp') }}"
+                             alt="Martim" class="img-fluid rounded">
+                        <p class="small text-muted mt-2">149KB</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 mb-4">
+                <div class="card bg-dark">
+                    <div class="card-body text-center">
+                        <h6>Ladino</h6>
+                        <img src="{{ url_for('static', filename='img/characters/ladino-ines.webp') }}"
+                             alt="Inês" class="img-fluid rounded">
+                        <p class="small text-muted mt-2">43KB</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 mb-4">
+                <div class="card bg-dark">
+                    <div class="card-body text-center">
+                        <h6>Ranger</h6>
+                        <img src="{{ url_for('static', filename='img/characters/ranger-vasco.webp') }}"
+                             alt="Vasco" class="img-fluid rounded">
+                        <p class="small text-muted mt-2">81KB</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 mb-4">
+                <div class="card bg-dark">
+                    <div class="card-body text-center">
+                        <h6>Paladino</h6>
+                        <img src="{{ url_for('static', filename='img/characters/paladino-leonor.webp') }}"
+                             alt="Leonor" class="img-fluid rounded">
+                        <p class="small text-muted mt-2">69KB</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-success border-success mt-3">
+            <i class="bi bi-check-circle me-2"></i>
+            <strong>Integração:</strong> Retratos visíveis em <code>/personagens</code> nas fichas de personagens pré-criados
+        </div>
+    </section>
+
+    <div class="divider-simple my-5"></div>
+
+    <!-- Tactical Combat Maps Section -->
+    <section class="showcase-section">
+        <h2><i class="bi bi-grid-3x3 me-2 text-warning"></i>Tactical Combat Maps (10/16 mapas)</h2>
+        <p class="text-muted">Mapas de combate com grelha para encontros táticos</p>
+
+        <h3 class="mt-4">A Cripta dos Reis Esquecidos (2 mapas)</h3>
+
+        <div class="row mt-4">
+            <div class="col-md-6 mb-4">
+                <div class="card bg-dark border-warning">
+                    <div class="card-body">
+                        <h5>Cripta - Step 6: Câmara dos Guardiões</h5>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/cripta-step6-camara-guardioes.webp') }}"
+                             alt="Câmara Guardiões" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-warning text-dark">12x12 grid</span>
+                            <span class="badge bg-secondary">4 Esqueletos</span>
+                            <span class="badge bg-info">125KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card bg-dark border-danger">
+                    <div class="card-body">
+                        <h5>Cripta - Step 10: Sala do Trono (Boss)</h5>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/cripta-step10-sala-trono.webp') }}"
+                             alt="Sala Trono" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-danger">16x14 grid</span>
+                            <span class="badge bg-secondary">Boss Fight</span>
+                            <span class="badge bg-info">115KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="mt-5">Sombras do Império Estelar (5 mapas)</h3>
+        <div class="row mt-4">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-primary">
+                    <div class="card-body">
+                        <h6>Step 3: Emboscada Imperial</h6>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/sombras-step3-emboscada-imperial.webp') }}"
+                             alt="Emboscada" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-primary">15x13 grid</span>
+                            <span class="badge bg-secondary">4 Soldados</span>
+                            <span class="badge bg-info">120KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-primary">
+                    <div class="card-body">
+                        <h6>Step 4: Perseguição nas Docas</h6>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/sombras-step4-perseguicao-docas.webp') }}"
+                             alt="Docas" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-primary">15x13 grid</span>
+                            <span class="badge bg-secondary">3 Caçadores</span>
+                            <span class="badge bg-info">100KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-primary">
+                    <div class="card-body">
+                        <h6>Step 6: Entrada do Templo</h6>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/sombras-step6-entrada-templo.webp') }}"
+                             alt="Templo" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-primary">14x12 grid</span>
+                            <span class="badge bg-secondary">2 Guardiões</span>
+                            <span class="badge bg-info">192KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card bg-dark border-primary">
+                    <div class="card-body">
+                        <h6>Step 9: Acólitos das Sombras</h6>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/sombras-step9-acolitos-sombras.webp') }}"
+                             alt="Acólitos" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-primary">15x13 grid</span>
+                            <span class="badge bg-secondary">4 Acólitos</span>
+                            <span class="badge bg-info">72KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card bg-dark border-danger">
+                    <div class="card-body">
+                        <h6>Step 10: Senhor das Sombras (Boss)</h6>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/sombras-step10-senhor-sombras.webp') }}"
+                             alt="Boss Sombras" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-danger">16x14 grid</span>
+                            <span class="badge bg-secondary">Boss Fight</span>
+                            <span class="badge bg-info">67KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="mt-5">A Irmandade do Anel Sombrio (3 boss fights)</h3>
+        <div class="row mt-4">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-danger">
+                    <div class="card-body">
+                        <h6>Step 13: Balrog (Boss)</h6>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/irmandade-step13-balrog.webp') }}"
+                             alt="Balrog" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-danger">16x14 grid</span>
+                            <span class="badge bg-secondary">Epic Boss</span>
+                            <span class="badge bg-info">149KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-danger">
+                    <div class="card-body">
+                        <h6>Step 22: Shelob (Boss)</h6>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/irmandade-step22-shelob.webp') }}"
+                             alt="Shelob" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-danger">16x14 grid</span>
+                            <span class="badge bg-secondary">Boss Fight</span>
+                            <span class="badge bg-info">173KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-danger">
+                    <div class="card-body">
+                        <h6>Step 23: Torre da Lua (Boss)</h6>
+                        <img src="{{ url_for('static', filename='img/maps/tactical/irmandade-step23-torre-lua.webp') }}"
+                             alt="Torre" class="map-preview">
+                        <div class="mt-2">
+                            <span class="badge bg-danger">18x15 grid</span>
+                            <span class="badge bg-secondary">Final Boss</span>
+                            <span class="badge bg-info">90KB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-success border-success mt-3">
+            <i class="bi bi-check-circle me-2"></i>
+            <strong>Integração:</strong> Todos os 10 mapas tácticos configurados nos JSONs das quests
+            <br>
+            <small>Cripta (2) | Sombras (5) | Irmandade (3 boss fights)</small>
+        </div>
+
+        <div class="alert alert-info border-info mt-3">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Pendente:</strong> 6 mapas tácticos restantes (Irmandade encounters regulares)
+            <br>
+            <small>Disponível para geração quando necessário</small>
+        </div>
+    </section>
+
+    <div class="divider-simple my-5"></div>
+
+    <!-- Statistics Section -->
+    <section class="showcase-section">
+        <h2><i class="bi bi-bar-chart me-2 text-info"></i>Estatísticas</h2>
+
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card bg-dark border-success text-center">
+                    <div class="card-body">
+                        <h3 class="text-success">39</h3>
+                        <p class="mb-0 text-muted">Assets Gerados</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-dark border-warning text-center">
+                    <div class="card-body">
+                        <h3 class="text-warning">~3.3MB</h3>
+                        <p class="mb-0 text-muted">Tamanho Total</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-dark border-info text-center">
+                    <div class="card-body">
+                        <h3 class="text-info">58%</h3>
+                        <p class="mb-0 text-muted">Progresso</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card bg-dark border-danger text-center">
+                    <div class="card-body">
+                        <h3 class="text-danger">28</h3>
+                        <p class="mb-0 text-muted">Assets Pendentes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h5>Breakdown por Categoria:</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-dark border-secondary d-flex justify-content-between">
+                    <span><i class="bi bi-check-circle text-success me-2"></i>UI Elements</span>
+                    <span class="badge bg-success">20/20 (100%)</span>
+                </li>
+                <li class="list-group-item bg-dark border-secondary d-flex justify-content-between">
+                    <span><i class="bi bi-check-circle text-success me-2"></i>Overview Maps</span>
+                    <span class="badge bg-success">3/3 (100%)</span>
+                </li>
+                <li class="list-group-item bg-dark border-secondary d-flex justify-content-between">
+                    <span><i class="bi bi-hourglass-split text-warning me-2"></i>Tactical Maps</span>
+                    <span class="badge bg-warning text-dark">10/16 (63%)</span>
+                </li>
+                <li class="list-group-item bg-dark border-secondary d-flex justify-content-between">
+                    <span><i class="bi bi-check-circle text-success me-2"></i>Character Portraits</span>
+                    <span class="badge bg-success">6/6 (100%)</span>
+                </li>
+                <li class="list-group-item bg-dark border-secondary d-flex justify-content-between">
+                    <span><i class="bi bi-x-circle text-danger me-2"></i>NPC Portraits</span>
+                    <span class="badge bg-danger">0/10 (0%)</span>
+                </li>
+                <li class="list-group-item bg-dark border-secondary d-flex justify-content-between">
+                    <span><i class="bi bi-x-circle text-danger me-2"></i>Monster Tokens</span>
+                    <span class="badge bg-danger">0/12 (0%)</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="divider-ornate my-5"></div>
+
+    <!-- Integration Test Section -->
+    <section class="showcase-section">
+        <h2><i class="bi bi-gear me-2 text-primary"></i>Testes de Integração</h2>
+
+        <div class="list-group mt-4">
+            <a href="{{ url_for('quest.list_quests') }}" class="list-group-item list-group-item-action bg-dark border-secondary">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                Mapas Overview nas Quest Cards
+                <i class="bi bi-arrow-right ms-auto"></i>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark border-secondary">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                Ícones de Condições nos Painéis de Jogadores
+                <small class="d-block text-muted">(Visível durante gameplay com condições ativas)</small>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark border-secondary">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                Mapas Tácticos no Sistema de Combate
+                <small class="d-block text-muted">(Quest: Cripta, Steps 6 e 10)</small>
+            </a>
+            <a href="{{ url_for('main.index') }}" class="list-group-item list-group-item-action bg-dark border-secondary">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                Hero Banner na Página Inicial
+                <i class="bi bi-arrow-right ms-auto"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Documentation Links -->
+    <div class="mt-5 text-center">
+        <h3>📖 Documentação</h3>
+        <div class="mt-3">
+            <a href="/UI_ELEMENTS_GUIDE.md" class="btn btn-outline-info me-2" target="_blank">
+                <i class="bi bi-file-text me-1"></i>UI Elements Guide
+            </a>
+            <a href="/QUEST_MAPS_GUIDE.md" class="btn btn-outline-info me-2" target="_blank">
+                <i class="bi bi-file-text me-1"></i>Quest Maps Guide
+            </a>
+            <a href="/CHARACTER_PORTRAITS_PLAN.md" class="btn btn-outline-info me-2" target="_blank">
+                <i class="bi bi-file-text me-1"></i>Character Portraits Plan
+            </a>
+            <a href="/AI_ASSETS_SUMMARY.md" class="btn btn-outline-info" target="_blank">
+                <i class="bi bi-file-text me-1"></i>AI Assets Summary
+            </a>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-5">
+        <a href="{{ url_for('main.index') }}" class="btn btn-outline-danger">
+            <i class="bi bi-arrow-left me-2"></i>Voltar ao Menu
+        </a>
+    </div>
+</div>
+{% endblock %}

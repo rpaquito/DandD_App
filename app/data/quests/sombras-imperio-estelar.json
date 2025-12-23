@@ -1,4 +1,5 @@
 {
+  "id": "sombras-imperio-estelar",
   "titulo": "Sombras do Império Estelar",
   "descricao": "Uma aventura para personagens de nível 1-3. Os aventureiros juntam-se à resistência contra o tirânico Império Estelar e descobrem os segredos de uma antiga ordem de guardiões místicos.",
   "nivel_min": 1,
@@ -79,7 +80,7 @@
         "grid_largura": 15,
         "grid_altura": 13,
         "metros_por_quadrado": 1.5,
-        "imagem_fundo": null,
+        "imagem_fundo": "/static/img/maps/tactical/sombras-step3-emboscada-imperial.webp",
         "posicoes_iniciais": {
           "jogadores": [
             {
@@ -165,7 +166,7 @@
         "grid_largura": 15,
         "grid_altura": 13,
         "metros_por_quadrado": 1.5,
-        "imagem_fundo": null,
+        "imagem_fundo": "/static/img/maps/tactical/sombras-step4-perseguicao-docas.webp",
         "posicoes_iniciais": {
           "jogadores": [
             {
@@ -264,7 +265,7 @@
         "grid_largura": 14,
         "grid_altura": 12,
         "metros_por_quadrado": 1.5,
-        "imagem_fundo": null,
+        "imagem_fundo": "/static/img/maps/tactical/sombras-step6-entrada-templo.webp",
         "posicoes_iniciais": {
           "jogadores": [
             {
@@ -380,7 +381,7 @@
         "grid_largura": 15,
         "grid_altura": 13,
         "metros_por_quadrado": 1.5,
-        "imagem_fundo": null,
+        "imagem_fundo": "/static/img/maps/tactical/sombras-step9-acolitos-sombras.webp",
         "posicoes_iniciais": {
           "jogadores": [
             {
@@ -460,7 +461,7 @@
         "grid_largura": 16,
         "grid_altura": 14,
         "metros_por_quadrado": 1.5,
-        "imagem_fundo": null,
+        "imagem_fundo": "/static/img/maps/tactical/sombras-step10-senhor-sombras.webp",
         "posicoes_iniciais": {
           "jogadores": [
             {

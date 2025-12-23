@@ -68,7 +68,15 @@
                         {% if player.get_condicoes() %}
                         <div class="mt-1">
                             {% for cond in player.get_condicoes() %}
-                            <span class="badge bg-danger" style="font-size: 0.6em;">{{ cond }}</span>
+                            {% set cond_data = CONDICOES_5E.get(cond.lower().replace(' ', '_').replace('ç', 'c').replace('ã', 'a'), {}) %}
+                            <span class="condition-badge-with-icon" title="{{ cond_data.get('descricao', '') }}">
+                                {% if cond_data.get('imagem') %}
+                                <img src="{{ cond_data.imagem }}" alt="{{ cond }}">
+                                {% else %}
+                                <i class="{{ cond_data.get('icone', 'bi-exclamation-circle') }}"></i>
+                                {% endif %}
+                                <span style="font-size: 0.7em;">{{ cond }}</span>
+                            </span>
                             {% endfor %}
                         </div>
                         {% endif %}
