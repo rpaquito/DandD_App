@@ -404,3 +404,94 @@ def advance_combat_round(session_id):
         'combat_time': time_service.get_combat_time(session_id),
         'tempo_jogo': time_service.get_game_time(session_id)
     })
+
+
+# ===== ROTAS DE XP =====
+
+@session_bp.route('/<int:session_id>/xp/atribuir', methods=['POST'])
+def award_xp(session_id):
+    """
+    Atribui XP ao grupo.
+
+    POST body: {
+        'total_xp': 250,
+        'source': 'combat' | 'milestone' | 'quest',
+        'description': 'Derrotaram 3 goblins'
+    }
+    """
+    data = request.get_json()
+    total_xp = data.get('total_xp', 0)
+    source = data.get('source', 'combat')
+    description = data.get('description', '')
+
+    if total_xp <= 0:
+        return jsonify({'error': 'XP deve ser maior que 0'}), 400
+
+    result = session_service.award_xp_to_session(
+        session_id,
+        total_xp,
+        source=source,
+        description=description
+    )
+
+    if result:
+        # Verificar level ups
+        if result['players_leveled_up']:
+            return jsonify({
+                **result,
+                'message': f'{len(result["players_leveled_up"])} jogador(es) subiram de nível!',
+                'level_up': True
+            })
+        return jsonify({
+            **result,
+            'message': f'{result["xp_per_player"]} XP atribuído a cada jogador',
+            'level_up': False
+        })
+
+    return jsonify({'error': 'Sessão não encontrada'}), 404
+
+
+@session_bp.route('/<int:session_id>/xp/jogador/<int:player_id>')
+def get_player_xp_progress(session_id, player_id):
+    """Obtém progresso de XP de um jogador."""
+    progress = session_service.get_xp_to_next_level(player_id)
+
+    if progress:
+        return jsonify(progress)
+
+    return jsonify({'error': 'Jogador não encontrado'}), 404
+
+
+@session_bp.route('/<int:session_id>/xp/visao-geral')
+def get_session_xp_overview(session_id):
+    """Obtém visão geral do XP de todos os jogadores."""
+    overview = session_service.get_session_xp_overview(session_id)
+    return jsonify({
+        'players': overview,
+        'num_players': len(overview)
+    })
+
+
+@session_bp.route('/<int:session_id>/xp/calcular-combate', methods=['POST'])
+def calculate_combat_xp(session_id):
+    """
+    Calcula XP de um combate.
+
+    POST body: {
+        'monsters': [
+            {'id': 'goblin', 'nome': 'Goblin', 'xp': 50, 'quantity': 3}
+        ]
+    }
+    """
+    from app.services.xp_calculator import XPCalculatorService
+
+    data = request.get_json()
+    monsters = data.get('monsters', [])
+
+    if not monsters:
+        return jsonify({'error': 'Lista de monstros vazia'}), 400
+
+    xp_calculator = XPCalculatorService()
+    result = xp_calculator.calculate_encounter_xp(monsters)
+
+    return jsonify(result)

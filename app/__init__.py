@@ -30,6 +30,7 @@ def create_app():
     from app.routes.character_builder import builder_bp
     from app.routes.glossary import glossary_bp
     from app.routes.map import map_bp
+    from app.routes.encounter import encounter_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(quest_bp, url_prefix='/aventura')
@@ -39,12 +40,14 @@ def create_app():
     app.register_blueprint(builder_bp)
     app.register_blueprint(glossary_bp, url_prefix='/glossario')
     app.register_blueprint(map_bp)
+    app.register_blueprint(encounter_bp)
 
     # Importar modelos para garantir que sao criados
     from app.models import (
         GameSession, SessionPlayer, SessionCombat, SavedCharacter,
         CombatSession,
-        EntityPosition, MapConfiguration
+        EntityPosition, MapConfiguration,
+        CombatLog
     )
 
     # Criar tabelas da base de dados

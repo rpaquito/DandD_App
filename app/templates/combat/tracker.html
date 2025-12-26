@@ -267,6 +267,67 @@
             </div>
             {% endif %}
 
+            <!-- Calculadora de XP -->
+            <div class="card bg-dark border-success mb-4">
+                <div class="card-header border-success">
+                    <h6 class="mb-0">
+                        <i class="bi bi-star me-2"></i>Calculadora de XP
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted mb-2">Monstros derrotados neste combate</p>
+
+                    <!-- Lista de monstros -->
+                    <div id="xp-monsters-list" class="mb-3" style="max-height: 200px; overflow-y: auto;">
+                        <p class="text-muted small mb-0">Sem monstros derrotados</p>
+                    </div>
+
+                    <!-- Resumo de XP -->
+                    <div class="bg-secondary rounded p-2 mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <strong class="small">Total XP:</strong>
+                            <span class="badge bg-warning text-dark" id="xp-total">0</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong class="small">Por Jogador:</strong>
+                            <span class="badge bg-success" id="xp-per-player">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Botões -->
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-sm btn-success" onclick="awardXPToParty()">
+                            <i class="bi bi-trophy me-1"></i>Atribuir XP ao Grupo
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="clearXPCalculator()">
+                            <i class="bi bi-x-circle me-1"></i>Limpar
+                        </button>
+                    </div>
+
+                    <small class="text-muted d-block mt-2">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Os monstros derrotados (HP = 0) são adicionados automaticamente.
+                    </small>
+                </div>
+            </div>
+
+            <!-- Combat Log -->
+            <div class="card bg-dark border-primary mb-4">
+                <div class="card-header border-primary d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                        <i class="bi bi-journal-text me-2"></i>Histórico de Combate
+                    </h6>
+                    <button class="btn btn-sm btn-outline-danger" onclick="clearCombatLogUI()" title="Limpar histórico">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+                <div class="card-body p-2">
+                    <div id="combat-log-container" style="max-height: 300px; overflow-y: auto; font-size: 0.75rem;">
+                        <p class="text-muted small mb-0 text-center py-3">Sem ações registadas</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Dicas do Mestre para Combate -->
             <div class="card bg-dark border-warning mb-4">
                 <div class="card-header border-warning bg-warning bg-opacity-10">
@@ -449,6 +510,198 @@
     </div>
 </div>
 
+<!-- Modal de Attack Roll -->
+<div class="modal fade" id="attackRollModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-danger">
+                <h5 class="modal-title">
+                    <i class="bi bi-crosshair me-2"></i>Attack Roll
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="attackActorId">
+                <input type="hidden" id="attackActorNome">
+
+                <div class="mb-3">
+                    <label class="form-label">Alvo</label>
+                    <select class="form-select bg-dark text-light border-secondary" id="attackTargetId">
+                        <option value="">Selecionar alvo...</option>
+                    </select>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label">Bónus de Ataque</label>
+                        <input type="number" class="form-control bg-dark text-light border-secondary"
+                               id="attackBonus" value="0">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">AC do Alvo</label>
+                        <input type="number" class="form-control bg-dark text-light border-secondary"
+                               id="attackTargetAC" value="10" readonly>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="attackAdvantage">
+                        <label class="form-check-label">Vantagem</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="attackDisadvantage">
+                        <label class="form-check-label">Desvantagem</label>
+                    </div>
+                </div>
+
+                <div id="attackResult" class="alert alert-secondary d-none"></div>
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-danger" onclick="performAttackRoll()">
+                        <i class="bi bi-dice-5 me-1"></i>Rolar Ataque (d20)
+                    </button>
+                    <button class="btn btn-success d-none" id="attackDamageButton" onclick="goToDamageFromAttack()">
+                        <i class="bi bi-arrow-right me-1"></i>Aplicar Dano
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Damage Roll Avançado -->
+<div class="modal fade" id="damageRollModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-danger">
+                <h5 class="modal-title">
+                    <i class="bi bi-heart-fill me-2 text-danger"></i>Damage Roll
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="damageActorId">
+                <input type="hidden" id="damageActorNome">
+                <input type="hidden" id="damageRollTargetId">
+                <input type="hidden" id="damageRollTargetNome">
+
+                <div class="mb-3">
+                    <label class="form-label">Expressão de Dados</label>
+                    <input type="text" class="form-control bg-dark text-light border-secondary"
+                           id="damageExpression" placeholder="2d6+3" value="1d6">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Tipo de Dano</label>
+                    <select class="form-select bg-dark text-light border-secondary" id="damageType">
+                        <option value="slashing">Cortante</option>
+                        <option value="piercing">Perfurante</option>
+                        <option value="bludgeoning">Contundente</option>
+                        <option value="fire">Fogo</option>
+                        <option value="cold">Gelo</option>
+                        <option value="lightning">Elétrico</option>
+                        <option value="acid">Ácido</option>
+                        <option value="poison">Veneno</option>
+                        <option value="psychic">Psíquico</option>
+                        <option value="necrotic">Necrótico</option>
+                        <option value="radiant">Radiante</option>
+                        <option value="thunder">Trovão</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="damageCrit">
+                        <label class="form-check-label">Crítico (dobra dados)</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="damageResistance">
+                        <label class="form-check-label">Resistência (metade)</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="damageImmunity">
+                        <label class="form-check-label">Imunidade (0)</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="damageVulnerability">
+                        <label class="form-check-label">Vulnerabilidade (dobro)</label>
+                    </div>
+                </div>
+
+                <div id="damageRollResult" class="alert alert-secondary d-none"></div>
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-danger" onclick="performDamageRoll()">
+                        <i class="bi bi-dice-5 me-1"></i>Rolar Dano
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Spell Slots -->
+<div class="modal fade" id="spellSlotsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-primary">
+                <h5 class="modal-title">
+                    <i class="bi bi-magic me-2"></i>Spell Slots
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="spellCasterNome">
+                <input type="hidden" id="spellCasterId">
+                <input type="hidden" id="spellParticipantId">
+
+                <div class="mb-3">
+                    <label class="form-label">Nome da Magia</label>
+                    <input type="text" class="form-control bg-dark text-light border-secondary"
+                           id="spellName" placeholder="Ex: Bola de Fogo">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nível da Magia</label>
+                    <select class="form-select bg-dark text-light border-secondary" id="spellLevel">
+                        <option value="0">Truque (Cantrip)</option>
+                        <option value="1">1º Nível</option>
+                        <option value="2">2º Nível</option>
+                        <option value="3">3º Nível</option>
+                        <option value="4">4º Nível</option>
+                        <option value="5">5º Nível</option>
+                        <option value="6">6º Nível</option>
+                        <option value="7">7º Nível</option>
+                        <option value="8">8º Nível</option>
+                        <option value="9">9º Nível</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Alvo (Opcional)</label>
+                    <select class="form-select bg-dark text-light border-secondary" id="spellTargetId">
+                        <option value="">Sem alvo específico</option>
+                    </select>
+                </div>
+
+                <div id="spellSlotsDisplay" class="mb-3">
+                    <p class="small text-muted">Spell Slots Disponíveis:</p>
+                    <div id="spellSlotsGrid"></div>
+                </div>
+
+                <div id="spellResult" class="alert alert-secondary d-none"></div>
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" onclick="castSpell()">
+                        <i class="bi bi-stars me-1"></i>Lançar Magia
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -456,6 +709,7 @@
 <script src="{{ url_for('static', filename='js/map-grid.js') }}"></script>
 {% if game_session %}
 <script src="{{ url_for('static', filename='js/time-tracker.js') }}"></script>
+<script src="{{ url_for('static', filename='js/xp-calculator.js') }}"></script>
 {% endif %}
 <script>
     // Contexto de sessao
@@ -498,11 +752,9 @@
 
     // ===== Inicializar Mapa Tactico (se disponivel) =====
     {% if session_combat and session_combat.quest_step_id and current_step and current_step.mapa_tatico %}
-    let mapGrid;
-
     // Inicializar mapa quando pagina carrega
     document.addEventListener('DOMContentLoaded', function() {
-        mapGrid = new MapGrid('tacticalMap', {
+        window.mapGrid = new MapGrid('tacticalMap', {
             gridWidth: {{ current_step.mapa_tatico.grid_largura }},
             gridHeight: {{ current_step.mapa_tatico.grid_altura }},
             squareSizeMeters: {{ current_step.mapa_tatico.metros_por_quadrado }},
@@ -515,7 +767,8 @@
             .then(function(response) { return response.json(); })
             .then(function(data) {
                 if (data.positions && data.positions.length > 0) {
-                    mapGrid.loadEntities(data.positions);
+                    window.mapGrid.loadEntities(data.positions);
+                    enrichMapEntitiesWithCombatData();
                 } else {
                     // Se nao houver posicoes, inicializar com posicoes padrao
                     inicializarMapaPadrao();
@@ -527,7 +780,7 @@
             });
 
         // Callback: Sincronizar movimento ao servidor
-        mapGrid.onEntityMoved = function(entity) {
+        window.mapGrid.onEntityMoved = function(entity) {
             fetch('/mapa/sessao/{{ game_session.id }}/passo/{{ session_combat.quest_step_id }}/mover', {
                 method: 'POST',
                 headers: {
@@ -549,7 +802,7 @@
         };
 
         // Callback: Mostrar info da entidade
-        mapGrid.onEntitySelected = function(entity) {
+        window.mapGrid.onEntitySelected = function(entity) {
             console.log('Entidade seleccionada:', entity);
         };
     });
@@ -578,7 +831,7 @@
         .then(function(data) {
             console.log('Mapa inicializado:', data);
             if (data.positions) {
-                mapGrid.loadEntities(data.positions);
+                window.mapGrid.loadEntities(data.positions);
             }
         })
         .catch(function(error) {
@@ -589,21 +842,43 @@
 
     // Toggle de filtros de entidades
     function toggleEntityFilter(filterName) {
-        if (mapGrid) {
-            const currentValue = mapGrid.filters[filterName];
-            mapGrid.setFilter(filterName, !currentValue);
+        if (window.mapGrid) {
+            const currentValue = window.mapGrid.filters[filterName];
+            window.mapGrid.setFilter(filterName, !currentValue);
 
             // Atualizar estado visual dos botoes
             const buttonId = 'toggle-' + filterName.replace('show', '').toLowerCase();
             const button = document.getElementById(buttonId);
             if (button) {
-                if (mapGrid.filters[filterName]) {
+                if (window.mapGrid.filters[filterName]) {
                     button.classList.add('active');
                 } else {
                     button.classList.remove('active');
                 }
             }
         }
+    }
+
+    // Enriquecer entidades do mapa com dados de combate
+    function enrichMapEntitiesWithCombatData() {
+        if (!window.mapGrid || !window.combatState) return;
+
+        window.mapGrid.entities.forEach(function(mapEntity) {
+            // Procurar participante correspondente no combate
+            const participant = window.combatState.participants.find(function(p) {
+                return p.id === mapEntity.entity_id;
+            });
+
+            if (participant) {
+                // Enriquecer com dados de combate
+                mapEntity.nome = participant.nome;
+                mapEntity.ac = participant.ac;
+                mapEntity.hp_atual = participant.hp_atual;
+                mapEntity.hp_max = participant.hp_max;
+            }
+        });
+
+        window.mapGrid.render();
     }
     {% endif %}
 
@@ -636,6 +911,15 @@
 
     // Fazer update inicial
     timeTracker.update();
+
+    // ===== Inicializar XP Calculator =====
+    // Contar jogadores no combate
+    const partySize = combatState.participants.filter(p => p.tipo === 'jogador').length;
+
+    // Inicializar XP Calculator
+    initXPCalculator({{ game_session.id }}, partySize);
+
+    console.log('XP Calculator inicializado com', partySize, 'jogadores');
     {% endif %}
 </script>
 {% endblock %}

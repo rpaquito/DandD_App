@@ -4,8 +4,8 @@
  * Usando métodos DOM seguros (sem innerHTML)
  */
 
-// Estado do combate
-let combatState = {
+// Estado do combate (global para acesso por outros componentes)
+window.combatState = {
     participants: [],
     currentTurn: 0,
     round: 1
@@ -173,6 +173,12 @@ async function applyDamage(isHealing) {
                     p.hp_atual = Math.min(p.hp_atual + amount, p.hp_max);
                 } else {
                     p.hp_atual = Math.max(p.hp_atual - amount, 0);
+
+                    // Se monstro foi derrotado, adicionar à calculadora de XP
+                    if (p.hp_atual === 0 && p.tipo === 'monstro' && typeof addMonsterToXPCalc === 'function') {
+                        const xpValue = p.xp || 50; // XP padrão se não especificado
+                        addMonsterToXPCalc(p.id, p.nome, xpValue);
+                    }
                 }
                 break;
             }
@@ -197,6 +203,18 @@ async function applyDamage(isHealing) {
         const data = await response.json();
         if (data.success) {
             combatState.participants = data.participants;
+
+            // Verificar se algum monstro foi derrotado e adicionar à calculadora de XP
+            if (!isHealing && typeof addMonsterToXPCalc === 'function') {
+                const defeated = combatState.participants.find(p =>
+                    String(p.id) === String(targetId) && p.hp_atual === 0 && p.tipo === 'monstro'
+                );
+                if (defeated) {
+                    const xpValue = defeated.xp || 50;
+                    addMonsterToXPCalc(defeated.id, defeated.nome, xpValue);
+                }
+            }
+
             renderInitiativeList();
             bootstrap.Modal.getInstance(document.getElementById('damageModal')).hide();
 
@@ -266,6 +284,14 @@ function nextTurn() {
     }
 
     renderInitiativeList();
+
+    // Actualizar mapa tactico com participante activo
+    if (window.mapGrid && combatState.participants.length > 0) {
+        const activeParticipant = combatState.participants[combatState.currentTurn];
+        if (activeParticipant) {
+            window.mapGrid.setActiveParticipant(activeParticipant.id);
+        }
+    }
 
     // Sincronizar com sessao se em modo de sessao
     if (window.sessionMode) {
@@ -400,6 +426,18 @@ function createParticipantCard(p, index) {
     const btnGroup = document.createElement('div');
     btnGroup.className = 'btn-group btn-group-sm';
 
+    // Botão Attack Roll (só em modo de sessão)
+    if (window.sessionMode && !isDead) {
+        const attackBtn = document.createElement('button');
+        attackBtn.className = 'btn btn-outline-danger';
+        attackBtn.title = 'Attack Roll';
+        attackBtn.addEventListener('click', () => openAttackRollModal(p.id, p.nome));
+        const attackIcon = document.createElement('i');
+        attackIcon.className = 'bi bi-crosshair';
+        attackBtn.appendChild(attackIcon);
+        btnGroup.appendChild(attackBtn);
+    }
+
     // Botão Dano
     const damageBtn = document.createElement('button');
     damageBtn.className = 'btn btn-outline-danger';
@@ -491,6 +529,18 @@ function renderInitiativeList() {
 
     // Atualizar highlight das condições
     updateConditionHighlights();
+
+    // Actualizar mapa tactico com participante activo
+    if (window.mapGrid && combatState.participants.length > 0) {
+        const activeParticipant = combatState.participants[combatState.currentTurn];
+        if (activeParticipant) {
+            window.mapGrid.setActiveParticipant(activeParticipant.id);
+        }
+        // Enriquecer entidades do mapa com dados atualizados
+        if (typeof enrichMapEntitiesWithCombatData === 'function') {
+            enrichMapEntitiesWithCombatData();
+        }
+    }
 }
 
 // ============================================
@@ -581,6 +631,491 @@ function updateConditionHighlights() {
     });
 }
 
+// ============================================
+// Combat Log System
+// ============================================
+
+async function refreshCombatLog() {
+    if (!window.sessionMode || !window.sessionId) return;
+
+    try {
+        const response = await fetch(`/combate/sessao/${window.sessionId}/log?limit=50`);
+        const data = await response.json();
+
+        if (data.logs) {
+            renderCombatLog(data.logs);
+        }
+    } catch (error) {
+        console.error('Erro ao carregar combat log:', error);
+    }
+}
+
+function renderCombatLog(logs) {
+    const container = document.getElementById('combat-log-container');
+    if (!container) return;
+
+    clearElement(container);
+
+    if (logs.length === 0) {
+        const emptyMsg = document.createElement('p');
+        emptyMsg.className = 'text-muted small mb-0 text-center py-3';
+        emptyMsg.textContent = 'Sem ações registadas';
+        container.appendChild(emptyMsg);
+        return;
+    }
+
+    // Mostrar logs do mais recente ao mais antigo
+    logs.forEach(log => {
+        const logEntry = document.createElement('div');
+        logEntry.className = 'border-bottom border-secondary pb-2 mb-2';
+
+        const logHeader = document.createElement('div');
+        logHeader.className = 'd-flex justify-content-between align-items-start mb-1';
+
+        const roundInfo = document.createElement('small');
+        roundInfo.className = 'text-muted';
+        roundInfo.textContent = `R${log.ronda}T${log.turno}`;
+        logHeader.appendChild(roundInfo);
+
+        const timestamp = new Date(log.timestamp);
+        const timeText = document.createElement('small');
+        timeText.className = 'text-muted';
+        timeText.textContent = timestamp.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+        logHeader.appendChild(timeText);
+
+        logEntry.appendChild(logHeader);
+
+        const message = document.createElement('p');
+        message.className = 'mb-0 small';
+        message.textContent = log.message;
+        logEntry.appendChild(message);
+
+        container.appendChild(logEntry);
+    });
+
+    // Scroll para o topo (mais recente)
+    container.scrollTop = 0;
+}
+
+async function clearCombatLogUI() {
+    if (!window.sessionMode || !window.sessionId) return;
+    if (!confirm('Tens a certeza que queres limpar o histórico de combate?')) return;
+
+    try {
+        const response = await fetch(`/combate/sessao/${window.sessionId}/log/limpar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            renderCombatLog([]);
+            showNotification(`${data.deleted} entradas removidas`, 'info');
+        }
+    } catch (error) {
+        console.error('Erro ao limpar combat log:', error);
+    }
+}
+
+// ============================================
+// Attack Roll System
+// ============================================
+
+function openAttackRollModal(actorId, actorNome) {
+    if (!window.sessionMode) {
+        showNotification('Attack rolls só funcionam em modo de sessão', 'warning');
+        return;
+    }
+
+    document.getElementById('attackActorId').value = actorId;
+    document.getElementById('attackActorNome').value = actorNome;
+
+    // Preencher dropdown de alvos
+    const targetSelect = document.getElementById('attackTargetId');
+    clearElement(targetSelect);
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Selecionar alvo...';
+    targetSelect.appendChild(defaultOption);
+
+    combatState.participants.forEach(p => {
+        if (String(p.id) !== String(actorId) && p.hp_atual > 0) {
+            const option = document.createElement('option');
+            option.value = p.id;
+            option.textContent = `${p.nome} (AC ${p.ac})`;
+            option.dataset.ac = p.ac;
+            option.dataset.nome = p.nome;
+            targetSelect.appendChild(option);
+        }
+    });
+
+    // Reset do modal
+    document.getElementById('attackBonus').value = '0';
+    document.getElementById('attackTargetAC').value = '10';
+    document.getElementById('attackAdvantage').checked = false;
+    document.getElementById('attackDisadvantage').checked = false;
+    document.getElementById('attackResult').classList.add('d-none');
+    document.getElementById('attackDamageButton').classList.add('d-none');
+
+    new bootstrap.Modal(document.getElementById('attackRollModal')).show();
+}
+
+// Atualizar AC quando alvo é selecionado
+document.addEventListener('DOMContentLoaded', function() {
+    const targetSelect = document.getElementById('attackTargetId');
+    if (targetSelect) {
+        targetSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.dataset.ac) {
+                document.getElementById('attackTargetAC').value = selectedOption.dataset.ac;
+            }
+        });
+    }
+});
+
+async function performAttackRoll() {
+    if (!window.sessionMode || !window.sessionId) return;
+
+    const actorId = document.getElementById('attackActorId').value;
+    const actorNome = document.getElementById('attackActorNome').value;
+    const targetSelect = document.getElementById('attackTargetId');
+    const targetOption = targetSelect.options[targetSelect.selectedIndex];
+
+    if (!targetOption.value) {
+        showNotification('Seleciona um alvo primeiro', 'warning');
+        return;
+    }
+
+    const targetId = targetOption.value;
+    const targetNome = targetOption.dataset.nome;
+    const bonus = parseInt(document.getElementById('attackBonus').value) || 0;
+    const targetAC = parseInt(document.getElementById('attackTargetAC').value) || 10;
+    const advantage = document.getElementById('attackAdvantage').checked;
+    const disadvantage = document.getElementById('attackDisadvantage').checked;
+
+    try {
+        const response = await fetch(`/combate/sessao/${window.sessionId}/atacar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                actor_id: actorId,
+                actor_nome: actorNome,
+                target_id: targetId,
+                target_nome: targetNome,
+                bonus: bonus,
+                target_ac: targetAC,
+                advantage: advantage,
+                disadvantage: disadvantage
+            })
+        });
+
+        const result = await response.json();
+        displayAttackResult(result);
+        refreshCombatLog();
+    } catch (error) {
+        console.error('Erro no attack roll:', error);
+        showNotification('Erro ao realizar ataque', 'danger');
+    }
+}
+
+function displayAttackResult(result) {
+    const resultDiv = document.getElementById('attackResult');
+    clearElement(resultDiv);
+    resultDiv.classList.remove('d-none');
+
+    const resultContainer = document.createElement('div');
+
+    // Linha 1: Resultado principal
+    const mainResult = document.createElement('div');
+    mainResult.className = 'mb-1';
+
+    if (result.crit) {
+        mainResult.textContent = '🎯 ';
+        const critText = document.createElement('strong');
+        critText.className = 'text-success';
+        critText.textContent = 'CRÍTICO!';
+        mainResult.appendChild(critText);
+    } else if (result.crit_fail) {
+        mainResult.textContent = '💥 ';
+        const failText = document.createElement('strong');
+        failText.className = 'text-danger';
+        failText.textContent = 'FALHA CRÍTICA!';
+        mainResult.appendChild(failText);
+    } else if (result.hit) {
+        mainResult.textContent = '⚔️ ';
+        const hitText = document.createElement('strong');
+        hitText.className = 'text-success';
+        hitText.textContent = 'Acerta!';
+        mainResult.appendChild(hitText);
+    } else {
+        mainResult.textContent = '❌ ';
+        const missText = document.createElement('strong');
+        missText.className = 'text-danger';
+        missText.textContent = 'Erra';
+        mainResult.appendChild(missText);
+    }
+
+    resultContainer.appendChild(mainResult);
+
+    // Linha 2: Detalhes do roll
+    const details = document.createElement('div');
+    details.textContent = `d20: ${result.d20_result} + ${result.bonus} = `;
+    const total = document.createElement('strong');
+    total.textContent = result.total;
+    details.appendChild(total);
+    details.appendChild(document.createTextNode(` vs AC ${result.target_ac}`));
+    resultContainer.appendChild(details);
+
+    resultDiv.appendChild(resultContainer);
+
+    // Mostrar botão de dano se acertou
+    const damageBtn = document.getElementById('attackDamageButton');
+    if (result.hit && !result.crit_fail) {
+        damageBtn.classList.remove('d-none');
+        damageBtn.dataset.crit = result.crit;
+    } else {
+        damageBtn.classList.add('d-none');
+    }
+}
+
+function goToDamageFromAttack() {
+    const isCrit = document.getElementById('attackDamageButton').dataset.crit === 'true';
+    const targetSelect = document.getElementById('attackTargetId');
+    const targetOption = targetSelect.options[targetSelect.selectedIndex];
+    const actorId = document.getElementById('attackActorId').value;
+    const actorNome = document.getElementById('attackActorNome').value;
+
+    // Fechar modal de ataque
+    bootstrap.Modal.getInstance(document.getElementById('attackRollModal')).hide();
+
+    // Abrir modal de dano com info pré-preenchida
+    openDamageRollModal(actorId, actorNome, targetOption.value, targetOption.dataset.nome, isCrit);
+}
+
+// ============================================
+// Damage Roll System (Advanced)
+// ============================================
+
+function openDamageRollModal(actorId, actorNome, targetId, targetNome, isCrit) {
+    if (!window.sessionMode) {
+        showNotification('Damage rolls só funcionam em modo de sessão', 'warning');
+        return;
+    }
+
+    document.getElementById('damageActorId').value = actorId;
+    document.getElementById('damageActorNome').value = actorNome;
+    document.getElementById('damageRollTargetId').value = targetId;
+    document.getElementById('damageRollTargetNome').value = targetNome;
+
+    document.getElementById('damageExpression').value = '1d6';
+    document.getElementById('damageType').value = 'slashing';
+    document.getElementById('damageCrit').checked = isCrit || false;
+    document.getElementById('damageResistance').checked = false;
+    document.getElementById('damageImmunity').checked = false;
+    document.getElementById('damageVulnerability').checked = false;
+    document.getElementById('damageRollResult').classList.add('d-none');
+
+    new bootstrap.Modal(document.getElementById('damageRollModal')).show();
+}
+
+async function performDamageRoll() {
+    if (!window.sessionMode || !window.sessionId) return;
+
+    const actorId = document.getElementById('damageActorId').value;
+    const actorNome = document.getElementById('damageActorNome').value;
+    const targetId = document.getElementById('damageRollTargetId').value;
+    const targetNome = document.getElementById('damageRollTargetNome').value;
+    const diceExpression = document.getElementById('damageExpression').value;
+    const damageType = document.getElementById('damageType').value;
+    const crit = document.getElementById('damageCrit').checked;
+    const resistance = document.getElementById('damageResistance').checked;
+    const immunity = document.getElementById('damageImmunity').checked;
+    const vulnerability = document.getElementById('damageVulnerability').checked;
+
+    try {
+        const response = await fetch(`/combate/sessao/${window.sessionId}/dano`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                actor_id: actorId,
+                actor_nome: actorNome,
+                target_id: targetId,
+                target_nome: targetNome,
+                dice_expression: diceExpression,
+                damage_type: damageType,
+                crit: crit,
+                resistance: resistance,
+                immunity: immunity,
+                vulnerability: vulnerability
+            })
+        });
+
+        const result = await response.json();
+        displayDamageResult(result);
+        renderInitiativeList();
+        refreshCombatLog();
+
+        // Atualizar combat state localmente
+        const targetParticipant = combatState.participants.find(p => String(p.id) === String(targetId));
+        if (targetParticipant) {
+            targetParticipant.hp_atual = result.target_hp_atual;
+        }
+
+        // Adicionar a XP calc se matou o monstro
+        if (result.target_hp_atual === 0) {
+            const target = combatState.participants.find(p => String(p.id) === String(targetId));
+            if (target && target.tipo === 'monstro' && typeof addMonsterToXPCalc === 'function') {
+                const xpValue = target.xp || 50;
+                addMonsterToXPCalc(target.id, target.nome, xpValue);
+            }
+        }
+
+        // Fechar modal após 2 segundos
+        setTimeout(() => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('damageRollModal'));
+            if (modal) modal.hide();
+        }, 2000);
+
+    } catch (error) {
+        console.error('Erro no damage roll:', error);
+        showNotification('Erro ao aplicar dano', 'danger');
+    }
+}
+
+function displayDamageResult(result) {
+    const resultDiv = document.getElementById('damageRollResult');
+    clearElement(resultDiv);
+    resultDiv.classList.remove('d-none');
+
+    const resultContainer = document.createElement('div');
+
+    // Linha 1: Emoji e dano total
+    const mainLine = document.createElement('div');
+    mainLine.className = 'mb-1';
+
+    let emoji = '⚔️';
+    if (result.crit) emoji = '💥';
+    if (result.immunity) emoji = '🛡️';
+
+    mainLine.textContent = `${emoji} `;
+    const damageAmount = document.createElement('strong');
+    damageAmount.textContent = result.final_damage;
+    mainLine.appendChild(damageAmount);
+    mainLine.appendChild(document.createTextNode(` de dano ${result.damage_type}`));
+    resultContainer.appendChild(mainLine);
+
+    // Linha 2: Detalhes
+    const detailsLine = document.createElement('small');
+    detailsLine.textContent = `Base: ${result.base_damage}`;
+
+    if (result.immunity) {
+        detailsLine.appendChild(document.createTextNode(' → IMUNE (0)'));
+    } else if (result.resistance) {
+        detailsLine.appendChild(document.createTextNode(' → Resistência (÷2)'));
+    } else if (result.vulnerability) {
+        detailsLine.appendChild(document.createTextNode(' → Vulnerável (×2)'));
+    }
+
+    if (result.crit) {
+        detailsLine.appendChild(document.createTextNode(' | CRÍTICO (dados dobrados)'));
+    }
+
+    resultContainer.appendChild(detailsLine);
+    resultDiv.appendChild(resultContainer);
+}
+
+// ============================================
+// Spell Slots System
+// ============================================
+
+function openSpellSlotsModal(participantId, casterNome, casterId) {
+    if (!window.sessionMode) {
+        showNotification('Spell slots só funcionam em modo de sessão', 'warning');
+        return;
+    }
+
+    document.getElementById('spellParticipantId').value = participantId;
+    document.getElementById('spellCasterNome').value = casterNome;
+    document.getElementById('spellCasterId').value = casterId;
+
+    // Preencher dropdown de alvos
+    const targetSelect = document.getElementById('spellTargetId');
+    clearElement(targetSelect);
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Sem alvo específico';
+    targetSelect.appendChild(defaultOption);
+
+    combatState.participants.forEach(p => {
+        if (p.hp_atual > 0) {
+            const option = document.createElement('option');
+            option.value = p.id;
+            option.textContent = p.nome;
+            option.dataset.nome = p.nome;
+            targetSelect.appendChild(option);
+        }
+    });
+
+    // Reset
+    document.getElementById('spellName').value = '';
+    document.getElementById('spellLevel').value = '0';
+    document.getElementById('spellResult').classList.add('d-none');
+
+    new bootstrap.Modal(document.getElementById('spellSlotsModal')).show();
+}
+
+async function castSpell() {
+    if (!window.sessionMode || !window.sessionId) return;
+
+    const participantId = document.getElementById('spellParticipantId').value;
+    const actorId = document.getElementById('spellCasterId').value;
+    const actorNome = document.getElementById('spellCasterNome').value;
+    const spellName = document.getElementById('spellName').value || 'Magia';
+    const spellLevel = parseInt(document.getElementById('spellLevel').value) || 0;
+
+    const targetSelect = document.getElementById('spellTargetId');
+    const targetOption = targetSelect.options[targetSelect.selectedIndex];
+    const targetId = targetOption.value || null;
+    const targetNome = targetOption.dataset.nome || null;
+
+    try {
+        const response = await fetch(`/combate/sessao/${window.sessionId}/magia`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                participant_id: participantId,
+                actor_id: actorId,
+                actor_nome: actorNome,
+                spell_name: spellName,
+                spell_level: spellLevel,
+                target_id: targetId,
+                target_nome: targetNome
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            showNotification(`✨ ${spellName} lançado!`, 'success');
+            refreshCombatLog();
+
+            // Fechar modal
+            setTimeout(() => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('spellSlotsModal'));
+                if (modal) modal.hide();
+            }, 1000);
+        } else if (result.erro) {
+            showNotification(result.erro, 'danger');
+        }
+    } catch (error) {
+        console.error('Erro ao lançar magia:', error);
+        showNotification('Erro ao lançar magia', 'danger');
+    }
+}
+
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('addParticipantForm');
@@ -600,5 +1135,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 rollDice();
             }
         });
+    }
+
+    // Refresh combat log on load (if in session mode)
+    if (window.sessionMode && window.sessionId) {
+        refreshCombatLog();
+
+        // Auto-refresh combat log every 10 seconds
+        setInterval(refreshCombatLog, 10000);
     }
 });

@@ -100,6 +100,7 @@ class SessionPlayer(db.Model):
     condicoes = db.Column(db.Text, default='[]')  # Array JSON de condicoes
     ordem_combate = db.Column(db.Integer, nullable=True)  # Ordem no combate
     iniciativa = db.Column(db.Integer, nullable=True)
+    xp_total = db.Column(db.Integer, default=0)  # XP acumulado total do personagem
 
     def __repr__(self):
         return f'<SessionPlayer {self.nome_jogador}>'
@@ -154,7 +155,8 @@ class SessionPlayer(db.Model):
             'hp_max': self.hp_max,
             'ac': char_data.get('ac', 10),
             'condicoes': self.get_condicoes(),
-            'iniciativa': self.iniciativa
+            'iniciativa': self.iniciativa,
+            'xp_total': self.xp_total
         }
 
 
@@ -207,6 +209,95 @@ class SessionCombat(db.Model):
         participantes.sort(key=lambda p: p.get('iniciativa', 0), reverse=True)
         self.set_participantes(participantes)
 
+    def get_action_economy(self):
+        """Retorna o estado de action economy."""
+        if not self.action_economy_json:
+            return {}
+        try:
+            return json.loads(self.action_economy_json)
+        except (json.JSONDecodeError, TypeError):
+            return {}
+
+    def set_action_economy(self, economy_dict):
+        """Define o estado de action economy."""
+        self.action_economy_json = json.dumps(economy_dict, ensure_ascii=False)
+
+    def reset_action_economy_for_participant(self, participant_id):
+        """Reseta action economy para um participante."""
+        economy = self.get_action_economy()
+        economy[participant_id] = {
+            'action': False,
+            'bonus_action': False,
+            'reaction': False,
+            'movement': False
+        }
+        self.set_action_economy(economy)
+
+    def use_action(self, participant_id, action_type):
+        """Marca uma ação como usada."""
+        economy = self.get_action_economy()
+        if participant_id not in economy:
+            economy[participant_id] = {
+                'action': False,
+                'bonus_action': False,
+                'reaction': False,
+                'movement': False
+            }
+        economy[participant_id][action_type] = True
+        self.set_action_economy(economy)
+
+    def get_spell_slots(self):
+        """Retorna o estado de spell slots."""
+        if not self.spell_slots_json:
+            return {}
+        try:
+            return json.loads(self.spell_slots_json)
+        except (json.JSONDecodeError, TypeError):
+            return {}
+
+    def set_spell_slots(self, slots_dict):
+        """Define o estado de spell slots."""
+        self.spell_slots_json = json.dumps(slots_dict, ensure_ascii=False)
+
+    def initialize_spell_slots(self, participant_id, max_slots):
+        """
+        Inicializa spell slots para um participante.
+
+        Args:
+            participant_id: ID do participante
+            max_slots: Dict com {level: max_slots} ex: {1: 4, 2: 3, 3: 2}
+        """
+        slots = self.get_spell_slots()
+        slots[participant_id] = {}
+        for level, max_count in max_slots.items():
+            slots[participant_id][str(level)] = {
+                'max': max_count,
+                'used': 0
+            }
+        self.set_spell_slots(slots)
+
+    def use_spell_slot(self, participant_id, level):
+        """Usa um spell slot."""
+        slots = self.get_spell_slots()
+        if participant_id in slots and str(level) in slots[participant_id]:
+            slot_data = slots[participant_id][str(level)]
+            if slot_data['used'] < slot_data['max']:
+                slot_data['used'] += 1
+                self.set_spell_slots(slots)
+                return True
+        return False
+
+    def restore_spell_slot(self, participant_id, level):
+        """Restaura um spell slot."""
+        slots = self.get_spell_slots()
+        if participant_id in slots and str(level) in slots[participant_id]:
+            slot_data = slots[participant_id][str(level)]
+            if slot_data['used'] > 0:
+                slot_data['used'] -= 1
+                self.set_spell_slots(slots)
+                return True
+        return False
+
     def to_dict(self):
         """Converte o combate para dicionario."""
         return {
@@ -216,7 +307,9 @@ class SessionCombat(db.Model):
             'ronda_atual': self.ronda_atual,
             'turno_atual': self.turno_atual,
             'participantes': self.get_participantes(),
-            'quest_step_id': self.quest_step_id
+            'quest_step_id': self.quest_step_id,
+            'action_economy': self.get_action_economy(),
+            'spell_slots': self.get_spell_slots()
         }
 
 

@@ -210,7 +210,56 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    {{ step.notas_mestre|safe }}
+                    <!-- Tipo de Passo Indicator -->
+                    <div class="mb-3">
+                        <span class="badge bg-{% if step.tipo == 'combate' %}danger{% elif step.tipo == 'puzzle' %}warning{% elif step.tipo == 'social' %}info{% else %}secondary{% endif %} me-2">
+                            <i class="bi bi-{% if step.tipo == 'combate' %}shield-shaded{% elif step.tipo == 'puzzle' %}puzzle{% elif step.tipo == 'social' %}chat-dots{% else %}book{% endif %} me-1"></i>
+                            {{ step.tipo|upper }}
+                        </span>
+                        {% if step.mapa_tatico %}
+                        <span class="badge bg-warning text-dark">
+                            <i class="bi bi-map me-1"></i>Mapa Táctico Disponível
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Conteúdo das Notas com Highlighting -->
+                    <div class="dm-notes-enhanced">
+                        {% set notas_html = step.notas_mestre %}
+                        {% set notas_html = notas_html|replace('COMBATE:', '<span class="badge bg-danger mb-2"><i class="bi bi-shield-shaded me-1"></i>COMBATE</span><br>') %}
+                        {% set notas_html = notas_html|replace('PUZZLE:', '<span class="badge bg-warning text-dark mb-2"><i class="bi bi-puzzle me-1"></i>PUZZLE</span><br>') %}
+                        {% set notas_html = notas_html|replace('ARMADILHA:', '<span class="badge bg-warning text-dark mb-2"><i class="bi bi-exclamation-triangle me-1"></i>ARMADILHA</span><br>') %}
+                        {% set notas_html = notas_html|replace('TÁTICAS:', '<span class="badge bg-info mb-2"><i class="bi bi-diagram-3 me-1"></i>TÁTICAS</span><br>') %}
+                        {% set notas_html = notas_html|replace('Táticas:', '<span class="badge bg-info mb-2"><i class="bi bi-diagram-3 me-1"></i>TÁTICAS</span><br>') %}
+
+                        {{ notas_html|safe }}
+                    </div>
+
+                    <!-- Quick Reference Box (se combate ou puzzle) -->
+                    {% if step.tipo == 'combate' and step.monstros %}
+                    <div class="alert alert-danger mt-3 mb-0">
+                        <h6 class="text-danger"><i class="bi bi-shield-shaded me-2"></i>Referência Rápida de Combate</h6>
+                        <ul class="mb-0 small">
+                            <li><strong>Inimigos:</strong> {{ step.monstros|length }} × {{ quest.get_monsters_for_step(step)[0].nome if quest.get_monsters_for_step(step) }}</li>
+                            {% set monsters = quest.get_monsters_for_step(step) %}
+                            {% if monsters %}
+                            {% set monster = monsters[0] %}
+                            <li><strong>CR Total:</strong> {{ (step.monstros|length * monster.xp)|string }} XP ({{ monster.cr }} cada)</li>
+                            <li><strong>AC Média:</strong> {{ monster.ac }}</li>
+                            <li><strong>HP Total:</strong> ~{{ (step.monstros|length * monster.hp_max)|string }} HP</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% elif step.tipo == 'puzzle' %}
+                    <div class="alert alert-warning text-dark mt-3 mb-0">
+                        <h6 class="text-dark"><i class="bi bi-puzzle me-2"></i>Lembra-te</h6>
+                        <ul class="mb-0 small">
+                            <li>Deixa os jogadores pensarem - não te apresses a dar dicas</li>
+                            <li>Recompensa a criatividade mesmo que não seja a solução "correta"</li>
+                            <li>Se ficarem 10+ minutos presos, oferece uma pista subtil</li>
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             {% endif %}

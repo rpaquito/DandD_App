@@ -68,9 +68,12 @@ class MapGrid {
         this.onEntityMoved = null;  // Callback quando entidade e movida
         this.onEntitySelected = null;  // Callback quando entidade e seleccionada
 
+        // Participante activo (para highlighting)
+        this.activeParticipantId = null;
+
         // Imagem de fundo
         this.backgroundImg = null;
-        if (this.config.backgroundImage) {
+        if (this.config.backgroundImage && this.config.backgroundImage !== 'null') {
             this.loadBackgroundImage(this.config.backgroundImage);
         }
 
@@ -204,9 +207,23 @@ class MapGrid {
             this.drawEntityHighlight(this.selectedEntity, '#ffff00', 3);
         }
 
+        // Desenhar participante activo (turno actual)
+        if (this.activeParticipantId) {
+            const activeEntity = this.entities.find(e => e.entity_id === this.activeParticipantId);
+            if (activeEntity && this.isEntityVisible(activeEntity) && activeEntity !== this.selectedEntity) {
+                this.drawEntityHighlight(activeEntity, '#00ff00', 3);
+                this.drawEntityPulse(activeEntity);
+            }
+        }
+
         // Desenhar entidade sob hover
         if (this.hoveredEntity && this.hoveredEntity !== this.selectedEntity && this.isEntityVisible(this.hoveredEntity)) {
             this.drawEntityHighlight(this.hoveredEntity, '#ffffff', 2);
+        }
+
+        // Desenhar tooltip para entidade sob hover
+        if (this.hoveredEntity && this.isEntityVisible(this.hoveredEntity)) {
+            this.drawTooltip(this.hoveredEntity);
         }
     }
 
@@ -293,6 +310,94 @@ class MapGrid {
         this.ctx.beginPath();
         this.ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
         this.ctx.stroke();
+    }
+
+    /**
+     * Desenhar efeito de pulso no participante activo
+     */
+    drawEntityPulse(entity) {
+        const cellSize = this.config.cellSize;
+        const centerX = entity.grid_x * cellSize + cellSize / 2;
+        const centerY = entity.grid_y * cellSize + cellSize / 2;
+        const baseRadius = cellSize * 0.4;
+
+        // Criar pulso animado
+        const time = Date.now() / 1000;
+        const pulseRadius = baseRadius + Math.sin(time * 3) * 5;
+
+        this.ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.arc(centerX, centerY, pulseRadius, 0, Math.PI * 2);
+        this.ctx.stroke();
+
+        // Continuar animacao
+        if (this.activeParticipantId) {
+            requestAnimationFrame(() => this.render());
+        }
+    }
+
+    /**
+     * Desenhar tooltip com informacoes da entidade
+     */
+    drawTooltip(entity) {
+        const cellSize = this.config.cellSize;
+        const centerX = entity.grid_x * cellSize + cellSize / 2;
+        const centerY = entity.grid_y * cellSize + cellSize / 2;
+
+        // Obter informacoes da entidade (se disponiveis)
+        const nome = entity.nome || this.getEntityDisplayName(entity);
+        const ac = entity.ac ? `AC: ${entity.ac}` : '';
+        const hp = entity.hp_atual !== undefined ? `HP: ${entity.hp_atual}/${entity.hp_max || entity.hp_atual}` : '';
+
+        // Construir texto do tooltip
+        const lines = [nome];
+        if (ac) lines.push(ac);
+        if (hp) lines.push(hp);
+
+        // Configurar estilo
+        this.ctx.font = '12px Arial';
+        const padding = 6;
+        const lineHeight = 14;
+
+        // Calcular dimensoes do tooltip
+        const maxWidth = Math.max(...lines.map(line => this.ctx.measureText(line).width));
+        const boxWidth = maxWidth + padding * 2;
+        const boxHeight = lines.length * lineHeight + padding * 2;
+
+        // Posicao do tooltip (acima da entidade)
+        let tooltipX = centerX - boxWidth / 2;
+        let tooltipY = centerY - cellSize * 0.6 - boxHeight - 5;
+
+        // Ajustar se sair do canvas
+        if (tooltipY < 0) tooltipY = centerY + cellSize * 0.6 + 5;
+        if (tooltipX < 0) tooltipX = 0;
+        if (tooltipX + boxWidth > this.canvas.width) tooltipX = this.canvas.width - boxWidth;
+
+        // Desenhar fundo do tooltip
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+        this.ctx.fillRect(tooltipX, tooltipY, boxWidth, boxHeight);
+
+        // Desenhar borda
+        this.ctx.strokeStyle = '#ffffff';
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeRect(tooltipX, tooltipY, boxWidth, boxHeight);
+
+        // Desenhar texto
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.textAlign = 'left';
+        this.ctx.textBaseline = 'top';
+        lines.forEach((line, index) => {
+            this.ctx.fillText(line, tooltipX + padding, tooltipY + padding + index * lineHeight);
+        });
+    }
+
+    /**
+     * Definir participante activo (turno actual)
+     */
+    setActiveParticipant(participantId) {
+        this.activeParticipantId = participantId;
+        this.render();
     }
 
     /**

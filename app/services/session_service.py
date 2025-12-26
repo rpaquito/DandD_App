@@ -246,6 +246,178 @@ class SessionService:
         db.session.commit()
         return combat
 
+    # ===== SISTEMA DE XP =====
+
+    # Tabela de XP para subir de nivel (D&D 5e PHB p.15)
+    LEVEL_XP_THRESHOLDS = {
+        1: 0,
+        2: 300,
+        3: 900,
+        4: 2700,
+        5: 6500,
+        6: 14000,
+        7: 23000,
+        8: 34000,
+        9: 48000,
+        10: 64000,
+        11: 85000,
+        12: 100000,
+        13: 120000,
+        14: 140000,
+        15: 165000,
+        16: 195000,
+        17: 225000,
+        18: 265000,
+        19: 305000,
+        20: 355000
+    }
+
+    def award_xp_to_session(self, session_id, total_xp, source='combat', description=''):
+        """
+        Atribui XP a todos os jogadores de uma sessão.
+
+        Args:
+            session_id: ID da sessão
+            total_xp: XP total a dividir pelos jogadores
+            source: Origem do XP ('combat', 'milestone', 'quest')
+            description: Descrição do que gerou o XP
+
+        Returns:
+            Dicionário com:
+            {
+                'xp_per_player': 100,
+                'players_leveled_up': [player_id1, player_id2],
+                'players_updated': [player_dict1, player_dict2, ...]
+            }
+        """
+        players = self.get_session_players(session_id)
+        if not players:
+            return None
+
+        xp_per_player = total_xp // len(players)
+        leveled_up = []
+        updated_players = []
+
+        for player in players:
+            old_xp = player.xp_total
+            old_level = self._get_level_from_xp(old_xp)
+
+            # Adicionar XP
+            player.xp_total += xp_per_player
+            new_level = self._get_level_from_xp(player.xp_total)
+
+            # Verificar level up
+            if new_level > old_level:
+                leveled_up.append(player.id)
+
+                # Atualizar nivel no character_data
+                char_data = player.get_character_data()
+                char_data['nivel'] = new_level
+                player.set_character_data(char_data)
+
+            updated_players.append(player.to_dict())
+
+        db.session.commit()
+
+        return {
+            'xp_per_player': xp_per_player,
+            'total_xp': total_xp,
+            'source': source,
+            'description': description,
+            'players_leveled_up': leveled_up,
+            'players_updated': updated_players,
+            'num_players': len(players)
+        }
+
+    def _get_level_from_xp(self, total_xp):
+        """
+        Determina o nível baseado no XP total acumulado.
+
+        Args:
+            total_xp: XP total do personagem
+
+        Returns:
+            int: Nível do personagem (1-20)
+        """
+        # Procurar de trás para frente para encontrar o nível correto
+        for level in range(20, 0, -1):
+            if total_xp >= self.LEVEL_XP_THRESHOLDS[level]:
+                return level
+        return 1
+
+    def get_xp_to_next_level(self, player_id):
+        """
+        Calcula quanto XP falta para o próximo nível.
+
+        Args:
+            player_id: ID do jogador
+
+        Returns:
+            Dicionário com informação de progresso:
+            {
+                'current_level': 2,
+                'next_level': 3,
+                'current_xp': 500,
+                'needed_xp': 900,
+                'remaining_xp': 400,
+                'progress_percent': 55.5
+            }
+        """
+        player = self.get_player(player_id)
+        if not player:
+            return None
+
+        current_level = self._get_level_from_xp(player.xp_total)
+        next_level = min(current_level + 1, 20)
+
+        current_threshold = self.LEVEL_XP_THRESHOLDS[current_level]
+        needed_threshold = self.LEVEL_XP_THRESHOLDS[next_level]
+
+        # XP relativo ao nível atual
+        xp_in_current_level = player.xp_total - current_threshold
+        xp_needed_for_next = needed_threshold - current_threshold
+
+        # Percentagem de progresso no nível atual
+        if xp_needed_for_next > 0:
+            progress_percent = (xp_in_current_level / xp_needed_for_next) * 100
+        else:
+            progress_percent = 100  # Nível máximo
+
+        return {
+            'player_id': player_id,
+            'current_level': current_level,
+            'next_level': next_level,
+            'current_xp': player.xp_total,
+            'needed_xp': needed_threshold,
+            'remaining_xp': needed_threshold - player.xp_total,
+            'xp_in_current_level': xp_in_current_level,
+            'xp_needed_for_next': xp_needed_for_next,
+            'progress_percent': round(progress_percent, 1)
+        }
+
+    def get_session_xp_overview(self, session_id):
+        """
+        Obtem visão geral do XP de todos os jogadores numa sessão.
+
+        Args:
+            session_id: ID da sessão
+
+        Returns:
+            Lista de dicionários com progresso de XP de cada jogador
+        """
+        players = self.get_session_players(session_id)
+        overview = []
+
+        for player in players:
+            progress = self.get_xp_to_next_level(player.id)
+            if progress:
+                progress['nome_jogador'] = player.nome_jogador
+                char_data = player.get_character_data()
+                progress['nome_personagem'] = char_data.get('nome', 'Desconhecido')
+                overview.append(progress)
+
+        return overview
+
 
 def load_character_templates():
     """Carrega os templates de personagens pre-criados."""

@@ -1,11 +1,12 @@
 {% extends "builder/wizard_base.html" %}
 
-{% block step_subtitle %}Passo 6: Ataques e Magias{% endblock %}
-
-{% block step_content %}
 {% set cls = builder_data.get('classe', {}) %}
 {% set armas = builder_data.get('armas', []) %}
 {% set attrs = builder_data.get('atributos', {}) %}
+
+{% block step_subtitle %}Passo 6: Ataques e Magias{% endblock %}
+
+{% block step_content %}
 
 <!-- Ataques das Armas -->
 <div class="card bg-dark border-danger mb-4">

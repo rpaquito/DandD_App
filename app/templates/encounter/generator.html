@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}Gerador de Encontros{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="text-warning">
+                <i class="bi bi-dice-6 me-2"></i>Gerador de Encontros
+            </h1>
+            <p class="text-muted">Cria encontros balanceados usando o sistema de XP do D&D 5ª Edição</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Coluna Esquerda: Configuração -->
+        <div class="col-lg-5">
+            <div class="card bg-dark border-warning mb-4">
+                <div class="card-header border-warning bg-warning bg-opacity-10">
+                    <h5 class="mb-0 text-warning">
+                        <i class="bi bi-sliders me-2"></i>Configuração
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Party Size -->
+                    <div class="mb-3">
+                        <label for="party-size" class="form-label">
+                            <i class="bi bi-people me-1"></i>Tamanho do Grupo
+                        </label>
+                        <input type="number" class="form-control bg-dark text-light" id="party-size"
+                               min="1" max="8" value="4" onchange="updatePartyLevels()">
+                        <small class="text-muted">Número de jogadores (1-8)</small>
+                    </div>
+
+                    <!-- Party Levels -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-star me-1"></i>Níveis dos Jogadores
+                        </label>
+                        <div id="party-levels-container" class="row g-2">
+                            <!-- Gerado dinamicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Difficulty -->
+                    <div class="mb-3">
+                        <label for="difficulty" class="form-label">
+                            <i class="bi bi-thermometer-half me-1"></i>Dificuldade
+                        </label>
+                        <select class="form-select bg-dark text-light" id="difficulty">
+                            <option value="easy">Fácil</option>
+                            <option value="medium" selected>Médio</option>
+                            <option value="hard">Difícil</option>
+                            <option value="deadly">Mortal</option>
+                        </select>
+                        <small class="text-muted">Dificuldade desejada do encontro</small>
+                    </div>
+
+                    <!-- Quest Filter -->
+                    <div class="mb-3">
+                        <label for="quest-filter" class="form-label">
+                            <i class="bi bi-funnel me-1"></i>Pool de Monstros
+                        </label>
+                        <select class="form-select bg-dark text-light" id="quest-filter">
+                            <option value="all">Todos os Monstros</option>
+                            {% for quest in quests %}
+                            <option value="{{ quest.id }}">{{ quest.titulo }}</option>
+                            {% endfor %}
+                        </select>
+                        <small class="text-muted">Escolhe de onde selecionar monstros</small>
+                    </div>
+
+                    <!-- Max Monsters -->
+                    <div class="mb-3">
+                        <label for="max-monsters" class="form-label">
+                            <i class="bi bi-hash me-1"></i>Máximo de Monstros
+                        </label>
+                        <input type="number" class="form-control bg-dark text-light" id="max-monsters"
+                               min="1" max="20" value="10">
+                        <small class="text-muted">Número máximo de criaturas no encontro</small>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <div class="d-grid">
+                        <button class="btn btn-warning btn-lg" onclick="generateEncounter()">
+                            <i class="bi bi-dice-5 me-2"></i>Gerar Encontro
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sistema de XP Explanation -->
+            <div class="card bg-dark border-info">
+                <div class="card-header border-info">
+                    <h6 class="mb-0 text-info">
+                        <i class="bi bi-info-circle me-2"></i>Como Funciona
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p class="small mb-2">O gerador usa o sistema oficial de XP do D&D 5e:</p>
+                    <ul class="small mb-2">
+                        <li><strong>XP Budget</strong>: Calculado com base nos níveis dos jogadores</li>
+                        <li><strong>Multiplicador</strong>: Ajusta XP pelo número de monstros</li>
+                        <li><strong>Balanceamento</strong>: Seleciona monstros para atingir o budget</li>
+                    </ul>
+                    <div class="alert alert-info mb-0 py-2" style="font-size: 0.85rem;">
+                        <strong>Exemplo:</strong> 4 jogadores nível 2 em dificuldade Médio = 400 XP budget.
+                        Com 3 monstros, multiplicador é 2.0x.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coluna Direita: Resultado -->
+        <div class="col-lg-7">
+            <!-- Resultado do Encontro -->
+            <div id="encounter-result" class="card bg-dark border-success" style="display: none;">
+                <div class="card-header border-success bg-success bg-opacity-10">
+                    <h5 class="mb-0 text-success">
+                        <i class="bi bi-check-circle me-2"></i>Encontro Gerado
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Métricas -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="text-center p-3 bg-secondary rounded">
+                                <div class="text-muted small">Dificuldade</div>
+                                <div class="h4 mb-0" id="result-difficulty">-</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center p-3 bg-secondary rounded">
+                                <div class="text-muted small">XP Budget</div>
+                                <div class="h4 mb-0 text-warning" id="result-budget">-</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center p-3 bg-secondary rounded">
+                                <div class="text-muted small">XP Ajustado</div>
+                                <div class="h4 mb-0 text-info" id="result-adjusted">-</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center p-3 bg-secondary rounded">
+                                <div class="text-muted small">Multiplicador</div>
+                                <div class="h4 mb-0 text-danger" id="result-multiplier">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monstros -->
+                    <h6 class="text-light mb-3">
+                        <i class="bi bi-bug me-2"></i>Monstros (<span id="result-count">0</span>)
+                    </h6>
+                    <div id="monsters-list" class="row g-3">
+                        <!-- Gerado dinamicamente -->
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="d-flex gap-2 mt-4">
+                        <button class="btn btn-warning flex-grow-1" onclick="generateEncounter()">
+                            <i class="bi bi-arrow-clockwise me-2"></i>Gerar Novamente
+                        </button>
+                        {% if game_session %}
+                        <button class="btn btn-success" onclick="addToCombat()">
+                            <i class="bi bi-plus-circle me-2"></i>Adicionar ao Combate
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Placeholder quando vazio -->
+            <div id="empty-state" class="card bg-dark border-secondary text-center py-5">
+                <div class="card-body">
+                    <i class="bi bi-dice-1 text-muted" style="font-size: 4rem;"></i>
+                    <h5 class="text-muted mt-3">Nenhum Encontro Gerado</h5>
+                    <p class="text-muted">Configura os parâmetros à esquerda e clica em "Gerar Encontro"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden data -->
+<input type="hidden" id="session-id" value="{{ game_session.id if game_session else '' }}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/encounter-generator.js') }}"></script>
+<script>
+    // Inicializar ao carregar página
+    document.addEventListener('DOMContentLoaded', function() {
+        updatePartyLevels();
+    });
+</script>
+{% endblock %}

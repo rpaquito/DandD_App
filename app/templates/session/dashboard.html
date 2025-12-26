@@ -241,6 +241,39 @@
                                         </div>
                                     </div>
 
+                                    <!-- XP Progress Bar -->
+                                    {% set player_xp = player.xp_total %}
+                                    {% set player_level = char_data.get('nivel', 1) %}
+                                    {% if player_level == 1 %}
+                                        {% set xp_current_threshold = 0 %}
+                                        {% set xp_next_threshold = 300 %}
+                                    {% elif player_level == 2 %}
+                                        {% set xp_current_threshold = 300 %}
+                                        {% set xp_next_threshold = 900 %}
+                                    {% elif player_level == 3 %}
+                                        {% set xp_current_threshold = 900 %}
+                                        {% set xp_next_threshold = 2700 %}
+                                    {% else %}
+                                        {% set xp_current_threshold = 2700 %}
+                                        {% set xp_next_threshold = 6500 %}
+                                    {% endif %}
+                                    {% set xp_in_level = player_xp - xp_current_threshold %}
+                                    {% set xp_needed = xp_next_threshold - xp_current_threshold %}
+                                    {% set xp_percent = ((xp_in_level / xp_needed * 100)|int) if xp_needed > 0 else 100 %}
+
+                                    <div class="mb-2">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <small class="text-muted">
+                                                <i class="bi bi-star me-1"></i>XP
+                                            </small>
+                                            <small class="text-muted">{{ player_xp }} / {{ xp_next_threshold }}</small>
+                                        </div>
+                                        <div class="progress" style="height: 6px; background-color: rgba(255,255,255,0.1);">
+                                            <div class="progress-bar bg-warning" role="progressbar"
+                                                 style="width: {{ xp_percent if xp_percent <= 100 else 100 }}%"></div>
+                                        </div>
+                                    </div>
+
                                     <!-- HP Controls -->
                                     <div class="d-flex gap-1 mb-2">
                                         <form action="{{ url_for('session.update_player_hp', session_id=game_session.id, player_id=player.id) }}" method="post" class="d-flex gap-1">
@@ -369,75 +402,49 @@
             {% endif %}
 
             <!-- Notas da Sessao -->
-            <div class="card bg-dark border-secondary">
-                <div class="card-header border-secondary">
-                    <h5 class="mb-0"><i class="bi bi-sticky me-2"></i>Notas da Sessao</h5>
+            <div class="card bg-dark border-info mb-4">
+                <div class="card-header border-info d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-journal-text me-2"></i>Notas da Sessão
+                    </h5>
+                    <div>
+                        <span class="text-muted small me-2" id="notes-save-status"></span>
+                        <button class="btn btn-sm btn-success" onclick="saveNotes(false)">
+                            <i class="bi bi-save me-1"></i>Guardar
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ url_for('session.update_notes', session_id=game_session.id) }}" method="post">
-                        <textarea name="notas" class="form-control bg-dark text-light border-secondary notes-textarea mb-2"
-                                  placeholder="Escreve aqui notas sobre a sessao, eventos importantes, decisoes dos jogadores...">{{ game_session.notas or '' }}</textarea>
-                        <button type="submit" class="btn btn-sm btn-outline-success">
-                            <i class="bi bi-save me-1"></i>Guardar Notas
-                        </button>
-                    </form>
+                    <textarea class="form-control bg-dark text-light border-secondary notes-textarea"
+                              id="session-notes"
+                              data-session-id="{{ game_session.id }}"
+                              placeholder="Escreve aqui as tuas notas de sessão: NPCs encontrados, decisões dos jogadores, segredos descobertos, momentos memoráveis...">{{ game_session.notas or '' }}</textarea>
+                    <small class="text-muted d-block mt-2">
+                        <i class="bi bi-info-circle me-1"></i>
+                        As notas são guardadas automaticamente enquanto escreves. Usa este espaço para registar eventos importantes e lembretes para a próxima sessão.
+                    </small>
                 </div>
             </div>
         </div>
 
         <!-- Sidebar Direita - Tempo e Navegação -->
         <div class="col-lg-3 mb-4">
-            <!-- Gestao de Tempo e Estado da Sessão -->
+            <!-- Tempo no Jogo -->
             <div class="card bg-dark border-info mb-4 sticky-top time-panel-bg" style="top: 20px;">
                 <div class="card-header border-info">
-                    <h5 class="mb-0"><i class="bi bi-clock me-2"></i>Gestao de Tempo</h5>
+                    <h5 class="mb-0"><i class="bi bi-clock me-2"></i>Tempo no Jogo</h5>
                 </div>
                 <div class="card-body">
-                    <!-- Tempo de Sessao -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <small class="text-muted">
-                                <i class="bi bi-stopwatch me-1"></i>Duracao da Sessao
-                            </small>
-                            <div id="session-controls"></div>
-                        </div>
-                        <h4 class="mb-0" id="session-duration">0h 0m</h4>
-                    </div>
-
-                    <hr class="border-secondary">
-
-                    <!-- Tempo de Combate -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <small class="text-muted">
-                                <i class="bi bi-shield-shaded me-1 text-danger"></i>Tempo de Combate
-                            </small>
-                            <div id="combat-controls"></div>
-                        </div>
-                        <p class="mb-0" id="combat-time">-</p>
-                    </div>
-
-                    <!-- Turnos de Exploracao -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <small class="text-muted">
-                                <i class="bi bi-compass me-1 text-warning"></i>Turnos de Exploracao
-                            </small>
-                            <p class="mb-0" id="exploration-turns">0</p>
-                        </div>
-                        <div id="exploration-controls"></div>
-                    </div>
-
-                    <hr class="border-secondary">
-
                     <!-- Tempo no Jogo -->
                     <div class="mb-3">
                         <small class="text-muted d-block mb-1">
-                            <i class="bi bi-sun me-1 text-info"></i>Tempo no Jogo
+                            <i class="bi bi-sun me-1 text-info"></i>Hora Actual
                         </small>
                         <h5 class="mb-2" id="game-time">Dia 1, 08:00</h5>
                         <div id="game-time-controls"></div>
                     </div>
+
+                    <hr class="border-secondary">
 
                     <!-- Descansos -->
                     <div>
@@ -583,11 +590,45 @@
         </div>
     </div>
 </div>
+
+<!-- Modal: Level Up -->
+<div class="modal fade" id="levelUpModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-light border-warning">
+            <div class="modal-header border-warning bg-warning bg-opacity-10">
+                <h5 class="modal-title text-warning">
+                    <i class="bi bi-star-fill me-2"></i>
+                    Level Up!
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <h2 class="display-3 mb-3">🎉</h2>
+                <h4 id="levelup-player-name" class="mb-2"></h4>
+                <p class="lead">
+                    subiu para nível <span id="levelup-new-level" class="text-warning fw-bold"></span>!
+                </p>
+                <p class="text-muted">
+                    Parabéns ao jogador! Actualiza a ficha de personagem com as melhorias do novo nível.
+                </p>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    <i class="bi bi-check-circle me-1"></i>Continuar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/time-tracker.js') }}"></script>
+<script src="{{ url_for('static', filename='js/session-notes.js') }}"></script>
 <script>
+// Definir session ID global para uso pelos scripts
+window.sessionId = {{ game_session.id }};
+
 // Highlight selected template/quest cards
 document.querySelectorAll('.template-mini, #questModal .card').forEach(card => {
     card.addEventListener('click', function() {
@@ -602,7 +643,7 @@ document.querySelectorAll('.template-mini, #questModal .card').forEach(card => {
 // Inicializar TimeTracker
 const timeTracker = new TimeTracker({{ game_session.id }}, {
     autoUpdate: true,
-    updateInterval: 1000,
+    updateInterval: 5000,  // Update a cada 5 segundos (só tempo no jogo)
     onUpdate: (data) => {
         console.log('Tempo actualizado:', data);
     },
@@ -613,17 +654,11 @@ const timeTracker = new TimeTracker({{ game_session.id }}, {
 
 // Configurar elementos DOM
 timeTracker.setElements({
-    sessionDuration: 'session-duration',
-    combatTime: 'combat-time',
-    explorationTurns: 'exploration-turns',
     gameTime: 'game-time'
 });
 
 // Criar controles com TimeControlsBuilder
 const controls = new TimeControlsBuilder(timeTracker);
-controls.createStartPauseButton('session-controls');
-controls.createCombatRoundButton('combat-controls');
-controls.createExplorationButton('exploration-controls');
 controls.createGameTimeButtons('game-time-controls');
 controls.createRestButtons('rest-controls');
 

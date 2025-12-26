@@ -89,6 +89,7 @@
     <div class="map-container">
         <div class="map-title">{{ quest.titulo }}</div>
 
+        {% if quest.id == 'cripta-reis-esquecidos' %}
         <div class="map-ascii">
                               ENTRADA
                                  │
@@ -156,8 +157,89 @@
                     │                         │
                     └─────────────────────────┘
         </div>
+        {% elif quest.id == 'sombras-imperio-estelar' %}
+        <div class="map-ascii">
+            PORTO ESTELAR          DESERTO              TEMPLO DOS GUARDIÕES
+                 │                    │                         │
+     ┌───────────┴────────────┐      │          ┌──────────────┴──────────────┐
+     │                        │      │          │                             │
+     │   1. CANTINA DO        │      │          │     6. ENTRADA DO TEMPLO    │
+     │      PORTO ESTELAR     │      │          │           ⚔                 │
+     │          🍺            │      │          │                             │
+     │       [2][3]           │      │          └──────────────┬──────────────┘
+     │                        │      │                         │
+     └────────┬───────────────┘      │                         │
+              │                      │          ┌──────────────┴──────────────┐
+              │                      │          │                             │
+              │                      │          │  7. PROVAÇÕES DOS GUARDIÕES │
+     ┌────────┴────────────┐         │          │          🔮                 │
+     │                     │         │          │         [8]                 │
+     │   4. DOCAS          │         │          │                             │
+     │      ⚔              │    ┌────┴────┐     └──────────────┬──────────────┘
+     │    [FUGA]           │    │         │                    │
+     │                     │    │    5.   │     ┌──────────────┴──────────────┐
+     └─────────────────────┘    │  AREIAS │     │                             │
+                                │         │     │   9. ACÓLITOS DAS SOMBRAS   │
+                                │   ☀🏜    │     │          ☠ ☠ ☠ ☠           │
+                                │         │     │                             │
+                                └─────────┘     └──────────────┬──────────────┘
+                                                               │
+                                                ┌──────────────┴──────────────┐
+                                                │                             │
+                                                │  10. SENHOR DAS SOMBRAS     │
+                                                │           👤               │
+                                                │         BOSS                │
+                                                │          [11]               │
+                                                │                             │
+                                                └─────────────────────────────┘
+        </div>
+        {% elif quest.id == 'a-irmandade-do-anel-sombrio' %}
+        <div class="map-ascii">
+    VALDOURO        SILVÁRIA         MORIA            LÓRIEN          MORDOR
+        │               │               │                │               │
+    ┌───┴───┐      ┌────┴────┐     ┌───┴───┐       ┌────┴────┐    ┌────┴────┐
+    │       │      │         │     │       │       │         │    │         │
+    │  1.   │      │    5.   │     │  9.   │       │   14.   │    │   21.   │
+    │ FESTA │──────│SANTUÁRIO│─────│PORTÕES│───────│ FLORESTA│────│ PORTÕES │
+    │   🎉  │ [4]  │    ⛪   │ [8] │  🚪   │ [13]  │   🌳    │    │  NEGROS │
+    │  [2]  │      │    [6]  │     │       │       │   [15]  │    │         │
+    │  [3]  │      │    [7]  │     │       │       │         │    │         │
+    │       │      │         │     │       │       │         │    │         │
+    └───────┘      └─────────┘     └───┬───┘       └─────────┘    └────┬────┘
+                                       │                                │
+                              ┌────────┴────────┐                       │
+                              │                 │                       │
+                              │   10-13. MINAS  │                ┌──────┴──────┐
+                              │    DE MORIA     │                │             │
+                              │                 │                │    22-23.   │
+                              │  ☠ Emboscada    │                │   SHELOB &  │
+                              │  🏛 Reino Caído  │                │   TORRE LUA │
+                              │  🦖 Troll        │                │     🕷👁    │
+                              │  🔥 Demónio      │                │             │
+                              │                 │                └──────┬──────┘
+                              └─────────────────┘                       │
+                                                              ┌─────────┴──────────┐
+                     GRANDE RIO                              │                    │
+                         │                                   │   24. MONTE DOOM   │
+                    ┌────┴────┐                              │                    │
+                    │   16.   │                              │    FENDA DESTINO   │
+                    │   RIO   │                              │         🌋         │
+                    │   🚣    │                              │                    │
+                    │  [17]   │                              │        FIM         │
+                    │ [18-20] │                              │                    │
+                    └─────────┘                              └────────────────────┘
+        </div>
+        {% else %}
+        <!-- Mapa não disponível -->
+        <div class="alert alert-info text-dark" role="alert">
+            <h5><i class="bi bi-info-circle me-2"></i>Mapa de Aventura</h5>
+            <p class="mb-0">O mapa overview para esta aventura ainda não está disponível.</p>
+            <p class="mb-0 mt-2"><strong>Sugestão:</strong> Use os mapas tácticos individuais de cada encontro de combate, disponíveis no rastreador de combate durante a sessão.</p>
+        </div>
+        {% endif %}
 
         <!-- Legenda -->
+        {% if quest.id == 'cripta-reis-esquecidos' %}
         <div class="map-legend-print">
             <h5 style="color: #000000; border-bottom: 1px solid #000000; padding-bottom: 5px;">Legenda</h5>
             <div class="row">
@@ -184,16 +266,77 @@
                 </div>
             </div>
         </div>
+        {% elif quest.id == 'sombras-imperio-estelar' %}
+        <div class="map-legend-print">
+            <h5 style="color: #000000; border-bottom: 1px solid #000000; padding-bottom: 5px;">Legenda</h5>
+            <div class="row">
+                <div class="col-6">
+                    <strong>Símbolos:</strong>
+                    <ul class="list-unstyled mt-2">
+                        <li>🍺 - Cantina</li>
+                        <li>⚔ - Combate</li>
+                        <li>🏜 - Deserto</li>
+                        <li>🔮 - Puzzle/Provações</li>
+                        <li>☠ - Inimigos</li>
+                        <li>👤 - Boss Final</li>
+                    </ul>
+                </div>
+                <div class="col-6">
+                    <strong>Localizações Principais:</strong>
+                    <ul class="list-unstyled mt-2 room-key">
+                        <li><strong>1-3.</strong> Porto Estelar</li>
+                        <li><strong>4.</strong> Docas (Perseguição)</li>
+                        <li><strong>5.</strong> Fuga nas Areias</li>
+                        <li><strong>6-8.</strong> Templo dos Guardiões</li>
+                        <li><strong>9.</strong> Acólitos das Sombras</li>
+                        <li><strong>10-12.</strong> Senhor das Sombras</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% elif quest.id == 'a-irmandade-do-anel-sombrio' %}
+        <div class="map-legend-print">
+            <h5 style="color: #000000; border-bottom: 1px solid #000000; padding-bottom: 5px;">Legenda</h5>
+            <div class="row">
+                <div class="col-6">
+                    <strong>Símbolos:</strong>
+                    <ul class="list-unstyled mt-2">
+                        <li>🎉 - Festa de Valdouro</li>
+                        <li>⛪ - Santuário</li>
+                        <li>🚪 - Portões</li>
+                        <li>🌳 - Floresta de Lórien</li>
+                        <li>🚣 - Grande Rio</li>
+                        <li>🕷 - Shelob (Aranha)</li>
+                        <li>👁 - Torre da Lua</li>
+                        <li>🌋 - Monte Doom</li>
+                    </ul>
+                </div>
+                <div class="col-6">
+                    <strong>Localizações Principais:</strong>
+                    <ul class="list-unstyled mt-2 room-key">
+                        <li><strong>1-4.</strong> Valdouro</li>
+                        <li><strong>5-7.</strong> Silvária</li>
+                        <li><strong>8.</strong> Lobos das Sombras</li>
+                        <li><strong>9-13.</strong> Minas de Moria</li>
+                        <li><strong>14-15.</strong> Lórien</li>
+                        <li><strong>16-20.</strong> Grande Rio e Pântanos</li>
+                        <li><strong>21-24.</strong> Mordor</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Notas para o Mestre (não imprime) -->
+    {% if quest.id == 'cripta-reis-esquecidos' %}
     <div class="card bg-dark border-secondary mt-4 no-print">
         <div class="card-header border-secondary">
             <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Notas do Mapa para o Mestre</h5>
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h6 class="text-warning">Armadilhas</h6>
                     <ul>
                         <li><strong>Puzzle da Porta [5]:</strong> Espada → Livro → Moeda → Coruja</li>
@@ -201,11 +344,11 @@
                         <li><strong>Tesouro Falso:</strong> Dardos envenenados se abrir sem verificar</li>
                     </ul>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h6 class="text-danger">Encontros</h6>
                     <ul>
-                        <li><strong>Câmara dos Guardiões:</strong> 4 Esqueletos (CR 1/4 cada)</li>
-                        <li><strong>Sala do Trono:</strong> Cavaleiro Fantasma (CR 3)</li>
+                        <li><strong>Câmara dos Guardiões [6]:</strong> 4 Esqueletos (CR 1/4 cada)</li>
+                        <li><strong>Sala do Trono [10]:</strong> Cavaleiro Fantasma (CR 3)</li>
                     </ul>
                     <h6 class="text-success mt-3">Aliados</h6>
                     <ul>
@@ -213,8 +356,100 @@
                         <li><strong>Rainha Leonor:</strong> Fantasma aliado na sala 9</li>
                     </ul>
                 </div>
+                <div class="col-md-4">
+                    <h6 class="text-info">Dicas de Condução</h6>
+                    <ul>
+                        <li><strong>Ritmo:</strong> 3-4 horas de jogo</li>
+                        <li><strong>Tom:</strong> Terror gótico, mistério</li>
+                        <li><strong>Objetivo Final:</strong> Quebrar a maldição no altar</li>
+                        <li><strong>Twist:</strong> O Cavaleiro quer ser libertado</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+    {% elif quest.id == 'sombras-imperio-estelar' %}
+    <div class="card bg-dark border-secondary mt-4 no-print">
+        <div class="card-header border-secondary">
+            <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Notas do Mapa para o Mestre</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6 class="text-danger">Encontros Principais</h6>
+                    <ul>
+                        <li><strong>Emboscada Imperial [3]:</strong> 4 Soldados (CR 1/8), usar cobertura</li>
+                        <li><strong>Perseguição Docas [4]:</strong> 3 Caçadores (CR 1/4), ambiente dinâmico</li>
+                        <li><strong>Entrada Templo [6]:</strong> 2 Guardiões de Pedra (CR 1/2)</li>
+                        <li><strong>Acólitos [9]:</strong> 4 Acólitos (CR 1/4), táticas coordenadas</li>
+                        <li><strong>Senhor das Sombras [10]:</strong> Boss (CR 3), duas fases</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-warning">Pontos-Chave</h6>
+                    <ul>
+                        <li><strong>Droide D7-R2:</strong> Essencial para missão, proteger</li>
+                        <li><strong>Provações [7]:</strong> Força, Sabedoria, Coragem - CD 13</li>
+                        <li><strong>Espírito Mestre [8]:</strong> Fornece contexto dos Guardiões</li>
+                        <li><strong>Deserto [5]:</strong> Encontro de exploração, recursos limitados</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-info">Dicas de Condução</h6>
+                    <ul>
+                        <li><strong>Ritmo:</strong> 4-5 horas de jogo</li>
+                        <li><strong>Tom:</strong> Space opera, ação rápida</li>
+                        <li><strong>NPC Aliado:</strong> Kira luta ao lado do grupo</li>
+                        <li><strong>Recompensa:</strong> 200-300po + artefato Guardian</li>
+                        <li><strong>Twist:</strong> O Império rastreou o droide</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% elif quest.id == 'a-irmandade-do-anel-sombrio' %}
+    <div class="card bg-dark border-secondary mt-4 no-print">
+        <div class="card-header border-secondary">
+            <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Notas do Mapa para o Mestre</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6 class="text-danger">Encontros Boss</h6>
+                    <ul>
+                        <li><strong>Cavaleiros Negros [4]:</strong> CR 2, recuam se feridos</li>
+                        <li><strong>Lobos Sombras [8]:</strong> 5 lobos (CR 1/4), pack tactics</li>
+                        <li><strong>Troll Cavernas [12]:</strong> CR 5, regeneração</li>
+                        <li><strong>Demónio Fogo [13]:</strong> CR 6, momento épico - pode fugir</li>
+                        <li><strong>Shelob [22]:</strong> CR 4, veneno paralisante</li>
+                        <li><strong>Boss Final [24]:</strong> Destruir o Anel</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-warning">Localizações Críticas</h6>
+                    <ul>
+                        <li><strong>Valdouro [1-3]:</strong> Estabelecer ligações emocionais</li>
+                        <li><strong>Conselho [6]:</strong> Formar a Irmandade oficialmente</li>
+                        <li><strong>Moria [9-13]:</strong> Dungeon principal, atmosfera sombria</li>
+                        <li><strong>Lórien [14-15]:</strong> Descanso, cura, presentes</li>
+                        <li><strong>Espelho Galadriel [15]:</strong> Revelar futuros possíveis</li>
+                        <li><strong>Encruzilhada [18]:</strong> Decisão moral importante</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-info">Dicas de Condução</h6>
+                    <ul>
+                        <li><strong>Duração:</strong> 8-10 horas (2-3 sessões)</li>
+                        <li><strong>Tom:</strong> Fantasia épica, jornada heroica</li>
+                        <li><strong>NPCs Chave:</strong> Gandalf (mago), Aragorn (ranger)</li>
+                        <li><strong>Corrupção Anel:</strong> Testar Sabedoria CD 12-15</li>
+                        <li><strong>Momento Épico:</strong> Sacrifício em Moria [13]</li>
+                        <li><strong>Final:</strong> Destruir Anel = vitória, guardar = corrupção</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
