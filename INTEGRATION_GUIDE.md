@@ -326,30 +326,6 @@ body {
 
 O sistema de mapas (`/app/static/js/map-grid.js`) automaticamente carrega a `imagem_fundo` quando o mapa táctico é inicializado durante o combate.
 
-### 8. Página Showcase
-
-**Rota:** `/showcase`
-**Ficheiro Blueprint:** `app/routes/main.py`
-**Template:** `app/templates/showcase.html`
-
-```python
-# app/routes/main.py
-from app.models.combat import CONDICOES_5E
-
-@main_bp.route('/showcase')
-def showcase():
-    """Página showcase de assets gerados por IA."""
-    return render_template('showcase.html', CONDICOES_5E=CONDICOES_5E)
-```
-
-**Conteúdo do Showcase:**
-- Visual de todos os 20 UI elements (banner, logo, dividers, condition icons, background)
-- Preview dos 3 overview maps com metadata (tamanho, resolução)
-- Preview dos 2 tactical maps com informação de grelha
-- Estatísticas de progresso (25/67 assets, 37%, 1.4MB)
-- Links para documentação (UI_ELEMENTS_GUIDE.md, QUEST_MAPS_GUIDE.md, etc.)
-- Links de integração (testar overview maps, condition icons, tactical maps)
-
 ## Como Estender
 
 ### Adicionar Novo Asset de UI
@@ -358,7 +334,6 @@ def showcase():
 2. **Adicionar CSS** em `app/static/css/style.css`
 3. **Integrar no template** apropriado com `url_for('static', filename='...')`
 4. **Documentar** em UI_ELEMENTS_GUIDE.md
-5. **Atualizar showcase** em `app/templates/showcase.html`
 
 ### Adicionar Novo Mapa Overview
 
@@ -369,7 +344,6 @@ def showcase():
    <img src="{{ url_for('static', filename='img/maps/overview/novo-quest.webp') }}"
         alt="{{ item.quest.titulo }}" class="quest-map-preview">
    ```
-3. **Atualizar showcase** em `app/templates/showcase.html`
 
 ### Adicionar Novo Mapa Táctico
 
@@ -459,7 +433,6 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 - [ ] Homepage carrega hero banner
 - [ ] Navbar mostra app logo
 - [ ] Quest list exibe overview maps nas cards
-- [ ] Showcase page mostra todos os 25 assets
 - [ ] Condition icons aparecem em painéis de jogadores (durante gameplay)
 - [ ] Tactical maps aparecem em combates (Cripta steps 6 e 10)
 - [ ] Dividers decorativos aparecem em templates
@@ -480,7 +453,6 @@ curl -I http://localhost:5001/static/img/maps/overview/cripta-reis-esquecidos.we
 # Testar páginas
 curl -s http://localhost:5001/ | grep hero-banner
 curl -s http://localhost:5001/aventura/ | grep quest-map-preview
-curl -s http://localhost:5001/showcase | grep -c asset-card
 ```
 
 ## 🔄 Como Retomar Este Trabalho
@@ -492,8 +464,6 @@ curl -s http://localhost:5001/showcase | grep -c asset-card
 - **GPU Quota esgotada** - Reset em ~22 horas (23 Dez 2025, ~10:45)
 
 ### 3 Opções para Continuar
-
-**Ver `RESUME_PLAN.md` para detalhes completos das opções.**
 
 #### Opção 1: Esperar Reset de Quota (Recomendado) ⏰
 - Aguardar ~22 horas
@@ -550,8 +520,6 @@ curl -s http://localhost:5001/showcase | grep -c asset-card
 
 - **UI_ELEMENTS_GUIDE.md** - Guia completo de elementos de UI
 - **QUEST_MAPS_GUIDE.md** - Estado e prompts de mapas de quest
-- **CHARACTER_PORTRAITS_PLAN.md** - Prompts prontos para retratos
-- **AI_ASSETS_SUMMARY.md** - Documento mestre de todos os assets
 - **CLAUDE.md** - Guia principal do projeto
 
 ---

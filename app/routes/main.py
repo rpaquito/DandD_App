@@ -4,7 +4,6 @@ import json
 import os
 from flask import Blueprint, render_template
 from app.services.session_service import get_saved_characters
-from app.models.combat import CONDICOES_5E
 
 main_bp = Blueprint('main', __name__)
 
@@ -13,12 +12,6 @@ main_bp = Blueprint('main', __name__)
 def index():
     """Pagina inicial - menu principal."""
     return render_template('index.html')
-
-
-@main_bp.route('/sobre')
-def about():
-    """Página sobre a aplicação."""
-    return render_template('about.html')
 
 
 @main_bp.route('/personagens')
@@ -56,9 +49,3 @@ def help_page():
 def settings():
     """Pagina de definicoes da aplicacao."""
     return render_template('settings.html')
-
-
-@main_bp.route('/showcase')
-def showcase():
-    """Página showcase de assets gerados por IA."""
-    return render_template('showcase.html', CONDICOES_5E=CONDICOES_5E)
